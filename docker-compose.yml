@@ -4,9 +4,39 @@ services:
   spacedeck:
     build: .
     container_name: spacedeck
+    depends_on:
+      - mysql
+      - redis
     ports:
       - "9666:9666"
     volumes:
-      - /absolute/path/to/storage:/app/storage
-      - /absolute/path/to/database.sqlite:/app/database.sqlite
+      - ./storage:/app/storage
 
+  spacedeck_2:
+    build: .
+    container_name: spacedeck_2
+    ports:
+      - "9667:9666"
+    depends_on:
+      - mysql
+      - redis
+    volumes:
+      - ./storage:/app/storage
+
+  redis:
+    image: redis:5-alpine
+    container_name: "redis"
+    restart: unless-stopped
+    mem_limit: 400m
+
+  mysql:
+    image: mysql:5.6
+    container_name: "mysql"
+    restart: unless-stopped
+    ports:
+      - 3306:3306
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_DATABASE: "spacedeck"

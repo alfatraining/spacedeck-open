@@ -1,25 +1,19 @@
 const Umzug = require('umzug');
 const config = require('config')
 
-function sequel_log(a,b,c) {
-  console.log(a);
-}
-
 const Sequelize = require('sequelize');
-const sequelize = new Sequelize('database', 'username', 'password', {
-  host: 'localhost',
-  dialect: 'sqlite',
-
+const sequelize = new Sequelize(config.mysql_db_name, config.mysql_username, config.mysql_password, {
+  host: config.mysql_host,
+  dialect: 'mysql',
+  dialectOptions: {
+    decimalNumbers: true  // required for MySQL so decimal number are not returned as strings!
+  },
   pool: {
     max: 5,
     min: 0,
     acquire: 30000,
     idle: 10000
   },
-
-  // SQLite only
-  storage: config.get('storage_local_db'),
-  logging: sequel_log,
 
   // http://docs.sequelizejs.com/manual/tutorial/querying.html#operators
   operatorsAliases: false
@@ -229,6 +223,7 @@ module.exports = {
       foreignKey: {
         name: 'user_id'
       },
+      onDelete: 'CASCADE',
       as: 'user'
     });
 
@@ -236,6 +231,7 @@ module.exports = {
       foreignKey: {
         name: 'space_id'
       },
+      onDelete: 'CASCADE',
       as: 'space'
     });
 
@@ -250,6 +246,7 @@ module.exports = {
       foreignKey: {
         name: 'space_id'
       },
+      onDelete: 'CASCADE',
       as: 'space'
     });
 
@@ -257,6 +254,7 @@ module.exports = {
       foreignKey: {
         name: 'user_id'
       },
+      onDelete: 'CASCADE',
       as: 'user'
     });
 
@@ -264,6 +262,7 @@ module.exports = {
       foreignKey: {
         name: 'space_id'
       },
+      onDelete: 'CASCADE',
       as: 'space'
     });
 
