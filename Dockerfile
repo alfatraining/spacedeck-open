@@ -7,6 +7,8 @@ WORKDIR /app
 RUN apk add git make cmake gcc g++ libmad-dev libid3tag-dev libsndfile-dev gd-dev boost-dev libgd libpng-dev zlib-dev
 RUN apk add zlib-static libpng-static boost-static
 
+RUN apk add mysql-client
+
 RUN apk add autoconf automake libtool gettext
 RUN wget https://github.com/xiph/flac/archive/1.3.3.tar.gz
 RUN tar xzf 1.3.3.tar.gz

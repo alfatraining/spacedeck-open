@@ -1,6 +1,7 @@
 'use strict';
 
 const config = require('config');
+const RedisConnection = require('ioredis');
 
 // this is a mock version of the Redis API,
 // emulating Redis if it is not available locally
@@ -97,7 +98,7 @@ module.exports = {
     if (config.get("redis_mock")) {
       this.connection = notRedis;
     } else {
-      const redisHost = process.env.REDIS_PORT_6379_TCP_ADDR || 'sync';
+      const redisHost = process.env.REDIS_PORT_6379_TCP_ADDR || config.get("redis_host");
       this.connection = new RedisConnection(6379, redisHost);
     }
   },

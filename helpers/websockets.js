@@ -7,8 +7,7 @@ const Op = Sequelize.Op;
 const config = require('config');
 
 const WebSocketServer = require('ws').Server;
-
-//const RedisConnection = require('ioredis');
+const RedisConnection = require('ioredis');
 const async = require('async');
 const _ = require("underscore");
 const crypto = require('crypto');

@@ -317,7 +317,7 @@
 </div>
 
 <div v-if="active_space_loaded" v-cloak>
-  <!--div id="minimap"
+  <div id="minimap"
        v-bind:style="{width: ''+(active_space.width/minimap_scale)+'px', height: ''+(active_space.height/minimap_scale)+'px', bottom: '66px', right: '20px'}"
        v-if="active_space"
         v-on:mousedown="handle_minimap_mousedown($event)"
@@ -329,7 +329,7 @@
         v-on:mouseup="handle_minimap_mouseup($event)">
     <div v-for="a in active_space_artifacts" v-bind:style="{left: ''+(a.x/minimap_scale)+ 'px',  top: ''+(a.y/minimap_scale) + 'px', width: ''+(a.w/minimap_scale)+ 'px', height: ''+(a.h/minimap_scale) + 'px'}"></div>
     <div class="window" v-bind:style="{left: ''+(scroll_left/minimap_scale) + 'px', top: ''+(scroll_top/minimap_scale)+ 'px', width: ''+(window_width/minimap_scale)+ 'px', height: ''+(window_height/minimap_scale) + 'px'}"></div>
-  </div-->
+  </div>
 
   <div class="btn-group light zoom-bar">
     <button class="btn btn-icon btn-md btn-white" v-on:click="zoom_in()">
