@@ -1,0 +1,74 @@
+{
+    "root": true,
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "extends": ["eslint:recommended", "plugin:vue/recommended", "plugin:prettier/recommended"],
+    "plugins": ["import"],
+    "rules": {
+      "vue/no-v-html": "off",
+      "vue/singleline-html-element-content-newline": "off",
+      "vue/html-self-closing": "off",
+      "vue/html-indent": "off",
+      "vue/html-closing-bracket-spacing": "error",
+      "vue/html-closing-bracket-newline": [
+        "error",
+        {
+          "singleline": "never",
+          "multiline": "always"
+        }
+      ],
+      "vue/component-name-in-template-casing": ["error", "PascalCase", { "registeredComponentsOnly": false }],
+      "vue/component-definition-name-casing": ["error", "camelcase"],
+      "vue/max-attributes-per-line": [
+        "error",
+        {
+          "singleline": 20,
+          "multiline": {
+            "max": 1,
+            "allowFirstLine": false
+          }
+        }
+      ],
+      "import/first": "error",
+      "import/named": "error",
+      "import/default": "error",
+      "import/export": "error",
+      "import/no-mutable-exports": "error",
+      "space-before-function-paren": "off",
+      "no-var": "error",
+      "no-unused-vars": ["error", { "vars": "all", "args": "after-used", "ignoreRestSiblings": true }],
+      "prefer-const": "error",
+      "dot-notation": "error",
+      "no-multiple-empty-lines": "error",
+      "consistent-return": "error",
+      "no-confusing-arrow": "error",
+      "prefer-spread": "error",
+      "default-case": "error",
+      "eqeqeq": "error",
+      "no-eval": "error",
+      "no-loop-func": "error",
+      "no-lonely-if": "error",
+      "radix": "error",
+      "padding-line-between-statements": [
+        "error",
+        { "blankLine": "always", "prev": "*", "next": "return" },
+        { "blankLine": "always", "prev": ["const", "let", "var"], "next": "*" },
+        { "blankLine": "any", "prev": ["const", "let", "var"], "next": ["const", "let", "var"] },
+        { "blankLine": "always", "prev": "directive", "next": "*" },
+        { "blankLine": "any", "prev": "directive", "next": "directive" }
+      ],
+      "one-var": ["error", "never"],
+      "no-console": "warn",
+      "spaced-comment": "warn",
+      "require-atomic-updates":"off"
+    },
+    "env": {
+      "browser": true,
+      "node": true
+    },
+    "globals": {
+      "NODE_ENV": true,
+      "Vue": true
+    }
+  }
