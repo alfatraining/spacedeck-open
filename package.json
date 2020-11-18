@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "node spacedeck.js"
+    "start": "node spacedeck.js",
+    "dev:frontend": "webpack --watch",
+    "build:css": "gulp styles",
+    "build:frontend": "NODE_ENV=production webpack"
   },
   "engines": {
     "node": ">=10.0.0"
@@ -59,5 +62,25 @@
   },
   "keywords": [],
   "author": "Lukas F. Hartmann, Martin Güther",
-  "license": "AGPLv3"
+  "license": "AGPLv3",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^6.4.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-runtime": "^6.26.0",
+    "css-loader": "^0.28.11",
+    "eslint": "^7.13.0",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-vue": "^7.1.0",
+    "prettier": "^2.1.2",
+    "terser-webpack-plugin-legacy": "^1.2.5",
+    "vue-html-loader": "^1.2.4",
+    "vue-loader": "^8.7.1",
+    "vue-style-loader": "^1.0.0",
+    "webpack": "^1.15.0"
+  }
 }

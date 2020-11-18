@@ -11,17 +11,7 @@ services:
       - "9666:9666"
     volumes:
       - ./storage:/app/storage
-
-  spacedeck_2:
-    build: .
-    container_name: spacedeck_2
-    ports:
-      - "9667:9666"
-    depends_on:
-      - mysql
-      - redis
-    volumes:
-      - ./storage:/app/storage
+      - ./public:/app/public
 
   redis:
     image: redis:5-alpine
