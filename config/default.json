@@ -2,14 +2,17 @@
   "team_name": "My Open Spacedeck",
   "contact_email": "support@example.org",
 
+  "host": "localhost",
+  "port": 9666,
   "endpoint": "http://localhost:9666",
   "invite_code": "top-sekrit",
 
+  "storage_local_path": "./storage",
+  "storage_local_db": "./database.sqlite",
   "storage_region": "eu-central-1",
-
+  "storage_endpoint": "http://localhost:4572",
   "storage_bucket": "my_spacedeck_bucket",
   "storage_cdn": "/storage",
-  "storage_local_path": "./storage",
 
   "mysql_host": "mysql",
   "mysql_db_name": "spacedeck",
@@ -20,9 +23,6 @@
   "mongodb_host": "localhost",
   "redis_host": "redis",
 
-  "google_access" : "",
-  "google_secret" : "",
-  "admin_pass": "very_secret_admin_password",
   "phantom_api_secret": "very_secret_phantom_password",
 
   "mail_provider": "smtp",
