@@ -7,33 +7,25 @@ const Op = Sequelize.Op;
 const config = require('config');
 
 const WebSocketServer = require('ws').Server;
-const RedisConnection = require('ioredis');
+const NATS = require('nats');
 const async = require('async');
 const _ = require("underscore");
 const crypto = require('crypto');
 
-const redisMock = require("./redis.js");
 
 module.exports = {
   startWebsockets: function(server) {
     this.setupSubscription();
     
     if (!this.current_websockets) {
-      if (config.get("redis_mock")) {
-        this.state = redisMock.getConnection();
-      } else {
-        this.state = new RedisConnection(6379, process.env.REDIS_PORT_6379_TCP_ADDR || config.get("redis_host"));
-      }
+      this.nats = NATS.connect('nats');
       this.current_websockets = [];
     }
 
     const wss = new WebSocketServer({ server:server,  path: "/socket" });
     wss.on('connection', function(ws) {
-
-      this.state.incr("socket_id", function(err, socketCounter) {
-        const socketId = "socket_"  + socketCounter + "_" + crypto.randomBytes(64).toString('hex').substring(0,8);
+        const socketId = "socket_"  + crypto.randomBytes(64).toString('hex').substring(0,8);
         const serverScope = this;
-
         ws.on('message', function(msgString){
           const socket = this;
 
@@ -105,7 +97,7 @@ module.exports = {
           } else if (msg.action == "cursor" || msg.action == "viewport" || msg.action=="media") {
             msg.space_id = socket.space_id;
             msg.from_socket_id = socket.id;
-            serverScope.state.publish('cursors', JSON.stringify(msg));
+            serverScope.nats.publish('cursors', JSON.stringify(msg));
           }
         });
 
@@ -121,88 +113,88 @@ module.exports = {
         ws.on('error', function(ws, err) {
           console.error(err, res);
         }.bind(this));
-      }.bind(this));
     }.bind(this));
   },
 
   setupSubscription: function() {
-    if (config.get("redis_mock")) {
-      this.cursorSubscriber = redisMock.getConnection().subscribe(['cursors', 'users', 'updates'], function (err, count) {
-        console.log("[redis-mock] websockets subscribed to " + count + " topics." );
-      });
-    } else {
-      this.cursorSubscriber = new RedisConnection(6379, process.env.REDIS_PORT_6379_TCP_ADDR || config.get("redis_host"));
-      this.cursorSubscriber.subscribe(['cursors', 'users', 'updates'], function (err, count) {
-        console.log("[redis] websockets subscribed to " + count + " topics." );
-      });
-    }
-    
-    this.cursorSubscriber.on('message', function (channel, rawMessage) {
+    const onMessageListenerUsers = (rawMessage) => {
       const msg = JSON.parse(rawMessage);
       const spaceId = msg.space_id;
+      const websockets = this.current_websockets;
+      const usersList = msg.users;
 
+      if (usersList) {
+        for(let i=0;i<usersList.length;i++) {
+          const activeUser = usersList[i];
+          let user_id;
+
+          if (activeUser._id) {
+            user_id = activeUser._id;
+          } else {
+            user_id = spaceId + "-" + (activeUser.nickname||"anonymous");
+          }
+
+          for (let a=0; a < websockets.length; a++) {
+            const ws = websockets[a];
+            if(ws.readyState === 1){
+              if(ws.space_id == spaceId) {
+                ws.send(JSON.stringify({"action": "status_update", space_id: spaceId, users: usersList}));
+              } else {
+                //console.log("space id not matching", spaceId, ws.space_id);
+              }
+
+            } else {
+              // FIXME SHOULD CLEANUP SOCKET HERE
+              console.error("socket in wrong state", ws.readyState);
+              if(ws.readyState == 3) {
+                this.removeLocalUser(ws, (err) => {
+                  console.log("old websocket removed");
+                });
+              }
+            }
+          }
+        }
+      } else {
+        console.error("userlist undefined for websocket");
+      }
+    }
+
+    const onMessageListenerArtifacts = (rawMessage) => {
+      const msg = JSON.parse(rawMessage);
       const websockets = this.current_websockets;
 
-      if(channel === "updates") {
-        for(let i=0;i<websockets.length;i++) {
-          const ws = websockets[i];
-          if(ws.readyState === 1) {
-            ws.send(JSON.stringify(msg));
-          }
+      for(let i=0;i<websockets.length;i++) {
+        const ws = websockets[i];
+        if(ws.readyState === 1) {
+          ws.send(JSON.stringify(msg));
         }
-      } else if(channel === "users") {
-        const usersList = msg.users;
+      }
+    }
 
-        if (usersList) {
-          for(let i=0;i<usersList.length;i++) {
-            const activeUser = usersList[i];
-            let user_id;
+    const onMessageListenerCursors = (rawMessage) => {
+      const msg = JSON.parse(rawMessage);
+      const spaceId = msg.space_id;
+      const websockets = this.current_websockets;
+      const socketId = msg.from_socket_id;
 
-            if (activeUser._id) {
-              user_id = activeUser._id;
-            } else {
-              user_id = spaceId + "-" + (activeUser.nickname||"anonymous");
+      for (let i=0;i<websockets.length;i++) {
+        const ws = websockets[i];
+        if (ws.readyState === 1) {
+          if (ws.space_id && spaceId) {
+            if ((ws.space_id == spaceId) && (ws.id !== socketId)) {
+              ws.send(JSON.stringify(msg));
             }
-
-            for (let a=0; a < websockets.length; a++) {
-              const ws = websockets[a];
-              if(ws.readyState === 1){
-                if(ws.space_id == spaceId) {
-                  ws.send(JSON.stringify({"action": "status_update", space_id: spaceId, users: usersList}));
-                } else {
-                  //console.log("space id not matching", spaceId, ws.space_id);
-                }
-
-              } else {
-                // FIXME SHOULD CLEANUP SOCKET HERE
-                console.error("socket in wrong state", ws.readyState);
-                if(ws.readyState == 3) {
-                  this.removeLocalUser(ws, (err) => {
-                    console.log("old websocket removed");
-                  });
-                }
-              }
-            }
-          }
-        } else {
-          console.error("userlist undefined for websocket");
-        }
-      } else if(channel === "cursors") {
-        const socketId = msg.from_socket_id;
-        for (let i=0;i<websockets.length;i++) {
-          const ws = websockets[i];
-          if (ws.readyState === 1) {
-            if (ws.space_id && spaceId) {
-              if ((ws.space_id == spaceId) && (ws.id !== socketId)) {
-                ws.send(JSON.stringify(msg));
-              }
-            } else {
-              console.log("space id not set, ignoring");
-            }
+          } else {
+            console.log("space id not set, ignoring");
           }
         }
       }
-    }.bind(this));
+    }
+
+    this.natsConnection = NATS.connect('nats');
+    this.natsConnection.subscribe('cursors', onMessageListenerCursors);
+    this.natsConnection.subscribe('users', onMessageListenerUsers);
+    this.natsConnection.subscribe('updates', onMessageListenerArtifacts);    
   },
 
   addLocalUser: function(username, ws) {
@@ -221,51 +213,16 @@ module.exports = {
     } else {
       console.log("websocket not found to remove");
     }
-
-    this.state.del(ws.id+"", function(err, res) {
-      if (err) console.error(err, res);
-      else {
-        this.removeUserInSpace(ws.space_id, ws, (err) => {
-          console.log("removed user from space list");
-          this.distributeUsers(ws.space_id);
-        })
-        if(cb)
-          cb(err);
-      }
-    }.bind(this));
   },
   
   addUserInSpace: function(username, space, ws, cb) {
     console.log("[websockets] user "+username+" in "+space.access_mode +" space " +  space._id + " with socket "  +  ws.id);
-    
-    this.state.set(ws.id+"", username+"", function(err, res) {
-      if(err) console.error(err, res);
-      else {
-        this.state.sadd("space_" + space._id, ws.id, function(err, res) {
-          if(err) cb(err);
-          else {
-            ws['space_id'] = space._id.toString();
-
-            this.distributeUsers(ws.space_id);
-            if(cb)
-              cb();
-          }
-        }.bind(this));
-      }
-    }.bind(this));
+    ws['space_id'] = space._id.toString()
+    cb();
   },
   removeUserInSpace: function(spaceId, ws, cb) {
-    this.state.srem("space_" + spaceId, ws.id+"", function(err, res) {
-      if (err) cb(err);
-      else {
-        console.log("[websockets] socket "+  ws.id + " went offline in space " + spaceId);
-        this.distributeUsers(spaceId);
-        ws['space_id'] = null;
-
-        if (cb)
-          cb();
-      }
-    }.bind(this));
+    ws['space_id'] = null;
+    cb();
   },
 
   distributeUsers: function(spaceId) {

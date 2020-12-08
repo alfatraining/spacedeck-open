@@ -5,7 +5,6 @@ const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const uuidv4 = require('uuid/v4');
 
-var redis = require('../../helpers/redis');
 var mailer = require('../../helpers/mailer');
 var uploader = require('../../helpers/uploader');
 var space_render = require('../../helpers/space-render');

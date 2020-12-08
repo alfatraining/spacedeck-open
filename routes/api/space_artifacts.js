@@ -9,7 +9,7 @@ const Op = Sequelize.Op;
 const uuidv4 = require('uuid/v4');
 
 var payloadConverter = require('../../helpers/artifact_converter');
-var redis = require('../../helpers/redis');
+var nats = require('../../helpers/nats');
 
 var async = require('async');
 var fs = require('fs');
@@ -127,7 +127,7 @@ router.post('/:artifact_id/payload', function(req, res, next) {
       a.description = progressMsg.toString();
       db.packArtifact(a);
       a.save();
-      redis.sendMessage("update", "Artifact", a, req.channelId);
+      nats.sendMessage("update", "Artifact", a, req.channelId);
     };
 
     stream.on('finish', function() {
