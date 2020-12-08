@@ -4,7 +4,7 @@ const db = require('./models/db.js');
 require("log-timestamp");
 
 const config = require('config');
-const redis = require('./helpers/redis');
+const nats = require('./helpers/nats');
 const websockets = require('./helpers/websockets');
 
 const http = require('http');
@@ -151,7 +151,7 @@ const server = http.Server(app).listen(port, host, () => {
 });
 
 websockets.startWebsockets(server);
-redis.connectRedis();
+nats.connectNats();
 
 /*process.on('message', (message) => {
   console.log("Process message:", message);

@@ -36,6 +36,7 @@
     "moment": "^2.19.3",
     "morgan": "^1.9.1",
     "mysql2": "^2.2.5",
+    "nats": "^1.4.12",
     "node-phantom-simple": "2.2.4",
     "node-server-screenshot": "^0.2.1",
     "nodemailer": "^4.6.7",

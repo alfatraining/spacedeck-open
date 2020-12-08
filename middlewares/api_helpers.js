@@ -1,8 +1,7 @@
 'use strict';
 
 require('../models/db');
-var config = require('config');
-const redis = require('../helpers/redis');
+const nats = require('../helpers/nats');
 
 module.exports = (req, res, next) => {
   res.header("Cache-Control", "no-cache");
@@ -13,19 +12,19 @@ module.exports = (req, res, next) => {
 
   res['distributeCreate'] = function(model, object) {
     if (!object) return;
-    redis.sendMessage("create", model, object, req.channelId);
+    nats.sendMessage("create", model, object, req.channelId);
     this.status(201).json(object);
   };
 
   res['distributeUpdate'] = function(model, object) {
     if (!object) return;
-    redis.sendMessage("update", model, object, req.channelId);
+    nats.sendMessage("update", model, object, req.channelId);
     this.status(200).json(object);
   };
 
   res['distributeDelete'] = function(model, object) {
     if (!object) return;
-    redis.sendMessage("delete", model, object, req.channelId);
+    nats.sendMessage("delete", model, object, req.channelId);
     this.sendStatus(204);
   };
 

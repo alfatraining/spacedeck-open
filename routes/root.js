@@ -2,7 +2,6 @@
 
 const config = require('config');
 
-const redis = require('../helpers/redis');
 const express = require('express');
 const crypto = require('crypto');
 const router = express.Router();
