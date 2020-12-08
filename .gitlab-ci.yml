@@ -1,0 +1,4 @@
+include:
+  - project: "alfatraining/spacedeck-deployment"
+    ref: master
+    file: "deployment.yaml"
