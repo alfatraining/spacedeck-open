@@ -216,6 +216,7 @@ module.exports = {
       foreignKey: {
         name: 'creator_id'
       },
+      onDelete: 'CASCADE',
       as: 'creator'
     });
 
@@ -239,6 +240,7 @@ module.exports = {
       foreignKey: {
         name: 'user_id'
       },
+      constraints: false,
       as: 'user'
     });
 
