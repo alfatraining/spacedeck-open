@@ -32,7 +32,6 @@ RUN apk add graphicsmagick ffmpeg ffmpeg-dev ghostscript
 COPY package*.json ./
 RUN npm install
 COPY . .
-
 # start app
 
 EXPOSE 9666

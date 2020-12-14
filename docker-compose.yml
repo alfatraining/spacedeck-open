@@ -12,6 +12,7 @@ services:
     volumes:
       - ./storage:/app/storage
       - ./public:/app/public
+      - ./:/app
 
   mysql:
     image: mysql:8.0.22

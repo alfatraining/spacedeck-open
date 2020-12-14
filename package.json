@@ -6,7 +6,8 @@
     "start": "node spacedeck.js",
     "dev:frontend": "webpack --watch",
     "build:css": "gulp styles",
-    "build:frontend": "NODE_ENV=production webpack"
+    "build:frontend": "NODE_ENV=production webpack",
+    "lint": "eslint --config views/alfaview/.eslintrc --ext .js --ext .vue views/alfaview/"
   },
   "engines": {
     "node": ">=10.0.0"

@@ -36,6 +36,8 @@
 <%- include("./tool/toolbar-elements.html") %>
 <%- include("./tool/toolbar-object.html") %>
 <toolbar></toolbar>
+<toolbar-object></toolbar-object>
+<minimap-zoom></minimap-zoom>
 
 <div v-if="active_space && active_space_loaded">
   <!-- <div id="lasso"></div> -->
@@ -317,7 +319,7 @@
 
 </div>
 
-<div v-if="active_space_loaded" v-cloak>
+<!-- <div v-if="active_space_loaded" v-cloak>
   <div id="minimap"
        v-bind:style="{width: ''+(active_space.width/minimap_scale)+'px', height: ''+(active_space.height/minimap_scale)+'px', bottom: '66px', right: '20px'}"
        v-if="active_space"
@@ -342,6 +344,6 @@
     <button class="btn btn-icon btn-md btn-white" v-on:click="zoom_out()">
       <span class="icon icon-minus"></span>
     </button>
-  </div>
+  </div> -->
 
 </div>
