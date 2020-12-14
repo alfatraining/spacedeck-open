@@ -59,7 +59,7 @@
     <script src="/javascripts/spacedeck_whiteboard.js"></script>
     <script src="/javascripts/spacedeck_directives.js"></script>
     <script src="/javascripts/spacedeck_vue.js"></script>
-        
+
     <script src="/build/js/alfaview-wb.js"></script>
 
     <script>if (window.module) module = window.module;</script>
@@ -67,7 +67,7 @@
 
   <body id="main" v-bind:class="{'present-mode':present_mode,'modal-open':active_modal}" v-on:click="handle_body_click($event)">
     <%- include("./partials/login.html") %>
-    <%- include("./partials/space.html") %>
+    <Space></Space>
     <%- include("./partials/folders.html") %>
     <%- include("./partials/team.html") %>
     <%- include("./partials/account.html") %>

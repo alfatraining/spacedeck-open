@@ -11,6 +11,7 @@
       "vue/html-self-closing": "off",
       "vue/html-indent": "off",
       "vue/html-closing-bracket-spacing": "error",
+      "vue/component-definition-in-name-casing": "off",
       "vue/html-closing-bracket-newline": [
         "error",
         {
@@ -18,8 +19,6 @@
           "multiline": "always"
         }
       ],
-      "vue/component-name-in-template-casing": ["error", "PascalCase", { "registeredComponentsOnly": false }],
-      "vue/component-definition-name-casing": ["error", "camelcase"],
       "vue/max-attributes-per-line": [
         "error",
         {
