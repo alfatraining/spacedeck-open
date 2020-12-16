@@ -7,6 +7,11 @@ services:
     depends_on:
       - mysql
       - nats
+    environment:
+      - NODE_ENV=development
+      - SPACEDECK_NATS_ADDR=nats://nats:4222
+      - SPACEDECK_NATS_AUTHENTICATION_USERNAME=dev-user
+      - SPACEDECK_NATS_AUTHENTICATION_PASSWORD=dev-pass
     ports:
       - "9666:9666"
     volumes:
@@ -30,6 +35,7 @@ services:
   nats:
     image: "nats:2.1"
     container_name: "nats"
+    command: "--user dev-user --pass dev-pass"
     expose:
       - "4222"
     ports:
