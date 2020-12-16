@@ -1,14 +1,18 @@
 'use strict';
 
-const config = require('config');
 const NATS = require('nats');
 
 module.exports = {
     connectNats: function() {
-      if (config.get("redis_mock")) {
-        this.connection = notRedis;
+      if (process.env.NODE_ENV === 'development') {
+        this.connection = NATS.connect({ url: process.env.SPACEDECK_NATS_ADDR, user: process.env.SPACEDECK_NATS_AUTHENTICATION_USERNAME, pass: process.env.SPACEDECK_NATS_AUTHENTICATION_PASSWORD })
       } else {
-        this.connection = NATS.connect('nats')
+        this.connection = NATS.connect({
+          url: process.env.SPACEDECK_NATS_ADDR, 
+          user: process.env.SPACEDECK_NATS_AUTHENTICATION_USERNAME, 
+          pass: process.env.SPACEDECK_NATS_AUTHENTICATION_PASSWORD , 
+          tls: { key: process.env.SPACEDECK_NATS_AUTHENTICATION_KEY, cert: process.env.SPACEDECK_NATS_AUTHENTICATION_CERT, ca: process.env.SPACEDECK_NATS_AUTHENTICATION_CA },
+        })
       }
     },
     getConnection: function() {

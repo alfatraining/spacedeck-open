@@ -7,7 +7,7 @@ const Op = Sequelize.Op;
 const config = require('config');
 
 const WebSocketServer = require('ws').Server;
-const NATS = require('nats');
+const nats = require('./nats');
 const async = require('async');
 const _ = require("underscore");
 const crypto = require('crypto');
@@ -18,7 +18,7 @@ module.exports = {
     this.setupSubscription();
     
     if (!this.current_websockets) {
-      this.nats = NATS.connect('nats');
+      this.nats = nats.getConnection()
       this.current_websockets = [];
     }
 
@@ -191,10 +191,10 @@ module.exports = {
       }
     }
 
-    this.natsConnection = NATS.connect('nats');
-    this.natsConnection.subscribe('cursors', onMessageListenerCursors);
-    this.natsConnection.subscribe('users', onMessageListenerUsers);
-    this.natsConnection.subscribe('updates', onMessageListenerArtifacts);    
+    this.nats = nats.getConnection()
+    this.nats.subscribe('cursors', onMessageListenerCursors);
+    this.nats.subscribe('users', onMessageListenerUsers);
+    this.nats.subscribe('updates', onMessageListenerArtifacts);    
   },
 
   addLocalUser: function(username, ws) {
