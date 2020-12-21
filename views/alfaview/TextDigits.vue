@@ -2,7 +2,7 @@
   <div id="typography" class="dialog">
     <div id="font">
       <ul
-        v-for="(index, value) in fonts"
+        v-for="(index, _) in fonts"
         :key="index"
         class="select-list overflow-y-scroll"
         style="max-height: 315px; width: 240px"
@@ -22,7 +22,6 @@
 </template>
 
 <script>
-import Vue from "vue";
 export default {
   data() {
     return {

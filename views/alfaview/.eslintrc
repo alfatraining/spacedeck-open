@@ -10,6 +10,7 @@
       "vue/singleline-html-element-content-newline": "off",
       "vue/html-self-closing": "off",
       "vue/html-indent": "off",
+      "vue/require-v-for-key": "off",
       "vue/html-closing-bracket-spacing": "error",
       "vue/component-definition-in-name-casing": "off",
       "vue/html-closing-bracket-newline": [
@@ -29,6 +30,7 @@
           }
         }
       ],
+      "vue/no-unused-vars": ["error", { "ignorePattern": "^_" }],      
       "import/first": "error",
       "import/named": "error",
       "import/default": "error",
@@ -36,7 +38,7 @@
       "import/no-mutable-exports": "error",
       "space-before-function-paren": "off",
       "no-var": "error",
-      "no-unused-vars": ["error", { "vars": "all", "args": "after-used", "ignoreRestSiblings": true }],
+      "no-unused-vars": ["error", { "vars": "all", "args": "after-used", "ignoreRestSiblings": true, "varsIgnorePattern": "^_"}],      
       "prefer-const": "error",
       "dot-notation": "error",
       "no-multiple-empty-lines": "error",

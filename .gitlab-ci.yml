@@ -1,3 +1,20 @@
+lint_js:
+  image: node:12.18-alpine3.12
+  stage: build
+  except:
+    - deployment/production
+    - deployment/staging
+    - master
+  script:
+    - yarn
+    - yarn lint
+  cache:
+    key: "${CI_COMMIT_REF_NAME}_${CI_BUILD_REF_NAME}"
+    paths:
+      - npm-packages-offline-cache
+  tags:
+    - kubernetes
+
 include:
   - project: "alfatraining/spacedeck-deployment"
     ref: master

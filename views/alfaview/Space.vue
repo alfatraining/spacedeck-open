@@ -32,13 +32,6 @@
           <span class="icon icon-triangle-4-right"></span>
         </button>
       </div>
-
-      <!-- div class="btn-group light" id="meta-toggle" style="margin-right:10px">
-    <button class="btn btn-md btn-transparent btn-icon" v-on:click="toggle_meta()" title="<%=__("chat")%>">
-      <span class="jewel" style="color: white; background-color: red" v-if="meta_unseen>0">{{meta_unseen}}</span>
-      <span class="icon icon-messages"></span>
-    </button>
-  </div -->
     </div>
 
     <toolbar></toolbar>
@@ -79,17 +72,19 @@
       </div>
     </div>
 
+    <!-- eslint-disable -->
     <div
       v-cloak
       v-if="activeView == 'space' && activeSpaceLoaded"
       id="space"
-      v-sd-droppable="handleDataDrop;activeSpace"
+      v-sd-droppable="handle_data_drop;activeSpace"
       v-sd-whiteboard
       class="section board active mouse-{{mouseState}} tool-{{activeTool}}"
       :style="{ 'background-color': activeSpace.background_color }"
       @scroll="handleScroll"
       @dblclick="handleSpaceDoubleclick"
     >
+    <!-- eslint-enable -->
       <div
         id="space-clipboard"
         style="
@@ -122,7 +117,7 @@
       <div
         class="wrapper"
         :style="{
-          transform: 'scale(' + viewport_zoom + ')',
+          transform: 'scale(' + viewportZoom + ')',
           'transform-origin': '0 0',
           width: activeSpace.width + 'px',
           height: activeSpace.height + 'px',
@@ -139,8 +134,14 @@
           v-for="a in activeSpaceArtifacts"
           id="artifact-{{a._id}}"
           :style="a.view.style"
-          :class="a.view.classes"
-          :class="{text-editing:(editingArtifactId==a._id && (a.view.major_type=='text' || a.view.major_type=='shape'))}"
+          :class="[
+            a.view.classes,
+            {
+              'text-editing':
+                editingArtifactId == a._id &&
+                (a.view.major_type == 'text' || a.view.major_type == 'shape'),
+            },
+          ]"
         >
           <div
             v-if="a.view && a.view.major_type"
@@ -164,8 +165,10 @@
                     v-show="editingArtifactId == a._id"
                     v-sd-richtext:obj="a"
                     class="text-column text-editing"
-                    v-html="a.description"
-                  ></div>
+                  >
+                    <!-- eslint-disable-next-line vue/no-parsing-error -->
+                    {{{ a.description }}}
+                  </div>
                   <div
                     v-show="editingArtifactId != a._id"
                     class="text-column"
@@ -363,7 +366,7 @@
             >
               <audio>
                 <source
-                  v-for="alt in a.payload_alternatives | orderBy 'mime' -1"
+                  v-for="alt in a.payload_alternatives"
                   :src="alt.payload_uri"
                   :type="alt.mime"
                 />
@@ -649,57 +652,6 @@
       </div>
       <!-- wrapper end -->
     </div>
-
-    <!-- <div v-if="activeSpaceLoaded" v-cloak>
-      <div
-        v-if="active_space"
-        id="minimap"
-        :style="{
-          width: '' + active_space.width / minimap_scale + 'px',
-          height: '' + active_space.height / minimap_scale + 'px',
-          bottom: '66px',
-          right: '20px',
-        }"
-        @mousedown="handle_minimap_mousedown($event)"
-        @touchstart="handle_minimap_mousedown($event)"
-        @mousemove="handle_minimap_mousemove($event)"
-        @touchmove="handle_minimap_mousemove($event)"
-        @mouseleave="handle_minimap_mouseup($event)"
-        @touchend="handle_minimap_mouseup($event)"
-        @mouseup="handle_minimap_mouseup($event)"
-      >
-        <div
-          v-for="a in active_space_artifacts"
-          :style="{
-            left: '' + a.x / minimap_scale + 'px',
-            top: '' + a.y / minimap_scale + 'px',
-            width: '' + a.w / minimap_scale + 'px',
-            height: '' + a.h / minimap_scale + 'px',
-          }"
-        ></div>
-        <div
-          class="window"
-          :style="{
-            left: '' + scroll_left / minimap_scale + 'px',
-            top: '' + scroll_top / minimap_scale + 'px',
-            width: '' + window_width / minimap_scale + 'px',
-            height: '' + window_height / minimap_scale + 'px',
-          }"
-        ></div>
-      </div>
-
-      <div class="btn-group light zoom-bar">
-        <button class="btn btn-icon btn-md btn-white" @click="zoom_in()">
-          <span class="icon icon-plus"></span>
-        </button>
-        <button class="btn btn-md btn-white no-p" @click="zoom_to_original()">
-          {{ viewport_zoom_percent }}%
-        </button>
-        <button class="btn btn-icon btn-md btn-white" @click="zoom_out()">
-          <span class="icon icon-minus"></span>
-        </button>
-      </div>
-    </div> -->
   </div>
 </template>
 

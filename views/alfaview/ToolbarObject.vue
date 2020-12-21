@@ -27,7 +27,8 @@
             class="jewel"
             :style="{ 'background-color': activeStyle.fill_color }"
           ></span>
-</button><br />
+        </button>
+        <br />
         <button
           class="dropdown-toggle btn btn-icon btn-transparent"
           :class="{ open: openedDialog == 'color-stroke' }"
@@ -38,7 +39,8 @@
             class="jewel jewel-stroke"
             :style="{ 'border-color': activeStyle.stroke_color }"
           ></span>
-</button><br />
+        </button>
+        <br />
         <button
           class="dropdown-toggle btn btn-icon btn-transparent"
           :class="{ open: openedDialog == 'color-text' }"
@@ -48,7 +50,9 @@
           <span
             class="jewel"
             :style="{ 'border-color': activeStyle.text_color }"
-            >{{ activeStyle.font_size }}</span>
+          >
+            {{ activeStyle.font_size }}
+          </span>
         </button>
         <Color></Color>
       </div>

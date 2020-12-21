@@ -1,13 +1,11 @@
 <template>
-  <div v-if="activeSpaceLoaded">
+  <div v-if="activeSpaceLoaded" class="av-board-navigation">
     <div
       v-if="activeSpace"
       class="av-minimap"
       :style="{
         width: '' + activeSpace.width / minimapScale + 'px',
         height: '' + activeSpace.height / minimapScale + 'px',
-        bottom: '66px',
-        right: '20px',
       }"
       @mousedown="handleMinimapMousedown($event)"
       @touchstart="handleMinimapMousedown($event)"
@@ -18,8 +16,7 @@
       @mouseup="handleMinimapMouseup($event)"
     >
       <div
-        v-for="(a, key) in activeSpaceArtifacts"
-        :key="key"
+        v-for="a in activeSpaceArtifacts"
         :style="{
           left: '' + a.x / minimapScale + 'px',
           top: '' + a.y / minimapScale + 'px',
@@ -38,14 +35,14 @@
       ></div>
     </div>
     <div class="btn-group light av-zoom-bar">
-      <button class="btn btn-icon btn-md btn-white" @click="zoomIn()">
-        <span class="icon icon-plus"></span>
+      <button class="btn btn-icon btn-md btn-white" @click="zoomOut()">
+        <span class="icon icon-minus"></span>
       </button>
       <button class="btn btn-md btn-white no-p" @click="zoomToOriginal()">
         {{ viewportZoomPercent }}%
       </button>
-      <button class="btn btn-icon btn-md btn-white" @click="zoomOut()">
-        <span class="icon icon-minus"></span>
+      <button class="btn btn-icon btn-md btn-white" @click="zoomIn()">
+        <span class="icon icon-plus"></span>
       </button>
     </div>
   </div>
@@ -109,19 +106,21 @@ export default {
 </script>
 
 <style lang="css">
+.av-board-navigation {
+  display: flex;
+  flex-direction: column;
+  bottom: 30px;
+  right: 30px;
+  position: absolute;
+}
 .av-zoom-bar {
   z-index: 3500;
-  position: absolute;
-  bottom: 130px;
-  right: 130px;
   box-shadow: 0 0 30px 1px rgba(0, 0, 0, 0.15);
   border: 1px solid black;
+  margin-top: 8px;
 }
 .av-minimap {
   background-color: transparent;
-  position: absolute;
-  right: 30px;
-  bottom: 20px;
   z-index: 20000;
   border-radius: 3px;
   border: 1px solid rgba(0, 0, 0, 0.2);

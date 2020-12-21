@@ -589,7 +589,7 @@ function setup_whiteboard_directives() {
         w: 64,
         h: 64,
         stroke_color: $scope.active_style.stroke_color,
-        stroke: 2,
+        stroke: $scope.active_style.stroke,
         shape: "scribble"
       };
 
@@ -625,7 +625,7 @@ function setup_whiteboard_directives() {
         w: 64,
         h: 64,
         stroke_color: $scope.active_style.stroke_color,
-        stroke: 2,
+        stroke: $scope.active_style.stroke,
         shape: "arrow"
       };
 
@@ -780,7 +780,8 @@ function setup_whiteboard_directives() {
         if ($scope.logged_in) {
           name = $scope.user.nickname || $scope.user.email;
         } else {
-          name = $scope.guest_nickname || "anonymous";
+          // TODO: get from cookie (?)
+          name = window.localStorage.guest_nickname || "anonymous";
         }
 
         var cursor_msg = {

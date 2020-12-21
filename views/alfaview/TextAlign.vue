@@ -51,8 +51,6 @@
 </template>
 
 <script>
-import Vue from "vue";
-
 export default {
   methods: {
     setArtifactStyleProp(axis, position) {

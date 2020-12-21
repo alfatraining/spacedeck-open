@@ -34,7 +34,6 @@
 </template>
 
 <script>
-import Vue from "vue";
 export default {
   methods: {
     applyFormatting(style) {

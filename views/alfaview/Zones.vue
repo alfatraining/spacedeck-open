@@ -14,7 +14,7 @@
       :key="key"
       class="dialog-section no-p"
       style="white-space: nowrap; text-align: left; cursor: pointer"
-      @click="zoomToZone(zones[$index], $index)"
+      @click="zoomToZone(zones[$index])"
     >
       <button class="btn btn-sm btn-transparent">
         {{ zones[$index].description }}
@@ -38,7 +38,6 @@
 </template>
 
 <script>
-import Vue from "vue";
 export default {
   data() {
     return {
@@ -55,7 +54,7 @@ export default {
       this.$root.add_shape(param);
       this.currentZoneIndex = this.$root.current_zone_idx;
     },
-    zoomToZone(zone, index) {
+    zoomToZone(zone) {
       this.currentZoneIndex = this.$root.current_zone_idx;
       this.$root.zoom_to_zone(zone);
     },
@@ -67,6 +66,7 @@ export default {
     },
     addZone() {
       this.$root.add_zone();
+      this.$root.opened_dialog = "none";
     },
   },
 };
