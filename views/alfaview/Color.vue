@@ -95,7 +95,7 @@
           </button>
         </div> -->
         <div
-          v-for="(index, value) in swatches"
+          v-for="(index, _) in swatches"
           :key="index"
           class="adapt overflow-y-scroll"
         >
@@ -200,7 +200,6 @@
 </template>
 
 <script>
-import Vue from "vue";
 export default {
   data() {
     return {
