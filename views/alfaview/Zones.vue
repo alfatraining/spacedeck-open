@@ -50,10 +50,6 @@ export default {
     },
   },
   methods: {
-    addShape(param) {
-      this.$root.add_shape(param);
-      this.currentZoneIndex = this.$root.current_zone_idx;
-    },
     zoomToZone(zone) {
       this.currentZoneIndex = this.$root.current_zone_idx;
       this.$root.zoom_to_zone(zone);

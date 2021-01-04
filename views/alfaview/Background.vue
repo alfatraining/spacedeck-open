@@ -56,6 +56,7 @@ export default {
 <style lang="css">
 .color-wrap {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
 }
 </style>

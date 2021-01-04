@@ -53,10 +53,7 @@
       >
         <div class="table-fake">
           <div class="cell">
-            <p>
-              Use the toolbar to add content.<br />
-              You can also drop images or sound and video files.
-            </p>
+            <p>Use the toolbar to add content.</p>
           </div>
         </div>
       </div>
@@ -73,11 +70,11 @@
     </div>
 
     <!-- eslint-disable -->
+    <!-- add `v-sd-droppable="handle_data_drop;activeSpace"` so files are droppable onto space when file upload is supported -->
     <div
       v-cloak
       v-if="activeView == 'space' && activeSpaceLoaded"
       id="space"
-      v-sd-droppable="handle_data_drop;activeSpace"
       v-sd-whiteboard
       class="section board active mouse-{{mouseState}} tool-{{activeTool}}"
       :style="{ 'background-color': activeSpace.background_color }"
@@ -734,9 +731,6 @@ export default {
     },
     handleScroll(evt) {
       this.$root.handle_scroll(evt);
-    },
-    handleDataDrop(event) {
-      this.$root.handle_data_drop(event);
     },
     goToPreviousZone() {
       this.$root.go_to_previous_zone();

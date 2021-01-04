@@ -2,11 +2,10 @@
   <div
     v-if="toolbarPropsIn"
     v-cloak
-    style="margin-right: 300px"
     class="toolbar toolbar-properties"
     :class="{ in: toolbarPropsIn, out: !toolbarPropsIn }"
   >
-    <div class="btn-group light vertical">
+    <div class="btn-group light vertical avw-button-group">
       <div
         class="dropdown top right light"
         :class="{
@@ -18,7 +17,7 @@
         }"
       >
         <button
-          class="dropdown-toggle btn btn-icon btn-transparent"
+          class="dropdown-toggle btn btn-icon avw-button"
           :class="{ open: openedDialog == 'color-fill' }"
           @click="openDialog('color-fill')"
         >
@@ -30,7 +29,7 @@
         </button>
         <br />
         <button
-          class="dropdown-toggle btn btn-icon btn-transparent"
+          class="dropdown-toggle btn btn-icon avw-button"
           :class="{ open: openedDialog == 'color-stroke' }"
           @click="openDialog('color-stroke')"
         >
@@ -42,7 +41,8 @@
         </button>
         <br />
         <button
-          class="dropdown-toggle btn btn-icon btn-transparent"
+          v-if="selectionMetrics.contains_text"
+          class="dropdown-toggle btn btn-icon avw-button"
           :class="{ open: openedDialog == 'color-text' }"
           @click="openDialog('color-text')"
         >
@@ -59,24 +59,6 @@
 
       <div
         class="dropdown top light right"
-        :class="{ open: openedDialog == 'text-styles' }"
-      >
-        <div class="btn-collapse in">
-          <button
-            class="btn btn-transparent btn-icon-labeled"
-            :class="{ open: openedDialog == 'text-styles' }"
-            title="Styles"
-            @click="openDialog('text-styles')"
-          >
-            <span class="icon icon-text-styles"></span>
-            <span class="icon-label">Styles</span>
-          </button>
-        </div>
-        <text-styles></text-styles>
-      </div>
-
-      <div
-        class="dropdown top light right"
         :class="{ open: openedDialog == 'type-align' }"
       >
         <div
@@ -84,7 +66,7 @@
           :class="{ in: selectionMetrics.contains_text }"
         >
           <button
-            class="btn btn-transparent btn-icon-labeled"
+            class="btn btn-icon-labeled avw-button"
             :class="{ open: openedDialog == 'type-align' }"
             title="Align"
             @click="openDialog('type-align')"
@@ -103,7 +85,7 @@
       >
         <div class="btn-collapse in">
           <button
-            class="btn btn-transparent btn-icon-labeled"
+            class="btn btn-icon-labeled avw-button"
             :class="{ open: openedDialog == 'layout' }"
             title="Layout"
             @click="openDialog('layout')"
@@ -115,43 +97,23 @@
 
         <layout></layout>
       </div>
-
-      <div
-        class="dropdown top light right"
-        :class="{ open: openedDialog == 'text-settings' }"
+      <button
+        class="btn btn-icon-labeled avw-button"
+        title="Duplicate"
+        @click="duplicateSelectedArtifacts()"
       >
-        <div class="btn-collapse in">
-          <button
-            class="btn btn-transparent btn-icon-labeled"
-            :class="{ open: openedDialog == 'text-settings' }"
-            title="Font"
-            @click="openDialog('text-settings')"
-          >
-            <span class="icon icon-text-typeface"></span>
-            <span class="icon-label">Font</span>
-          </button>
-        </div>
+        <span class="icon icon-duplicate"></span>
+        <span class="icon-label">Duplicate</span>
+      </button>
 
-        <text-digits></text-digits>
-      </div>
-
-      <button class="btn btn-divider"></button>
-
-      <div
-        class="dropdown top light right"
-        :class="{ open: openedDialog == 'object-options' }"
+      <button
+        class="btn btn-icon-labeled avw-button"
+        title="Delete"
+        @click="deleteSelectedArtifacts()"
       >
-        <button
-          class="btn btn-transparent btn-icon-labeled"
-          :class="{ open: openedDialog == 'object-options' }"
-          @click="openDialog('object-options')"
-        >
-          <span class="icon icon-cogwheel"></span>
-          <span class="icon-label">More</span>
-        </button>
-
-        <object-options></object-options>
-      </div>
+        <span class="icon icon-trash"></span>
+        <span class="icon-label">Delete</span>
+      </button>
     </div>
   </div>
 </template>
@@ -189,17 +151,18 @@ export default {
       this.$root.open_dialog(param);
       this.toggleDialog(param);
     },
-    idActiveSpaceRole(role) {
-      return this.$root.is_active_space_role(role);
-    },
     toggleDialog(param) {
       this.toggles[param] = !this.toggles[param];
       Object.keys(this.toggles).forEach(
         (x) => x !== param && (this.toggles[x] = false)
       );
     },
+    deleteSelectedArtifacts() {
+      this.$root.delete_selected_artifacts();
+    },
+    duplicateSelectedArtifacts() {
+      this.$root.duplicate_selected_artifacts();
+    },
   },
 };
 </script>
-
-<style lang="css"></style>

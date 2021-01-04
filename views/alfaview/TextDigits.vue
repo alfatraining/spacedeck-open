@@ -35,9 +35,3 @@ export default {
   },
 };
 </script>
-<style lang="css">
-.color-wrap {
-  display: flex;
-  flex-wrap: wrap;
-}
-</style>

@@ -2533,8 +2533,7 @@ var SpacedeckSections = {
     },
 
     hide_toolbar_props: function() {
-      // FIXME test
-      //this.toolbar_props_in = false;
+      this.toolbar_props_in = false;
     },
 
     show_toolbar_artifacts: function(x,y) {

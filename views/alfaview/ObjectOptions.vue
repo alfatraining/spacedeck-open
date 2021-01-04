@@ -10,8 +10,6 @@
         <span class="icon-label">Delete</span>
       </button>
 
-      <button class="btn btn-divider"></button>
-
       <button
         v-if="activeSpaceRole == 'admin'"
         class="btn btn-transparent btn-icon-labeled"
@@ -102,9 +100,3 @@ export default {
   },
 };
 </script>
-<style lang="css">
-.color-wrap {
-  display: flex;
-  flex-wrap: wrap;
-}
-</style>
