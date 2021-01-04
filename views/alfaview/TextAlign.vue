@@ -25,9 +25,6 @@
       >
         <span class="icon icon-text-align-justify-alt"></span>
       </button>
-
-      <button class="btn btn-divider"></button>
-
       <button
         class="btn btn-transparent btn-icon"
         @click="setArtifactStyleProp('valign', 'top')"
@@ -59,9 +56,3 @@ export default {
   },
 };
 </script>
-<style lang="css">
-.color-wrap {
-  display: flex;
-  flex-wrap: wrap;
-}
-</style>

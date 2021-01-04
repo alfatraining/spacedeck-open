@@ -36,15 +36,9 @@
 <script>
 export default {
   methods: {
-    applyFormatting(style) {
-      this.$root.apply_formatting(style);
+    applyFormatting(event, style) {
+      this.$root.apply_formatting(event, style);
     },
   },
 };
 </script>
-<style lang="css">
-.color-wrap {
-  display: flex;
-  flex-wrap: wrap;
-}
-</style>

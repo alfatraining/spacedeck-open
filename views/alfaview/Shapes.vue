@@ -1,61 +1,61 @@
 <template>
-  <div id="shapes" class="av-shapes">
+  <div id="shapes" class="avw-shapes">
     <div class="dialog-section">
-      <div class="btn-group av-shapes__av-btn-group">
+      <div class="btn-group avw-shapes__avw-btn-group">
         <button
           class="btn btn-icon-labeled btn-transparent"
-          @click="addShape('ellipse')"
+          @click="addShape('ellipse', $event)"
         >
-          <span class="icon av-icon icon-shape-circle"></span>
+          <span class="icon avw-icon icon-shape-circle"></span>
         </button>
 
         <button
           class="btn btn-icon-labeled btn-transparent"
-          @click="addShape('hexagon')"
+          @click="addShape('hexagon', $event)"
         >
-          <span class="icon av-icon icon-shape-hexagon"></span>
+          <span class="icon avw-icon icon-shape-hexagon"></span>
         </button>
 
         <button
           class="btn btn-icon-labeled btn-transparent"
-          @click="addShape('square')"
+          @click="addShape('square', $event)"
         >
-          <span class="icon av-icon icon-shape-square"></span>
+          <span class="icon avw-icon icon-shape-square"></span>
         </button>
 
         <button
           class="btn btn-icon-labeled btn-transparent"
-          @click="addShape('speechbubble')"
+          @click="addShape('speechbubble', $event)"
         >
-          <span class="icon av-icon icon-shape-bubble"></span>
+          <span class="icon avw-icon icon-shape-bubble"></span>
         </button>
 
         <button
           class="btn btn-icon-labeled btn-transparent"
-          @click="addShape('cloud')"
+          @click="addShape('cloud', $event)"
         >
-          <span class="icon av-icon icon-shape-cloud"></span>
+          <span class="icon avw-icon icon-shape-cloud"></span>
         </button>
 
         <button
           class="btn btn-icon-labeled btn-transparent"
-          @click="addShape('burst')"
+          @click="addShape('burst', $event)"
         >
-          <span class="icon av-icon icon-shape-burst"></span>
+          <span class="icon avw-icon icon-shape-burst"></span>
         </button>
 
         <button
           class="btn btn-icon-labeled btn-transparent"
-          @click="addShape('star')"
+          @click="addShape('star', $event)"
         >
-          <span class="icon av-icon icon-shape-star"></span>
+          <span class="icon avw-icon icon-shape-star"></span>
         </button>
 
         <button
           class="btn btn-icon-labeled btn-transparent"
-          @click="addShape('heart')"
+          @click="addShape('heart', $event)"
         >
-          <span class="icon av-icon icon-shape-heart"></span>
+          <span class="icon avw-icon icon-shape-heart"></span>
         </button>
       </div>
     </div>
@@ -65,22 +65,23 @@
 <script>
 export default {
   methods: {
-    addShape(param) {
-      this.$root.add_shape(param);
+    addShape(param, event) {
+      this.$root.add_shape(param, event);
       this.$root.opened_dialog = "none";
+      this.$root.active_tool = "pointer";
     },
   },
 };
 </script>
 
 <style lang="css">
-.av-shapes__av-btn-group {
+.avw-shapes__avw-btn-group {
   display: flex;
   padding-top: 12px;
   padding-left: 8px;
   padding-right: 8px;
 }
-.av-icon {
+.avw-icon {
   font-size: 32px;
 }
 </style>

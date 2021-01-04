@@ -128,7 +128,7 @@
             v-sd-fader="true"
             tabindex="-1"
             class="input-drag btn btn-transparent btn-icon"
-            :sd-fader-var-y="activeStyle.stroke"
+            sd-fader-var-y="active_style.stroke"
             sd-fader-min-y="0"
             sd-fader-max-y="100"
             sd-fader-step="1"
@@ -150,7 +150,7 @@
             v-sd-fader="true"
             tabindex="-1"
             class="input-drag btn btn-transparent btn-icon"
-            :sd-fader-var-y="activeStyle.border_radius"
+            sd-fader-var-y="active_style.border_radius"
             sd-fader-min-y="0"
             sd-fader-max-y="500"
             sd-fader-step="1"
@@ -168,9 +168,7 @@
     >
       <div class="input-row">
         <div class="form-group no-m">
-          <label class="label label-sm text-center">{{
-            activeStyle.font_size
-          }}</label>
+          <label class="label label-sm text-center">Font size</label>
           <input
             v-model="activeStyle.font_size"
             class="input no-b no-p text-center text-large"
@@ -185,7 +183,7 @@
             tabindex="-1"
             class="input-drag btn btn-transparent btn-icon"
             style="cursor: ns-resize"
-            :sd-fader-var-y="activeStyle.font_size"
+            sd-fader-var-y="active_style.font_size"
             sd-fader-min-y="30"
             sd-fader-max-y="200"
             sd-fader-sens="5"
@@ -193,6 +191,36 @@
             <span class="icon icon-triangles-vertical"></span>
           </button>
           <span class="input-unit">px</span>
+        </div>
+        <div class="btn-group">
+          <button
+            class="btn btn-transparent btn-icon-labeled"
+            @click="applyFormatting($event, 'bold')"
+          >
+            <span class="icon icon-text-bold"></span>
+            <span class="icon-label">Bold</span>
+          </button>
+          <button
+            class="btn btn-transparent btn-icon-labeled"
+            @click="applyFormatting($event, 'italic')"
+          >
+            <span class="icon icon-text-italic"></span>
+            <span class="icon-label">Italic</span>
+          </button>
+          <button
+            class="btn btn-transparent btn-icon-labeled"
+            @click="applyFormatting($event, 'underline')"
+          >
+            <span class="icon icon-text-underline"></span>
+            <span class="icon-label">Underl.</span>
+          </button>
+          <button
+            class="btn btn-transparent btn-icon-labeled"
+            @click="applyFormatting($event, 'strikeThrough')"
+          >
+            <span class="icon icon-text-strike"></span>
+            <span class="icon-label">Strike</span>
+          </button>
         </div>
       </div>
     </div>
@@ -227,6 +255,9 @@ export default {
     applySwatchColor(swatche) {
       this.$root.apply_swatch_color(swatche);
     },
+    applyFormatting(event, style) {
+      this.$root.apply_formatting(event, style);
+    },
   },
 };
 </script>
@@ -234,5 +265,6 @@ export default {
 .color-wrap {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 </style>

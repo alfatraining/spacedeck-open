@@ -1,8 +1,8 @@
 <template>
-  <div v-if="activeSpaceLoaded" class="av-board-navigation">
+  <div v-if="activeSpaceLoaded" class="avw-board-navigation">
     <div
       v-if="activeSpace"
-      class="av-minimap"
+      class="avw-minimap"
       :style="{
         width: '' + activeSpace.width / minimapScale + 'px',
         height: '' + activeSpace.height / minimapScale + 'px',
@@ -34,14 +34,14 @@
         }"
       ></div>
     </div>
-    <div class="btn-group light av-zoom-bar">
-      <button class="btn btn-icon btn-md btn-white" @click="zoomOut()">
+    <div class="btn-group light avw-zoom-bar">
+      <button class="btn btn-icon btn-md avw-button" @click="zoomOut()">
         <span class="icon icon-minus"></span>
       </button>
-      <button class="btn btn-md btn-white no-p" @click="zoomToOriginal()">
+      <button class="btn btn-md avw-button no-p" @click="zoomToOriginal()">
         {{ viewportZoomPercent }}%
       </button>
-      <button class="btn btn-icon btn-md btn-white" @click="zoomIn()">
+      <button class="btn btn-icon btn-md avw-button" @click="zoomIn()">
         <span class="icon icon-plus"></span>
       </button>
     </div>
@@ -80,9 +80,6 @@ export default {
     },
   },
   methods: {
-    addShape(param) {
-      this.$root.add_shape(param);
-    },
     zoomIn() {
       this.$root.zoom_in();
     },
@@ -106,33 +103,35 @@ export default {
 </script>
 
 <style lang="css">
-.av-board-navigation {
+.avw-board-navigation {
   display: flex;
   flex-direction: column;
   bottom: 30px;
   right: 30px;
   position: absolute;
 }
-.av-zoom-bar {
+.avw-zoom-bar {
+  display: flex;
   z-index: 3500;
   box-shadow: 0 0 30px 1px rgba(0, 0, 0, 0.15);
   border: 1px solid black;
+  background-color: #37383b;
   margin-top: 8px;
 }
-.av-minimap {
+.avw-minimap {
   background-color: transparent;
   z-index: 20000;
   border-radius: 3px;
   border: 1px solid rgba(0, 0, 0, 0.2);
   overflow: hidden;
 }
-.av-minimap div {
+.avw-minimap div {
   background-color: rgba(0, 0, 0, 0.1);
   position: absolute;
   z-index: 1;
   pointer-events: none;
 }
-.av-minimap div.window {
+.avw-minimap div.window {
   background-color: rgba(255, 255, 255, 0.01);
   border: 1px solid rgba(255, 255, 255, 0.5);
 }
