@@ -2,7 +2,7 @@
   <div
     v-if="toolbarPropsIn"
     v-cloak
-    class="toolbar toolbar-properties"
+    class="toolbar toolbar-properties avw-object-toolbar"
     :class="{ in: toolbarPropsIn, out: !toolbarPropsIn }"
   >
     <div class="btn-group light vertical avw-button-group">

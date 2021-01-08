@@ -101,38 +101,3 @@ export default {
   },
 };
 </script>
-
-<style lang="css">
-.avw-board-navigation {
-  display: flex;
-  flex-direction: column;
-  bottom: 30px;
-  right: 30px;
-  position: absolute;
-}
-.avw-zoom-bar {
-  display: flex;
-  z-index: 3500;
-  box-shadow: 0 0 30px 1px rgba(0, 0, 0, 0.15);
-  border: 1px solid black;
-  background-color: #37383b;
-  margin-top: 8px;
-}
-.avw-minimap {
-  background-color: transparent;
-  z-index: 20000;
-  border-radius: 3px;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  overflow: hidden;
-}
-.avw-minimap div {
-  background-color: rgba(0, 0, 0, 0.1);
-  position: absolute;
-  z-index: 1;
-  pointer-events: none;
-}
-.avw-minimap div.window {
-  background-color: rgba(255, 255, 255, 0.01);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-}
-</style>

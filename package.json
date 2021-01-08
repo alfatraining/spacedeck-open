@@ -27,6 +27,7 @@
     "glob": "7.1.1",
     "gm": "^1.23.1",
     "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^7.0.1",
     "gulp-concat": "^2.6.1",
     "gulp-sass": "^4.0.2",
     "helmet": "^3.5.0",

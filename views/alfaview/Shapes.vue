@@ -73,15 +73,3 @@ export default {
   },
 };
 </script>
-
-<style lang="css">
-.avw-shapes__avw-btn-group {
-  display: flex;
-  padding-top: 12px;
-  padding-left: 8px;
-  padding-right: 8px;
-}
-.avw-icon {
-  font-size: 32px;
-}
-</style>
