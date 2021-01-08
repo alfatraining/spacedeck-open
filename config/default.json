@@ -14,11 +14,6 @@
   "storage_bucket": "my_spacedeck_bucket",
   "storage_cdn": "/storage",
 
-  "mysql_host": "mysql",
-  "mysql_db_name": "spacedeck",
-  "mysql_username": "root",
-  "mysql_password": "root",
-
   "redis_mock": false,
   "mongodb_host": "localhost",
   "redis_host": "redis",

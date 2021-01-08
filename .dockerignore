@@ -16,3 +16,6 @@ Dockerfile
 docker-compose.yml
 docs
 integrations
+mysql
+.gitignore
+.gitlab-ci.yml
