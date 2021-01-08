@@ -111,7 +111,9 @@ if (app.get('env') == 'development') {
 module.exports = app;
 
 // CONNECT TO DATABASE
-db.init();
+db.create().then(() => {
+  db.init();
+});
 
 // START WEBSERVER
 const host = config.get('host');

@@ -1,9 +1,14 @@
 const Umzug = require('umzug');
 const config = require('config')
+const uuidv4 = require('uuid/v4')
 
 const Sequelize = require('sequelize');
-const sequelize = new Sequelize(config.mysql_db_name, config.mysql_username, config.mysql_password, {
-  host: config.mysql_host,
+const sequelize = new Sequelize(
+{
+  database: process.env.SPACEDECK_DB_NAME,
+  username: process.env.SPACEDECK_DB_USERNAME,
+  password: process.env.SPACEDECK_DB_PASSWORD,
+  host: process.env.SPACEDECK_DB_HOST,
   dialect: 'mysql',
   dialectOptions: {
     decimalNumbers: true  // required for MySQL so decimal number are not returned as strings!
@@ -204,6 +209,17 @@ module.exports = {
     updated_at: {type: Sequelize.DATE, defaultValue: Sequelize.NOW}
   }),
 
+  create: function() {
+    const initDB = new Sequelize(
+      {
+        username: process.env.SPACEDECK_DB_USERNAME,
+        password: process.env.SPACEDECK_DB_PASSWORD,
+        host: process.env.SPACEDECK_DB_HOST,
+        dialect: 'mysql',
+      });
+    
+    return initDB.query(`CREATE DATABASE IF NOT EXISTS ${process.env.SPACEDECK_DB_NAME}`)
+  }, 
   init: async function() {
     User = this.User;
     Session = this.Session;
@@ -288,6 +304,37 @@ module.exports = {
     umzug.up().then(function(migrations)  {
       console.log('Migration complete up!');
     });
+
+    // check for admin user and create it if needed
+    User.findOne({ where: { email: process.env.SPACEDECK_ADMIN_EMAIL }})
+      .then((user) => {
+        console.log('murat' + JSON.stringify(user))
+        if (!user) {
+          console.log()
+          const adminUser = {
+            _id: uuidv4(),
+            email: process.env.SPACEDECK_ADMIN_EMAIL,
+            nickname: process.env.SPACEDECK_ADMIN_EMAIL,
+            api_token: process.env.SPACEDECK_ADMIN_API_TOKEN,
+            prefs_language: 'en',
+          };
+          User.create(adminUser).then(u => {
+            var homeFolder = {
+              _id: uuidv4(),
+              name: 'home',
+              space_type: 'folder',
+              creator_id: u._id
+            };
+            Space.create(homeFolder).then(homeFolder => {
+              u.home_folder_id = homeFolder._id;
+              u.save()
+            })
+          })
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
 
   },
 

@@ -12,12 +12,19 @@ services:
       - SPACEDECK_NATS_ADDR=nats://nats:4222
       - SPACEDECK_NATS_AUTHENTICATION_USERNAME=dev-user
       - SPACEDECK_NATS_AUTHENTICATION_PASSWORD=dev-pass
+      - SPACEDECK_DB_HOST=mysql
+      - SPACEDECK_DB_NAME=spacedeck
+      - SPACEDECK_DB_USERNAME=root
+      - SPACEDECK_DB_PASSWORD=root
+      - SPACEDECK_ADMIN_EMAIL=dev@alfaview.com
+      - SPACEDECK_ADMIN_API_TOKEN=alfaview_api_token
     ports:
       - "9666:9666"
     volumes:
       - ./storage:/app/storage
       - ./public:/app/public
       - ./:/app
+      - /app/node_modules
 
   mysql:
     image: mysql:8.0.22
