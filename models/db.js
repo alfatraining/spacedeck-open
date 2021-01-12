@@ -308,7 +308,6 @@ module.exports = {
     // check for admin user and create it if needed
     User.findOne({ where: { email: process.env.SPACEDECK_ADMIN_EMAIL }})
       .then((user) => {
-        console.log('murat' + JSON.stringify(user))
         if (!user) {
           console.log()
           const adminUser = {

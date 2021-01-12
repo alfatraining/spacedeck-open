@@ -3,7 +3,7 @@ const sass = require('gulp-sass')
 const concat = require('gulp-concat')
 const autoprefixer = require('gulp-autoprefixer');
 
-gulp.task('styles', function(done) {
+const generateCSS = (done) => {
   gulp.src('styles/**/*.scss')
     .pipe(sass({
         errLogToConsole: true
@@ -14,4 +14,7 @@ gulp.task('styles', function(done) {
     .pipe(gulp.dest('./public/stylesheets/'))
     .pipe(concat('style.css'))
   done()
-})
+};
+
+gulp.task('styles', generateCSS)
+gulp.task('watch', () => { gulp.watch(['views/alfaview/styles/*.scss', 'styles/*.scss'], generateCSS) });
