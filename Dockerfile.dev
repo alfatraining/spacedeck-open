@@ -1,0 +1,5 @@
+FROM spacedeck
+
+RUN npm install --global gulp-cli
+RUN npm run build:css
+RUN npm run build:frontend

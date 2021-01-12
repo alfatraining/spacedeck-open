@@ -2,7 +2,7 @@
 
 - Run `make dev-init` in the root folder to install dependencies, generate the alfaview components, and start up the containers
 - `make dev-start` and `make dev-stop` can be used to start and stop without intalling dependencies and generating files again
-- Additionally `yarn dev:frontend` can be used to watch the files under `views/alfaview`
+- Additionally `make watch` can be used to watch the files under `views/alfaview`
 
 
 ### Creating a space for test

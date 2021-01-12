@@ -37,8 +37,8 @@
     <toolbar></toolbar>
     <toolbar-object></toolbar-object>
     <minimap-zoom></minimap-zoom>
-
     <div v-if="activeSpace && activeSpaceLoaded">
+      <div class="avw-room-name">{{ roomName }}</div>
       <!-- <div id="lasso"></div> -->
       <div class="snap-ruler-h" :style="{ top: snapRulerY + 'px' }"></div>
       <div class="snap-ruler-v" :style="{ left: snapRulerX + 'px' }"></div>
@@ -720,6 +720,11 @@ export default {
     },
     zones() {
       return this.$root.zones;
+    },
+    roomName() {
+      const url = new URL(window.location);
+
+      return url.searchParams.get("roomName");
     },
   },
   methods: {
