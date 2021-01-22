@@ -67,10 +67,18 @@
         class="avw-submenu"
       ></Background>
     </div>
+    <button class="btn btn-icon-labeled avw-button" @click="downloadSpace()">
+      <span class="icon icon-download"></span>
+      <span class="icon-label">Download</span>
+    </button>
   </div>
 </template>
 
 <script>
+import { toPng } from "html-to-image";
+import download from "downloadjs";
+import dayjs from "dayjs";
+
 export default {
   computed: {
     openedDialog() {
@@ -105,6 +113,17 @@ export default {
     },
     enableSelectMode() {
       this.$root.active_tool = "pointer";
+    },
+    downloadSpace() {
+      const spaceHeight = this.$root.active_space.height;
+      const spaceWidth = this.$root.active_space.width;
+
+      toPng(document.getElementById("space"), {
+        width: spaceWidth,
+        height: spaceHeight,
+      }).then(function (dataUrl) {
+        download(dataUrl, `whiteboard-${dayjs().format("DD-MM-YYYY")}.png`);
+      });
     },
   },
 };
