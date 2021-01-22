@@ -10,7 +10,10 @@ import Layout from "./Layout.vue";
 import TextDigits from "./TextDigits.vue";
 import ObjectOptions from "./ObjectOptions.vue";
 import MinimapZoom from "./MinimapZoom.vue";
+import BoardExpiration from "./BoardExpiration.vue";
+import BoardMeta from "./BoardMeta.vue";
 import Space from "./Space.vue";
+import BoardError from "./BoardError.vue";
 
 Vue.component("Toolbar", Toolbar);
 Vue.component("Shapes", Shapes);
@@ -24,4 +27,7 @@ Vue.component("Layout", Layout);
 Vue.component("TextDigits", TextDigits);
 Vue.component("ObjectOptions", ObjectOptions);
 Vue.component("MinimapZoom", MinimapZoom);
+Vue.component("BoardExpiration", BoardExpiration);
+Vue.component("BoardMeta", BoardMeta);
 Vue.component("Space", Space);
+Vue.component("BoardError", BoardError);

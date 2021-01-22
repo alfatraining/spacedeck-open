@@ -34,10 +34,15 @@
       </div>
     </div>
 
-    <toolbar></toolbar>
-    <toolbar-object></toolbar-object>
-    <minimap-zoom></minimap-zoom>
-    <div v-if="activeSpace && activeSpaceLoaded">
+    <board-error v-if="!isLoading && !spaceFound"></board-error>
+
+    <template v-if="!isLoading && activeSpace && activeSpaceLoaded">
+      <toolbar></toolbar>
+      <toolbar-object></toolbar-object>
+      <board-meta></board-meta>
+    </template>
+
+    <div v-if="!isLoading && activeSpace && activeSpaceLoaded">
       <div class="avw-room-name">{{ roomName }}</div>
       <!-- <div id="lasso"></div> -->
       <div class="snap-ruler-h" :style="{ top: snapRulerY + 'px' }"></div>
@@ -62,7 +67,7 @@
     <div
       v-cloak
       id="space-loading"
-      :class="{ active: loadingSpaceId, active: globalSpinner }"
+      :class="{ active: isLoading, active: globalSpinner }"
     >
       <div>
         <div class="spinner"></div>
@@ -73,7 +78,7 @@
     <!-- add `v-sd-droppable="handle_data_drop;activeSpace"` so files are droppable onto space when file upload is supported -->
     <div
       v-cloak
-      v-if="activeView == 'space' && activeSpaceLoaded"
+      v-if="!isLoading && activeView == 'space' && activeSpaceLoaded"
       id="space"
       v-sd-whiteboard
       class="section board active mouse-{{mouseState}} tool-{{activeTool}}"
@@ -653,7 +658,17 @@
 </template>
 
 <script>
+import jsCookie from "js-cookie";
+import get from "lodash/get";
+import axios from "axios";
+
 export default {
+  data() {
+    return {
+      isLoading: false,
+      spaceFound: false,
+    };
+  },
   computed: {
     userCursors() {
       return this.$root.user_cursors;
@@ -724,8 +739,39 @@ export default {
     roomName() {
       const url = new URL(window.location);
 
-      return url.searchParams.get("roomName");
+      return url.searchParams.get("roomName") || this.activeSpace.name;
     },
+  },
+  created() {
+    this.isLoading = true;
+    let fetchBoardInterval = null;
+    const url = new URL(window.location);
+    const urlParams = url.pathname.split("/");
+    const userAuthCookie = jsCookie.get("sdsession");
+    const getBoardStatus = () => {
+      axios
+        .get(`/api/spaces/${urlParams[2]}`, {
+          headers: { sdsession: userAuthCookie },
+        })
+        .then((response) => {
+          // update value in instance periodically
+          this.$root.active_space.updatedAt = get(response, "body.updatedAt");
+          this.spaceFound = true;
+        })
+        .catch(() => {
+          this.$root.active_space = null;
+          this.$root.active_space_loaded = false;
+          this.spaceFound = false;
+          clearInterval(fetchBoardInterval);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    };
+
+    fetchBoardInterval = setInterval(getBoardStatus, 60000);
+
+    getBoardStatus();
   },
   methods: {
     isSelected(itm) {
@@ -742,12 +788,6 @@ export default {
     },
     goToNextZone() {
       this.$root.go_to_next_zone();
-    },
-    toggleDialog(param) {
-      this.toggles[param] = !this.toggles[param];
-      Object.keys(this.toggles).forEach(
-        (x) => x !== param && (this.toggles[x] = false)
-      );
     },
   },
 };

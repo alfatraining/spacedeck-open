@@ -134,7 +134,7 @@ var SpacedeckSpaces = {
           is_home = (space_id == this.user.home_folder_id);
         }
 
-        document.title = "Loading… | Spacedeck";
+        document.title = "Loading…";
 
         load_space(space_id, function(space, role) {
           document.title = space.name;
@@ -294,7 +294,7 @@ var SpacedeckSpaces = {
               this.redirect_to("/");
             }
           } else {
-            this.redirect_to("/not_found");
+            // this.redirect_to("/not_found");
             console.error(xhr);
           }
         }.bind(this));

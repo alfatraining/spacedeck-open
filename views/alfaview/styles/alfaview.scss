@@ -1,5 +1,14 @@
+$avw-background-color: #2d3034;
+$avw-background-color-white: #ffff;
+$avw-background-color-lightgrey: #eaebed;
+$avw-background-selected: #3c3f43;
+$avw-font-color: #f7f7ff;
+$avw-border-radius-large: 6px;
+$avw-border-radius-small: 3px;
+
 @import "space";
-@import "minimap";
+@import "boardmeta";
 @import "toolbar";
 @import "shapes";
 @import "colors";
+@import "error";

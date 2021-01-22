@@ -1,5 +1,5 @@
 <template>
-  <div v-if="activeSpaceLoaded" class="avw-board-navigation">
+  <div v-if="activeSpaceLoaded">
     <div
       v-if="activeSpace"
       class="avw-minimap"
