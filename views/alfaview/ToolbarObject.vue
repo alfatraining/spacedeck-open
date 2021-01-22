@@ -149,13 +149,6 @@ export default {
   methods: {
     openDialog(param) {
       this.$root.open_dialog(param);
-      this.toggleDialog(param);
-    },
-    toggleDialog(param) {
-      this.toggles[param] = !this.toggles[param];
-      Object.keys(this.toggles).forEach(
-        (x) => x !== param && (this.toggles[x] = false)
-      );
     },
     deleteSelectedArtifacts() {
       this.$root.delete_selected_artifacts();

@@ -19,7 +19,7 @@ const sequelize = new Sequelize(
     acquire: 30000,
     idle: 10000
   },
-
+  logging: process.env.SPACEDECK_ENV === 'development' ?  (...msg) => console.log(msg) : false,
   // http://docs.sequelizejs.com/manual/tutorial/querying.html#operators
   operatorsAliases: false
 });
@@ -309,7 +309,6 @@ module.exports = {
     User.findOne({ where: { email: process.env.SPACEDECK_ADMIN_EMAIL }})
       .then((user) => {
         if (!user) {
-          console.log()
           const adminUser = {
             _id: uuidv4(),
             email: process.env.SPACEDECK_ADMIN_EMAIL,

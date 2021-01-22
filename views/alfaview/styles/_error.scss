@@ -1,0 +1,13 @@
+.avw-board-error {
+  background-color: $avw-background-color-lightgrey;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.avw-board-error__info {
+  padding: 16px;
+  border-radius: $avw-border-radius-large;
+  background-color: $avw-background-color-white;
+}

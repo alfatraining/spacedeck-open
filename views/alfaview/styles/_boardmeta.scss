@@ -1,22 +1,25 @@
-.avw-board-navigation {
+.avw-board-meta {
   display: flex;
-  flex-direction: column;
-  bottom: 30px;
-  right: 30px;
+  justify-content: space-between;
+  align-items: flex-end;
+  bottom: 20px;
+  z-index: 3500;
   position: absolute;
+  width: 100%;
+  padding-right: 24px;
+  padding-left: 6px;
 }
 .avw-zoom-bar {
   display: flex;
-  z-index: 3500;
   box-shadow: 0 0 30px 1px rgba(0, 0, 0, 0.15);
   border: 1px solid transparent;
-  background-color: #37383b;
-  margin-top: 8px;
+  background-color: $avw-background-color;
 }
 .avw-minimap {
+  position: absolute;
+  bottom: 55px;
   background-color: transparent;
-  z-index: 20000;
-  border-radius: 3px;
+  border-radius: $avw-border-radius-small;
   border: 1px solid rgba(0, 0, 0, 0.2);
   overflow: hidden;
   div {
@@ -29,4 +32,8 @@
       border: 1px solid rgba(255, 255, 255, 0.5);
     }
   }
+}
+.avw-board-expiration {
+  font-size: 12px;
+  color: $avw-background-color;
 }

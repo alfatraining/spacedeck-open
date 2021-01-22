@@ -1,5 +1,8 @@
 FROM spacedeck
 
 RUN npm install --global gulp-cli
+RUN npm install --global nodemon
 RUN npm run build:css
 RUN npm run build:frontend
+
+CMD ["nodemon", "spacedeck.js"]

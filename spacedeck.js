@@ -1,5 +1,7 @@
 "use strict";
 
+process.env.SPACEDECK_ENV && (process.env.NODE_ENV = process.env.SPACEDECK_ENV)
+
 const db = require('./models/db.js');
 require("log-timestamp");
 
@@ -12,7 +14,7 @@ const path = require('path');
 
 const _ = require('underscore');
 const favicon = require('serve-favicon');
-const logger = require('morgan');
+const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
@@ -23,33 +25,35 @@ const express = require('express');
 const app = express();
 const serveStatic = require('serve-static');
 
-const isProduction = app.get('env') === 'production';
+const isDevelopment = app.get('env') === 'development';
 
 // workaround for libssl_conf.so error triggered by phantomjs
 process.env['OPENSSL_CONF'] = '/dev/null';
 
 console.log("Booting Spacedeck Open… (environment: " + app.get('env') + ")");
 
-app.use(logger(isProduction ? 'combined' : 'dev'));
+if (!isDevelopment) {
+  app.use(
+    morgan('combined', {
+      skip: function (req, res) { return res.statusCode < 400 }  // only log error responses
+    })
+  );
+} else {
+  app.use(morgan('dev'));
+}
 
 i18n.expressBind(app, {
   locales: ["en", "de", "fr", "oc", "es"],
   defaultLocale: "en",
   cookieName: "spacedeck_locale",
-  devMode: (app.get('env') == 'development')
+  devMode: isDevelopment
 });
 
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.png')));
+app.use(express.static(path.join(__dirname, 'public')));
 
-if (isProduction) {
-  app.set('views', path.join(__dirname, 'build', 'views'));
-  app.use(favicon(path.join(__dirname, 'build', 'assets', 'images', 'favicon.png')));
-  app.use(express.static(path.join(__dirname, 'build', 'assets')));
-} else {
-  app.set('views', path.join(__dirname, 'views'));
-  app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.png')));
-  app.use(express.static(path.join(__dirname, 'public')));
-}
 
 app.use(bodyParser.json({
   limit: '50mb'
@@ -102,7 +106,7 @@ if (config.get('storage_local_path')) {
 
 // catch 404 and forward to error handler
 //app.use(require('./middlewares/404'));
-if (app.get('env') == 'development') {
+if (isDevelopment) {
   app.set('view cache', false);
 } else {
   app.use(require('./middlewares/500'));
@@ -120,13 +124,13 @@ const host = config.get('host');
 const port = config.get('port');
 
 const server = http.Server(app).listen(port, host, () => {
-  
+
   if ("send" in process) {
     process.send('online');
   }
 
 }).on('listening', () => {
-  
+
   const host = server.address().address;
   const port = server.address().port;
   console.log('Spacedeck Open listening at http://%s:%s', host, port);
