@@ -2,7 +2,7 @@
 
 const db = require('../models/db');
 const config = require('config');
-const phantom = require('node-phantom-simple');
+// const phantom = require('node-phantom-simple');
 const os = require('os');
 
 module.exports = {
