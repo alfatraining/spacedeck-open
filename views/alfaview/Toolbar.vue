@@ -5,7 +5,7 @@
       :class="{ active: activeTool == 'pointer' }"
       @click="enableSelectMode"
     >
-      <span class="icon icon-border-dashed"></span>
+      <i class="material-icons">crop_free</i>
       <span class="icon-label">Select</span>
     </button>
     <button
@@ -13,7 +13,7 @@
       :class="{ active: activeTool == 'scribble' }"
       @click="startDrawingScribble"
     >
-      <span class="icon icon-tool-scribble"></span>
+      <i class="material-icons">gesture</i>
       <span class="icon-label">Draw</span>
     </button>
     <div class="avw-submenu-wrapper">
@@ -22,7 +22,7 @@
         :class="{ open: openedDialog == 'shapes' }"
         @click="openDialog('shapes')"
       >
-        <span class="icon icon-shapes"></span>
+        <i class="material-icons">category</i>
         <span class="icon-label">Shape</span>
       </button>
       <Shapes v-if="openedDialog == 'shapes'" class="avw-submenu"></Shapes>
@@ -32,7 +32,7 @@
       :class="{ active: activeTool == 'arrow' }"
       @click="startDrawingArrow"
     >
-      <span class="icon icon-tool-arrow"></span>
+      <i class="material-icons">sync_alt</i>
       <span class="icon-label">Arrow</span>
     </button>
     <!-- Disable file uploads for MVP -->
@@ -50,7 +50,7 @@
       :class="{ active: activeTool == 'note' }"
       @click="activateTool('note')"
     >
-      <span class="icon icon-tool-text"></span>
+      <i class="material-icons">text_fields</i>
       <span class="icon-label">Text</span>
     </button>
     <div class="avw-submenu-wrapper">
@@ -59,7 +59,7 @@
         :class="{ open: openedDialog == 'background' }"
         @click="openDialog('background')"
       >
-        <span class="icon icon-picture-landscape"></span>
+        <i class="material-icons">wallpaper</i>
         <span class="icon-label">Background</span>
       </button>
       <Background
@@ -68,8 +68,13 @@
       ></Background>
     </div>
     <button class="btn btn-icon-labeled avw-button" @click="downloadSpace()">
-      <span class="icon icon-download"></span>
+      <i class="material-icons">file_download</i>
       <span class="icon-label">Download</span>
+    </button>
+    <button class="btn btn-icon-labeled avw-button" @click="clearSpace()">
+      <!-- <span class="icon icon-page-horizontal-remove"></span> -->
+      <i class="material-icons">delete_sweep</i>
+      <span class="icon-label">Clear</span>
     </button>
   </div>
 </template>
@@ -124,6 +129,10 @@ export default {
       }).then(function (dataUrl) {
         download(dataUrl, `whiteboard-${dayjs().format("DD-MM-YYYY")}.png`);
       });
+    },
+    clearSpace() {
+      this.$root.select_all_artifacts();
+      this.$root.delete_selected_artifacts(null, false);
     },
   },
 };
