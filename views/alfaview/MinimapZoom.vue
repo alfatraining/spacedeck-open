@@ -36,13 +36,13 @@
     </div>
     <div class="btn-group light avw-zoom-bar">
       <button class="btn btn-icon btn-md avw-button" @click="zoomOut()">
-        <span class="icon icon-minus"></span>
+        <i class="material-icons avw-zoom-bar__icon">remove</i>
       </button>
       <button class="btn btn-md avw-button no-p" @click="zoomToOriginal()">
         {{ viewportZoomPercent }}%
       </button>
       <button class="btn btn-icon btn-md avw-button" @click="zoomIn()">
-        <span class="icon icon-plus"></span>
+        <i class="material-icons avw-zoom-bar__icon">add</i>
       </button>
     </div>
   </div>

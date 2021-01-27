@@ -197,28 +197,28 @@
             class="btn btn-transparent btn-icon-labeled"
             @click="applyFormatting($event, 'bold')"
           >
-            <span class="icon icon-text-bold"></span>
+            <i class="material-icons">format_bold</i>
             <span class="icon-label">Bold</span>
           </button>
           <button
             class="btn btn-transparent btn-icon-labeled"
             @click="applyFormatting($event, 'italic')"
           >
-            <span class="icon icon-text-italic"></span>
+            <i class="material-icons">format_italic</i>
             <span class="icon-label">Italic</span>
           </button>
           <button
             class="btn btn-transparent btn-icon-labeled"
             @click="applyFormatting($event, 'underline')"
           >
-            <span class="icon icon-text-underline"></span>
+            <i class="material-icons">format_underlined</i>
             <span class="icon-label">Underl.</span>
           </button>
           <button
             class="btn btn-transparent btn-icon-labeled"
             @click="applyFormatting($event, 'strikeThrough')"
           >
-            <span class="icon icon-text-strike"></span>
+            <i class="material-icons">strikethrough_s</i>
             <span class="icon-label">Strike</span>
           </button>
         </div>

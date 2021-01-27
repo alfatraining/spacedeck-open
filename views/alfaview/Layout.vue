@@ -1,11 +1,11 @@
 <template>
-  <div id="layout" class="dialog">
+  <div id="layout" class="dialog avw-dialog">
     <div class="btn-group">
       <button class="btn btn-transparent btn-icon" @click="layoutStackTop()">
-        <span class="icon icon-stack-3d-top"></span>
+        <i class="material-icons">flip_to_front</i>
       </button>
       <button class="btn btn-transparent btn-icon" @click="layoutStackBottom()">
-        <span class="icon icon-stack-3d-bottom"></span>
+        <i class="material-icons">flip_to_back</i>
       </button>
     </div>
   </div>

@@ -17,13 +17,8 @@
   color: $avw-font-color;
   border-radius: $avw-border-radius-large;
   margin-left: 8px;
-  padding: 12px;
+  padding: 10px;
   z-index: 3500;
-
-  .avw-button,
-  .avw-button .icon:before {
-    width: 70px;
-  }
 }
 .avw-submenu-wrapper {
   display: flex;
@@ -46,4 +41,8 @@
     padding-bottom: 8px;
     background-color: $avw-background-color !important;
   }
+}
+
+.avw-dialog {
+  height: 50px;
 }

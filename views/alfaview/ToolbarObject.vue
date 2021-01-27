@@ -17,6 +17,7 @@
         }"
       >
         <button
+          v-if="!selectionMetrics.contains_vectors"
           class="dropdown-toggle btn btn-icon avw-button"
           :class="{ open: openedDialog == 'color-fill' }"
           @click="openDialog('color-fill')"
@@ -71,7 +72,7 @@
             title="Align"
             @click="openDialog('type-align')"
           >
-            <span class="icon icon-text-align-left-alt"></span>
+            <i class="material-icons">format_align_center</i>
             <span class="icon-label">Align</span>
           </button>
         </div>
@@ -90,7 +91,7 @@
             title="Layout"
             @click="openDialog('layout')"
           >
-            <span class="icon icon-cluster"></span>
+            <i class="material-icons">flip</i>
             <span class="icon-label">Layout</span>
           </button>
         </div>
@@ -102,7 +103,7 @@
         title="Duplicate"
         @click="duplicateSelectedArtifacts()"
       >
-        <span class="icon icon-duplicate"></span>
+        <i class="material-icons">content_copy</i>
         <span class="icon-label">Duplicate</span>
       </button>
 
@@ -111,7 +112,7 @@
         title="Delete"
         @click="deleteSelectedArtifacts()"
       >
-        <span class="icon icon-trash"></span>
+        <i class="material-icons">delete</i>
         <span class="icon-label">Delete</span>
       </button>
     </div>
