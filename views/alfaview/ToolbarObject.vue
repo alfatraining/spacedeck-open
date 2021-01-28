@@ -73,7 +73,7 @@
             @click="openDialog('type-align')"
           >
             <i class="material-icons">format_align_center</i>
-            <span class="icon-label">Align</span>
+            <span class="icon-label">{{ $t("toolbar.align") }}</span>
           </button>
         </div>
 
@@ -92,7 +92,7 @@
             @click="openDialog('layout')"
           >
             <i class="material-icons">flip</i>
-            <span class="icon-label">Layout</span>
+            <span class="icon-label">{{ $t("toolbar.layout") }}</span>
           </button>
         </div>
 
@@ -104,7 +104,7 @@
         @click="duplicateSelectedArtifacts()"
       >
         <i class="material-icons">content_copy</i>
-        <span class="icon-label">Duplicate</span>
+        <span class="icon-label">{{ $t("toolbar.duplicate") }}</span>
       </button>
 
       <button
@@ -113,7 +113,7 @@
         @click="deleteSelectedArtifacts()"
       >
         <i class="material-icons">delete</i>
-        <span class="icon-label">Delete</span>
+        <span class="icon-label">{{ $t("toolbar.delete") }}</span>
       </button>
     </div>
   </div>

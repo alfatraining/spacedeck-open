@@ -58,6 +58,7 @@
     "underscore": "1.8.3",
     "uuid": "^3.2.1",
     "validator": "7.0.0",
+    "vue-i18n": "^4.10.0",
     "ws": "3.3.1"
   },
   "main": "app.js",

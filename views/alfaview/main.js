@@ -15,6 +15,24 @@ import BoardMeta from "./BoardMeta.vue";
 import Space from "./Space.vue";
 import BoardError from "./BoardError.vue";
 
+import VueI18n from "vue-i18n";
+import en from "./locales/en";
+import de from "./locales/de";
+import { getBrowserLocale } from "./utils";
+
+Vue.use(VueI18n);
+const locales = {
+  en: en,
+  de: de,
+};
+
+Vue.config.lang = getBrowserLocale();
+Vue.config.fallbackLang = "en";
+
+Object.keys(locales).forEach(function (lang) {
+  Vue.locale(lang, locales[lang]);
+});
+
 Vue.component("Toolbar", Toolbar);
 Vue.component("Shapes", Shapes);
 Vue.component("Zones", Zones);

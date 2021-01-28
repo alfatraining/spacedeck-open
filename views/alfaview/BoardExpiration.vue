@@ -1,18 +1,24 @@
 <template>
   <div class="avw-board-expiration">
-    Board will be automatically deleted on: {{ remainingTime }}
+    {{ $t("boardMetadata.deletionMessage", { date: expirationDate }) }}
   </div>
 </template>
 
 <script>
 import dayjs from "dayjs";
+import { getBrowserLocale } from "./utils";
+import localizedFormat from "dayjs/plugin/localizedFormat";
+import "dayjs/locale/de";
 
 export default {
   computed: {
-    remainingTime() {
+    expirationDate() {
+      dayjs.extend(localizedFormat);
+      dayjs.locale(getBrowserLocale());
+
       return dayjs(this.$root.active_space.updatedAt)
         .add(7, "days")
-        .format("ddd DD.MM, HH:mm")
+        .format("llll")
         .toString();
     },
   },

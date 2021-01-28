@@ -19,6 +19,11 @@
   margin-left: 8px;
   padding: 10px;
   z-index: 3500;
+  width: 100px;
+
+  .btn {
+    min-width: 80px;
+  }
 }
 .avw-submenu-wrapper {
   display: flex;
@@ -29,7 +34,7 @@
   background-color: $avw-background-color-white;
   position: absolute;
   color: $avw-background-color;
-  left: 100px;
+  left: 105px;
   z-index: 3500;
 }
 .avw-object-toolbar {
@@ -39,7 +44,20 @@
   .avw-button-group {
     padding-top: 8px;
     padding-bottom: 8px;
+    padding-left: 8px;
+
     background-color: $avw-background-color !important;
+
+    .btn,
+    .btn-collapse {
+      border-radius: $avw-border-radius-small;
+    }
+    .btn-collapse {
+      width: 70px;
+    }
+  }
+  .dialog {
+    right: 80px !important;
   }
 }
 
