@@ -117,7 +117,7 @@
     >
       <div class="input-row">
         <div class="form-group no-m">
-          <label class="label label-sm">Stroke</label>
+          <label class="label label-sm">{{ $t("toolbar.stroke") }}</label>
           <input
             v-model="activeStyle.stroke"
             class="input no-b no-p text-center text-large"
@@ -139,7 +139,9 @@
         </div>
 
         <div class="form-group no-m">
-          <label class="label label-sm">Border Radius</label>
+          <label class="label label-sm">
+            {{ $t("toolbar.borderRadius") }}
+          </label>
           <input
             v-model="activeStyle.border_radius"
             class="input no-b no-p text-center text-large"
@@ -168,7 +170,9 @@
     >
       <div class="input-row">
         <div class="form-group no-m">
-          <label class="label label-sm text-center">Font size</label>
+          <label class="label label-sm text-center">
+            {{ $t("toolbar.fontSize") }}
+          </label>
           <input
             v-model="activeStyle.font_size"
             class="input no-b no-p text-center text-large"
@@ -184,7 +188,7 @@
             class="input-drag btn btn-transparent btn-icon"
             style="cursor: ns-resize"
             sd-fader-var-y="active_style.font_size"
-            sd-fader-min-y="30"
+            sd-fader-min-y="12"
             sd-fader-max-y="200"
             sd-fader-sens="5"
           >
@@ -194,32 +198,28 @@
         </div>
         <div class="btn-group">
           <button
-            class="btn btn-transparent btn-icon-labeled"
+            class="btn btn-transparent"
             @click="applyFormatting($event, 'bold')"
           >
             <i class="material-icons">format_bold</i>
-            <span class="icon-label">Bold</span>
           </button>
           <button
-            class="btn btn-transparent btn-icon-labeled"
+            class="btn btn-transparent"
             @click="applyFormatting($event, 'italic')"
           >
             <i class="material-icons">format_italic</i>
-            <span class="icon-label">Italic</span>
           </button>
           <button
-            class="btn btn-transparent btn-icon-labeled"
+            class="btn btn-transparent"
             @click="applyFormatting($event, 'underline')"
           >
             <i class="material-icons">format_underlined</i>
-            <span class="icon-label">Underl.</span>
           </button>
           <button
-            class="btn btn-transparent btn-icon-labeled"
+            class="btn btn-transparent"
             @click="applyFormatting($event, 'strikeThrough')"
           >
             <i class="material-icons">strikethrough_s</i>
-            <span class="icon-label">Strike</span>
           </button>
         </div>
       </div>

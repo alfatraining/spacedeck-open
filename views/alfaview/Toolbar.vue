@@ -6,7 +6,7 @@
       @click="enableSelectMode"
     >
       <i class="material-icons">crop_free</i>
-      <span class="icon-label">Select</span>
+      <span class="icon-label">{{ $t("toolbar.select") }}</span>
     </button>
     <button
       class="btn btn-icon-labeled avw-button"
@@ -14,7 +14,7 @@
       @click="startDrawingScribble"
     >
       <i class="material-icons">gesture</i>
-      <span class="icon-label">Draw</span>
+      <span class="icon-label">{{ $t("toolbar.draw") }}</span>
     </button>
     <div class="avw-submenu-wrapper">
       <button
@@ -23,7 +23,7 @@
         @click="openDialog('shapes')"
       >
         <i class="material-icons">category</i>
-        <span class="icon-label">Shape</span>
+        <span class="icon-label">{{ $t("toolbar.shape") }}</span>
       </button>
       <Shapes v-if="openedDialog == 'shapes'" class="avw-submenu"></Shapes>
     </div>
@@ -33,7 +33,7 @@
       @click="startDrawingArrow"
     >
       <i class="material-icons">sync_alt</i>
-      <span class="icon-label">Arrow</span>
+      <span class="icon-label">{{ $t("toolbar.arrow") }}</span>
     </button>
     <!-- Disable file uploads for MVP -->
     <!-- <button class="btn btn-icon-labeled avw-button" @click="showFileUploadDialog()">Media</button>
@@ -51,7 +51,7 @@
       @click="activateTool('note')"
     >
       <i class="material-icons">text_fields</i>
-      <span class="icon-label">Text</span>
+      <span class="icon-label">{{ $t("toolbar.text") }}</span>
     </button>
     <div class="avw-submenu-wrapper">
       <button
@@ -60,7 +60,7 @@
         @click="openDialog('background')"
       >
         <i class="material-icons">wallpaper</i>
-        <span class="icon-label">Background</span>
+        <span class="icon-label">{{ $t("toolbar.background") }}</span>
       </button>
       <Background
         v-if="openedDialog == 'background'"
@@ -69,7 +69,7 @@
     </div>
     <button class="btn btn-icon-labeled avw-button" @click="downloadSpace()">
       <i class="material-icons">file_download</i>
-      <span class="icon-label">Download</span>
+      <span class="icon-label">{{ $t("toolbar.download") }}</span>
     </button>
     <button class="btn btn-icon-labeled avw-button" @click="clearSpace()">
       <!-- <span class="icon icon-page-horizontal-remove"></span> -->
