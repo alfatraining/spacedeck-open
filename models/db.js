@@ -1,5 +1,4 @@
 const Umzug = require('umzug');
-const config = require('config')
 const uuidv4 = require('uuid/v4')
 
 const Sequelize = require('sequelize');
@@ -283,6 +282,26 @@ module.exports = {
       onDelete: 'CASCADE',
       as: 'space'
     });
+
+    Session.belongsTo(User, {
+      foreignKey: {
+        name: 'user_id'
+      },
+      onDelete: 'CASCADE',
+      as: 'user'
+    });
+
+    // Add hook to space to delete users that are members to that space
+    Space.beforeDestroy((space) =>
+      Membership.findAll({
+        where: { space_id: space._id, email_invited: { [Sequelize.Op.not]: null } },
+      })
+        .then((memberships) =>
+          User.destroy({
+            where: { _id: memberships.map((membership) => membership.user_id) },
+          })
+        )
+    );
 
     await sequelize.sync();
 
