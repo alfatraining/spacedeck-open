@@ -349,7 +349,10 @@ router.delete('/:id', function(req, res, next) {
       const attrs = req.body;
       space.destroy().then(function() {
         res.distributeDelete("Space", space);
-      });
+      }).catch((e) => res.status(412).json({
+          "error": `failed to delete space: ${e.message}`
+        }) 
+      );
     } else {
       res.status(403).json({
         "error": "requires admin role"
