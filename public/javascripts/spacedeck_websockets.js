@@ -40,7 +40,7 @@ SpacedeckWebsockets = {
             }
           } else console.log("artifact created in another space.");
         }
-        else if (msg.action == "update" && msg.object) {
+        if (msg.action == "update" && msg.object) {
           if (this.active_space) {
             var o = msg.object;
             if (o && o._id) {
@@ -56,7 +56,7 @@ SpacedeckWebsockets = {
             }
           }
         }
-        else if (msg.action == "delete" && msg.object) {
+        if (msg.action == "delete" && msg.object) {
           if (this.active_space) {
             var o = msg.object;
             if (o._id){

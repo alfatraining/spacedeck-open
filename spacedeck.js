@@ -156,8 +156,8 @@ const server = http.Server(app).listen(port, host, () => {
   }
 });
 
-websockets.startWebsockets(server);
 nats.connectNats();
+websockets.startWebsockets(server);
 
 /*process.on('message', (message) => {
   console.log("Process message:", message);
