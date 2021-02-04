@@ -658,15 +658,16 @@
 </template>
 
 <script>
-import jsCookie from "js-cookie";
-import get from "lodash/get";
-import axios from "axios";
+// import jsCookie from "js-cookie";
+// import get from "lodash/get";
+// import axios from "axios";
 
 export default {
   data() {
     return {
       isLoading: false,
-      spaceFound: false,
+      // TODO: set to false when connected with backend service
+      spaceFound: true,
     };
   },
   computed: {
@@ -743,35 +744,34 @@ export default {
     },
   },
   created() {
-    this.isLoading = true;
-    let fetchBoardInterval = null;
-    const url = new URL(window.location);
-    const urlParams = url.pathname.split("/");
-    const userAuthCookie = jsCookie.get("sdsession");
-    const getBoardStatus = () => {
-      axios
-        .get(`/api/spaces/${urlParams[2]}`, {
-          headers: { sdsession: userAuthCookie },
-        })
-        .then((response) => {
-          // update value in instance periodically
-          this.$root.active_space.updatedAt = get(response, "body.updatedAt");
-          this.spaceFound = true;
-        })
-        .catch(() => {
-          this.$root.active_space = null;
-          this.$root.active_space_loaded = false;
-          this.spaceFound = false;
-          clearInterval(fetchBoardInterval);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-    };
-
-    fetchBoardInterval = setInterval(getBoardStatus, 60000);
-
-    getBoardStatus();
+    // TODO: enable this block when connected with backend service
+    // this.isLoading = true;
+    // const fetchBoardInterval = null;
+    // const url = new URL(window.location);
+    // const urlParams = url.pathname.split("/");
+    // const userAuthCookie = jsCookie.get("sdsession");
+    // const getBoardStatus = () => {
+    //   axios
+    //     .get(`/api/spaces/${urlParams[2]}`, {
+    //       headers: { sdsession: userAuthCookie },
+    //     })
+    //     .then((response) => {
+    //       // update value in instance periodically
+    //       this.$root.active_space.updatedAt = get(response, "body.updatedAt");
+    //       this.spaceFound = true;
+    //     })
+    //     .catch(() => {
+    //       this.$root.active_space = null;
+    //       this.$root.active_space_loaded = false;
+    //       this.spaceFound = false;
+    //       clearInterval(fetchBoardInterval);
+    //     })
+    //     .finally(() => {
+    //       this.isLoading = false;
+    //     });
+    // };
+    // fetchBoardInterval = setInterval(getBoardStatus, 60000);
+    // getBoardStatus();
   },
   methods: {
     isSelected(itm) {
