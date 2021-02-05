@@ -80,9 +80,7 @@
 </template>
 
 <script>
-import { toPng } from "html-to-image";
-import download from "downloadjs";
-import dayjs from "dayjs";
+import { downloadSpace } from "./utils";
 
 export default {
   computed: {
@@ -120,15 +118,10 @@ export default {
       this.$root.active_tool = "pointer";
     },
     downloadSpace() {
-      const spaceHeight = this.$root.active_space.height;
       const spaceWidth = this.$root.active_space.width;
+      const spaceHeight = this.$root.active_space.height;
 
-      toPng(document.getElementById("space"), {
-        width: spaceWidth,
-        height: spaceHeight,
-      }).then(function (dataUrl) {
-        download(dataUrl, `whiteboard-${dayjs().format("DD-MM-YYYY")}.png`);
-      });
+      return downloadSpace(spaceWidth, spaceHeight);
     },
     clearSpace() {
       this.$root.select_all_artifacts();

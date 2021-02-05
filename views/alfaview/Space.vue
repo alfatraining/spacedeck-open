@@ -37,13 +37,23 @@
     <board-error v-if="!isLoading && !spaceFound"></board-error>
 
     <template v-if="!isLoading && activeSpace && activeSpaceLoaded">
-      <toolbar></toolbar>
-      <toolbar-object></toolbar-object>
+      <toolbar v-if="showToolbars"></toolbar>
+      <toolbar-object v-if="showToolbars"></toolbar-object>
       <board-meta></board-meta>
     </template>
 
     <div v-if="!isLoading && activeSpace && activeSpaceLoaded">
-      <div class="avw-room-name">{{ roomName }}</div>
+      <div class="avw-board-header">
+        <div class="avw-board-header__room-name">{{ roomName }}</div>
+        <button
+          v-if="!showToolbars"
+          class="avw-board-header__download-btn"
+          @click="downloadSpace()"
+        >
+          <span class="material-icons md-18">file_download</span>
+          <span>{{ $t("toolbar.download") }}</span>
+        </button>
+      </div>
       <!-- <div id="lasso"></div> -->
       <div class="snap-ruler-h" :style="{ top: snapRulerY + 'px' }"></div>
       <div class="snap-ruler-v" :style="{ left: snapRulerX + 'px' }"></div>
@@ -661,6 +671,7 @@
 // import jsCookie from "js-cookie";
 // import get from "lodash/get";
 // import axios from "axios";
+import { downloadSpace } from "./utils";
 
 export default {
   data() {
@@ -737,6 +748,9 @@ export default {
     zones() {
       return this.$root.zones;
     },
+    showToolbars() {
+      return !this.$root.is_active_space_role("viewer");
+    },
     roomName() {
       const url = new URL(window.location);
 
@@ -788,6 +802,12 @@ export default {
     },
     goToNextZone() {
       this.$root.go_to_next_zone();
+    },
+    downloadSpace() {
+      const spaceWidth = this.$root.active_space.width;
+      const spaceHeight = this.$root.active_space.height;
+
+      return downloadSpace(spaceWidth, spaceHeight);
     },
   },
 };
