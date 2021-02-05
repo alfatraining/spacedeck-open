@@ -1,3 +1,7 @@
+import { toPng } from "html-to-image";
+import download from "downloadjs";
+import dayjs from "dayjs";
+
 const browserDetectedLang = () => {
   return navigator.languages && navigator.languages.length
     ? navigator.languages[0]
@@ -11,4 +15,13 @@ export const getBrowserLocale = () => {
   ) > -1
     ? "de"
     : "en";
+};
+
+export const downloadSpace = (spaceWidth, spaceHeight) => {
+  toPng(document.getElementById("space"), {
+    width: spaceWidth,
+    height: spaceHeight,
+  }).then(function (dataUrl) {
+    download(dataUrl, `whiteboard-${dayjs().format("DD-MM-YYYY")}.png`);
+  });
 };

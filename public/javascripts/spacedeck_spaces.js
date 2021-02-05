@@ -287,16 +287,19 @@ var SpacedeckSpaces = {
             return on_error(xhr);
           }
 
+          /** Disable redirects to login or root to stay on the page and show errors 
           if (xhr.status == 403) {
             if (!this.logged_in) {
               this.redirect_to("/login?space_id="+space_id);
             } else {
-              this.redirect_to("/");
+             // this.redirect_to("/");
             }
           } else {
-            // this.redirect_to("/not_found");
+            // Redirect to root instead to show error
+            this.redirect_to("/not_found");
             console.error(xhr);
           }
+          */
         }.bind(this));
 
       }.bind(this);
