@@ -50,7 +50,7 @@
     "read-chunk": "^2.1.0",
     "request": "^2.88.0",
     "sanitize-html": "^1.11.1",
-    "sequelize": "^4.37.6",
+    "sequelize": "^4.44.4",
     "serve-favicon": "~2.4.2",
     "serve-static": "^1.13.1",
     "slug": "^1.1.0",
@@ -59,7 +59,7 @@
     "uuid": "^3.2.1",
     "validator": "7.0.0",
     "vue-i18n": "^4.10.0",
-    "ws": "3.3.1"
+    "ws": "^7.4.3"
   },
   "main": "app.js",
   "description": "",
