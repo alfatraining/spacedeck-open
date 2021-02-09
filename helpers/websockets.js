@@ -70,7 +70,7 @@ module.exports = {
             ] = serverScope.nats.subscribe(
               `_spacedeck.updates.${spaceId}`,
               (rawMessage) =>
-                onMessageListenerCursors(
+                onMessageListenerArtifacts(
                   rawMessage,
                   serverScope.current_websockets
                 )
@@ -83,7 +83,7 @@ module.exports = {
             ] = serverScope.nats.subscribe(
               `_spacedeck.cursors.${spaceId}`,
               (rawMessage) =>
-                onMessageListenerArtifacts(
+                onMessageListenerCursors(
                   rawMessage,
                   serverScope.current_websockets
                 )
