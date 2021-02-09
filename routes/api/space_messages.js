@@ -18,7 +18,6 @@ var request = require('request');
 var url = require("url");
 var path = require("path");
 var crypto = require('crypto');
-var glob = require('glob');
 
 var express = require('express');
 var router = express.Router({mergeParams: true});

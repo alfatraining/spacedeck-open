@@ -13,7 +13,6 @@ var _ = require("underscore");
 var request = require('request');
 var url = require("url");
 var path = require("path");
-var glob = require('glob');
 var crypto = require('crypto');
 
 var express = require('express');
