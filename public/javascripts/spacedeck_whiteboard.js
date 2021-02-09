@@ -792,7 +792,7 @@ function setup_whiteboard_directives() {
           id: $scope.user._id||name
         };
 
-        $scope.websocket_send(cursor_msg);
+        // $scope.websocket_send(cursor_msg);
       }
       
       // side effects ftw!

@@ -77,18 +77,18 @@ module.exports = {
             );
           }
 
-          if (!get(serverScope, `natsCursorsMap[${spaceId}]`)) {
-            serverScope.natsCursorsMap[
-              spaceId
-            ] = serverScope.nats.subscribe(
-              `_spacedeck.cursors.${spaceId}`,
-              (rawMessage) =>
-                onMessageListenerCursors(
-                  rawMessage,
-                  serverScope.current_websockets
-                )
-            );
-          }
+          // if (!get(serverScope, `natsCursorsMap[${spaceId}]`)) {
+          //   serverScope.natsCursorsMap[
+          //     spaceId
+          //   ] = serverScope.nats.subscribe(
+          //     `_spacedeck.cursors.${spaceId}`,
+          //     (rawMessage) =>
+          //       onMessageListenerCursors(
+          //         rawMessage,
+          //         serverScope.current_websockets
+          //       )
+          //   );
+          // }
 
           if (msg.action == "auth") {
             const token = msg.auth_token;
