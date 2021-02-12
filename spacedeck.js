@@ -84,6 +84,7 @@ app.use('/api/spaces/:id/artifacts/:artifact_id', require("./middlewares/artifac
 
 app.use('/api/users', require('./routes/api/users'));
 app.use('/api/memberships', require('./routes/api/memberships'));
+app.use('/api/search', require('./routes/api/search'));
 
 const spaceRouter = require('./routes/api/spaces');
 app.use('/api/spaces', spaceRouter);
