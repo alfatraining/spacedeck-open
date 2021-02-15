@@ -207,9 +207,10 @@ SpacedeckWebsockets = {
 
             if (this.active_space_artifacts.length !== parseInt(artifactCount, 10)) {
               console.log('lengths out of sync ', this.active_space_artifacts.length, artifactCount)
-            }
-            if (`${new Date(this.active_space.updatedAt).getTime()}` !== timestamp) {
+            } else if (`${new Date(this.active_space.updatedAt).getTime()}` !== timestamp) {
               console.log('timestamps out of sync ', new Date(this.active_space.updatedAt).getTime(), timestamp)
+            } else {
+              console.log('in sync: ', msg.object.artifactHash)
             }
           }
 
