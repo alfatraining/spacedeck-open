@@ -1173,7 +1173,15 @@ var SpacedeckSections = {
           a.editor_name = this.guest_nickname;
         }
 
-        save_artifact(a, function() {
+        save_artifact(a, function(savedArtifact) {
+          if (id.indexOf('client_') > -1) {
+            const index = this.active_space_artifacts.findIndex(a => a._id === id)
+            console.log({artifactIds:this.active_space_artifacts.map(({_id}) =>_id),index, oldId: id, newId:savedArtifact._id});
+            this.active_space_artifacts[index] = {
+              ...this.active_space_artifacts[index],
+              _id: savedArtifact._id
+            }
+          }
           delete window.artifact_save_queue[id];
         }.bind(this), function(req) {
           if (req && req.status == 404) {
