@@ -27,13 +27,15 @@ module.exports = {
     return this.connection;
   },
   sendMessage: function (action, model, attributes, channelId) {
+    const spaceId = model === "Artifact" ? attributes.space_id : attributes._id;
+
     const data = JSON.stringify({
-      space_id: model === "Artifact" ? attributes.space_id : attributes._id,
+      space_id: spaceId,
       channel_id: channelId,
       action: action,
       model: model,
       object: attributes,
     });
-    this.connection.publish(`_spacedeck.updates.${attributes.space_id}`, data);
+    this.connection.publish(`_spacedeck.updates.${spaceId}`, data);
   },
 };
