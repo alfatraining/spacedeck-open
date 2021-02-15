@@ -201,6 +201,18 @@ SpacedeckWebsockets = {
 
         if (msg.action == "update" || msg.action == "create" || msg.action == "delete"){
           this.handle_live_updates(msg);
+
+          if (msg.object.artifactHash) {
+            const [artifactCount, timestamp] = msg.object.artifactHash.split('-')
+
+            if (this.active_space_artifacts.length !== parseInt(artifactCount, 10)) {
+              console.log('lengths out of sync ', this.active_space_artifacts.length, artifactCount)
+            }
+            if (`${new Date(this.active_space.updatedAt).getTime()}` !== timestamp) {
+              console.log('timestamps out of sync ', new Date(this.active_space.updatedAt).getTime(), timestamp)
+            }
+          }
+
         }
 
         if (msg.action == "init") {
