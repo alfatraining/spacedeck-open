@@ -19,6 +19,9 @@ import VueI18n from "vue-i18n";
 import en from "./locales/en";
 import de from "./locales/de";
 import { getBrowserLocale } from "./utils";
+import unionBy from "lodash/unionBy";
+
+window.unionBy = unionBy;
 
 Vue.use(VueI18n);
 const locales = {
