@@ -208,13 +208,16 @@ SpacedeckWebsockets = {
             if (Math.abs(this.active_space_artifacts.length - parseInt(artifactCount, 10)) > 2) {
               console.log('lengths out of sync ', this.active_space_artifacts.length, artifactCount)
               const spaceId = msg.object.space_id
-              load_artifacts(spaceId, (artifacts) => {
-                console.log('replacing artifacts ', artifacts)
-                console.log('current arts ' , this.active_space_artifacts)
-                for (var i=0; i<artifacts.length; i++) {
-                  this.update_board_artifact_viewmodel(artifacts[i]);
+              load_artifacts(spaceId, (serverArtifacts) => {
+                for (var i=0; i < serverArtifacts.length; i++) {
+                  this.update_board_artifact_viewmodel(serverArtifacts[i]);
                 }
-                this.active_space_artifacts = artifacts
+                for (const [id, artifact] of Object.entries(window.artifact_save_queue)) {
+                  const index = lodash.findIndex(serverArtifacts, (artifact) => artifact._id === id)
+                  serverArtifacts[index] = artifact
+                }
+
+                this.active_space_artifacts = serverArtifacts
               })
             }
           }
