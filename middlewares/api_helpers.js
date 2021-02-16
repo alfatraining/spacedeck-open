@@ -31,5 +31,12 @@ module.exports = (req, res, next) => {
     this.sendStatus(204);
   };
 
+  res['distributeBulkDelete'] = function(model, object) {
+    if (!object) return;
+    object.artifactHash = `${req.artifactCount}-${new Date(req.space.updatedAt).getTime()}`
+    nats.sendMessage("bulkDelete", model, object, req.channelId);
+    this.sendStatus(204);
+  };
+
   next();
 }

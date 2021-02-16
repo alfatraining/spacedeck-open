@@ -179,6 +179,10 @@ function delete_artifact(a, on_success, on_error) {
   load_resource("delete", "/spaces/"+a.space_id+"/artifacts/"+a._id);
 }
 
+function bulk_delete_artifacts(spaceId, artifactIds, on_success, on_error) {
+  load_resource("post", "/spaces/"+spaceId+"/artifacts/batch-delete", { artifactIds }, on_success, on_error);
+}
+
 function duplicate_space(s, to_space_id, on_success, on_error) {
   var path = "/spaces/"+s._id+"/duplicate";
   if(to_space_id) {

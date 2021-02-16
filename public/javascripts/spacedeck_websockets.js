@@ -68,6 +68,13 @@ SpacedeckWebsockets = {
             } else console.error("object without _id");
           }
         }
+
+        if (msg.action == "bulkDelete" && msg.object && this.active_space) {
+          var artifactIds = msg.object.artifactIds;
+          if (artifactIds.length){
+            this.active_space_artifacts = this.active_space_artifacts.filter((artifact) => { return artifactIds.indexOf(artifact._id) === -1})
+          }
+        } 
       }
     },
 
@@ -199,7 +206,7 @@ SpacedeckWebsockets = {
           this.handle_presenter_media_update(msg);
         }
 
-        if (msg.action == "update" || msg.action == "create" || msg.action == "delete"){
+        if (msg.action == "update" || msg.action == "create" || msg.action == "delete" || msg.action == "bulkDelete"){
           this.handle_live_updates(msg);
 
           if (msg.object.artifactHash && msg.action !== "delete") {
