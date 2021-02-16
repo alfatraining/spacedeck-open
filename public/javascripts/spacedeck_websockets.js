@@ -214,7 +214,8 @@ SpacedeckWebsockets = {
                 for (var i=0; i<artifacts.length; i++) {
                   this.update_board_artifact_viewmodel(artifacts[i]);
                 }
-                this.active_space_artifacts = lodash.unionBy(this.active_space_artifacts, artifacts, (artifact) => artifact._id)
+                const sortedArtifacts = lodash.orderBy(this.active_space_artifacts.concat(artifacts), [(artifact) => artifact.updated_at], ['desc'])
+                this.active_space_artifacts = lodash.uniqBy(sortedArtifacts, (artifact) => artifact._id)
               })
             }
           }

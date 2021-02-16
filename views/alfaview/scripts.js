@@ -1,3 +1,4 @@
-import unionBy from "lodash/unionBy";
+import uniqBy from "lodash/uniqBy";
+import orderBy from "lodash/orderBy";
 
-window.lodash = { unionBy };
+window.lodash = { uniqBy, orderBy };
