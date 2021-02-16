@@ -204,7 +204,7 @@ SpacedeckWebsockets = {
 
           if (msg.object.artifactHash) {
             const [artifactCount, timestamp] = msg.object.artifactHash.split('-')
-
+            // refetch artifacts if gap greater than 1
             if (Math.abs(this.active_space_artifacts.length - parseInt(artifactCount, 10)) > 1) {
               console.log('lengths out of sync ', this.active_space_artifacts.length, artifactCount)
               const spaceId = msg.object.space_id
@@ -216,13 +216,8 @@ SpacedeckWebsockets = {
                 }
                 this.active_space_artifacts = artifacts
               })
-            } else if (`${new Date(this.active_space.updatedAt).getTime()}` !== timestamp) {
-              console.log('timestamps out of sync ', new Date(this.active_space.updatedAt).getTime(), timestamp)
-            } else {
-              console.log('in sync: ', msg.object.artifactHash)
             }
           }
-
         }
 
         if (msg.action == "init") {
