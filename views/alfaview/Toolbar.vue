@@ -97,7 +97,7 @@ export default {
       this.$root.open_dialog(dialog);
     },
     startDrawingScribble() {
-      this.$root.active_style.stroke = 4;
+      this.$root.active_style.stroke = this.$root.active_style.stroke || 4;
       this.$root.start_drawing_scribble();
     },
     startDrawingArrow() {
@@ -124,8 +124,13 @@ export default {
       return downloadSpace(spaceWidth, spaceHeight);
     },
     clearSpace() {
-      this.$root.select_all_artifacts();
-      this.$root.delete_selected_artifacts(null, false);
+      const artifactIds = this.$root.active_space_artifacts.map((a) => a._id);
+      const spaceId = this.$root.active_space._id;
+
+      window.bulk_delete_artifacts(spaceId, artifactIds, () => {
+        this.$root.active_space_artifacts = [];
+        this.$root.deselect(true);
+      });
     },
   },
 };

@@ -73,6 +73,7 @@ SpacedeckWebsockets = {
           var artifactIds = msg.object.artifactIds;
           if (artifactIds.length){
             this.active_space_artifacts = this.active_space_artifacts.filter((artifact) => { return artifactIds.indexOf(artifact._id) === -1})
+            this.deselect(true)
           }
         } 
       }
