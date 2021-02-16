@@ -202,7 +202,7 @@ SpacedeckWebsockets = {
         if (msg.action == "update" || msg.action == "create" || msg.action == "delete"){
           this.handle_live_updates(msg);
 
-          if (msg.object.artifactHash) {
+          if (msg.object.artifactHash && msg.action !== "delete") {
             const [artifactCount, timestamp] = msg.object.artifactHash.split('-')
             // refetch artifacts if gap greater than 1
             if (Math.abs(this.active_space_artifacts.length - parseInt(artifactCount, 10)) > 1) {
