@@ -204,22 +204,16 @@ SpacedeckWebsockets = {
 
           if (msg.object.artifactHash && msg.action !== "delete") {
             const [artifactCount, timestamp] = msg.object.artifactHash.split('-')
-            // refetch artifacts if gap greater than 2
-            if (Math.abs(this.active_space_artifacts.length - parseInt(artifactCount, 10)) > 2) {
-              console.log('lengths out of sync ', this.active_space_artifacts.length, artifactCount)
+            // refetch artifacts if gap greater than 3
+            if (Math.abs(this.active_space_artifacts.length - parseInt(artifactCount, 10)) > 3) {
+              console.log('artifacts out of sync ', this.active_space_artifacts.length, artifactCount)
               const spaceId = msg.object.space_id
               load_artifacts(spaceId, (serverArtifacts) => {
-                serverArtifacts.forEach((a, i) => {
-                  this.update_board_artifact_viewmodel(serverArtifacts[i]);
-                }) 
-                
-                Object.keys(window.artifact_save_queue).forEach((id) => {
-                  const index = lodash.findIndex(serverArtifacts, (artifact) => artifact._id === id)
-                  index && (serverArtifacts[index] = window.artifact_save_queue[id])
-                })
-
-                this.active_space_artifacts = serverArtifacts
-              })
+                serverArtifacts.forEach((a, i) =>
+                  this.update_board_artifact_viewmodel(serverArtifacts[i])
+                );
+                this.active_space_artifacts = serverArtifacts;
+              });
             }
           }
         }
