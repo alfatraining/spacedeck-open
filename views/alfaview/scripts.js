@@ -1,4 +1,3 @@
-import uniqBy from "lodash/uniqBy";
-import orderBy from "lodash/orderBy";
+import findIndex from "lodash/findIndex";
 
-window.lodash = { uniqBy, orderBy };
+window.lodash = { findIndex };

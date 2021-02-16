@@ -209,13 +209,14 @@ SpacedeckWebsockets = {
               console.log('lengths out of sync ', this.active_space_artifacts.length, artifactCount)
               const spaceId = msg.object.space_id
               load_artifacts(spaceId, (serverArtifacts) => {
-                for (var i=0; i < serverArtifacts.length; i++) {
+                serverArtifacts.forEach((a, i) => {
                   this.update_board_artifact_viewmodel(serverArtifacts[i]);
-                }
-                for (const [id, artifact] of Object.entries(window.artifact_save_queue)) {
+                }) 
+                
+                Object.keys(window.artifact_save_queue).forEach((id) => {
                   const index = lodash.findIndex(serverArtifacts, (artifact) => artifact._id === id)
-                  serverArtifacts[index] = artifact
-                }
+                  index && (serverArtifacts[index] = window.artifact_save_queue[id])
+                })
 
                 this.active_space_artifacts = serverArtifacts
               })
