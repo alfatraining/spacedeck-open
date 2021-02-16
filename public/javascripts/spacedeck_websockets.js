@@ -205,7 +205,7 @@ SpacedeckWebsockets = {
           if (msg.object.artifactHash) {
             const [artifactCount, timestamp] = msg.object.artifactHash.split('-')
 
-            if (this.active_space_artifacts.length !== parseInt(artifactCount, 10)) {
+            if (Math.abs(this.active_space_artifacts.length - parseInt(artifactCount, 10)) > 1) {
               console.log('lengths out of sync ', this.active_space_artifacts.length, artifactCount)
               const spaceId = msg.object.space_id
               load_artifacts(spaceId, (artifacts) => {
