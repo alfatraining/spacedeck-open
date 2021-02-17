@@ -1,5 +1,5 @@
 lint_js:
-  image: node:12.18-alpine3.12
+  image: git-registry.alfa.sx:4567/alfatraining/docker/node:12.18-alpine3.12
   stage: build
   except:
     - deployment/production
