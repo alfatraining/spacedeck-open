@@ -2,6 +2,21 @@ const gulp = require("gulp");
 const sass = require("gulp-sass");
 const concat = require("gulp-concat");
 const autoprefixer = require("gulp-autoprefixer");
+const uglify = require("gulp-uglify");
+const babel = require("gulp-babel");
+const dirs = {
+  src: "public/javascripts/*.js",
+  dest: "public/build/js/",
+};
+
+gulp.task("build-sd-js", () =>
+  gulp
+    .src(dirs.src)
+    .pipe(babel({ presets: [["@babel/preset-env", { modules: false }]] }))
+    .pipe(uglify())
+    .pipe(concat("spacedeck.js"))
+    .pipe(gulp.dest(dirs.dest))
+);
 
 gulp.task("styles", (done) => {
   gulp
@@ -47,4 +62,11 @@ gulp.task("watch", () => {
       .pipe(concat("style.css"));
     done();
   });
+  gulp.watch(dirs.src, () =>
+    gulp
+      .src(dirs.src)
+      .pipe(babel({ presets: [["@babel/preset-env", { modules: false }]] }))
+      .pipe(concat("spacedeck.js"))
+      .pipe(gulp.dest(dirs.dest))
+  );
 });

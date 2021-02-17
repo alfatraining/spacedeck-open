@@ -32,6 +32,16 @@ process.env['OPENSSL_CONF'] = '/dev/null';
 
 console.log("Booting Spacedeck Open… (environment: " + app.get('env') + ")");
 
+var useMiddleware = function(middleware, excludes = []) {
+  return function(req, res, next) {
+      if (excludes.indexOf(req.baseUrl.split('/').pop()) > -1) {
+        return next();
+      } else {
+        return middleware(req, res, next);
+      }
+  };
+};
+
 if (!isDevelopment) {
   app.use(
     morgan('combined', {
@@ -80,7 +90,7 @@ app.use(require("./middlewares/session"));
 app.use(require("./middlewares/i18n"));
 app.use("/api", require("./middlewares/api_helpers"));
 app.use('/api/spaces/:id', require("./middlewares/space_helpers"));
-app.use('/api/spaces/:id/artifacts/:artifact_id', require("./middlewares/artifact_helpers"));
+app.use('/api/spaces/:id/artifacts/:artifact_id', useMiddleware(require("./middlewares/artifact_helpers"), ['batch-delete']));
 
 app.use('/api/users', require('./routes/api/users'));
 app.use('/api/memberships', require('./routes/api/memberships'));

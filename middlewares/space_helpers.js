@@ -7,13 +7,14 @@ var config = require('config');
 module.exports = (req, res, next) => {
   let spaceId = req.params.id;
 
-  let finalizeReq = (space, role) => {
+  let finalizeReq = async (space, role) => {
     if (role === "none") {
       res.status(403).json({
         "error": "access denied"
       });
     } else {
       req['space'] = space;
+      req['artifactCount'] = await db.Artifact.count({where: {space_id: space._id}})
       req['spaceRole'] = role;
       res.header("x-spacedeck-space-role", req['spaceRole']);
       next();

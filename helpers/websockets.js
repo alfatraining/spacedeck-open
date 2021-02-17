@@ -10,6 +10,7 @@ const WebSocketServer = require("ws").Server;
 const nats = require("./nats");
 const _ = require("underscore");
 const crypto = require("crypto");
+const get = require("lodash/get");
 
 const onMessageListenerArtifacts = (rawMessage, websockets) => {
   const msg = JSON.parse(rawMessage);
@@ -46,6 +47,8 @@ module.exports = {
     if (!this.current_websockets) {
       this.nats = nats.getConnection();
       this.current_websockets = [];
+      this.natsUpdatesMap = {};
+      this.natsCursorsMap = {};
     }
 
     const wss = new WebSocketServer({ server: server, path: "/socket" });
@@ -60,22 +63,32 @@ module.exports = {
           const msg = JSON.parse(msgString);
           const spaceId = msg.space_id;
 
-          serverScope.nats.subscribe(
-            `_spacedeck.cursors.${spaceId}`,
-            (rawMessage) =>
-              onMessageListenerCursors(
-                rawMessage,
-                serverScope.current_websockets
-              )
-          );
-          serverScope.nats.subscribe(
-            `_spacedeck.updates.${spaceId}`,
-            (rawMessage) =>
-              onMessageListenerArtifacts(
-                rawMessage,
-                serverScope.current_websockets
-              )
-          );
+          // Only subscribe to nats event if the serverScope has not already subscribed to it
+          if (!get(serverScope, `natsUpdatesMap[${spaceId}]`)) {
+            serverScope.natsUpdatesMap[
+              spaceId
+            ] = serverScope.nats.subscribe(
+              `_spacedeck.updates.${spaceId}`,
+              (rawMessage) =>
+                onMessageListenerArtifacts(
+                  rawMessage,
+                  serverScope.current_websockets
+                )
+            );
+          }
+
+          // if (!get(serverScope, `natsCursorsMap[${spaceId}]`)) {
+          //   serverScope.natsCursorsMap[
+          //     spaceId
+          //   ] = serverScope.nats.subscribe(
+          //     `_spacedeck.cursors.${spaceId}`,
+          //     (rawMessage) =>
+          //       onMessageListenerCursors(
+          //         rawMessage,
+          //         serverScope.current_websockets
+          //       )
+          //   );
+          // }
 
           if (msg.action == "auth") {
             const token = msg.auth_token;

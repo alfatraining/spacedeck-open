@@ -97,8 +97,10 @@ export default {
       this.$root.open_dialog(dialog);
     },
     startDrawingScribble() {
-      this.$root.active_style.stroke = 4;
+      this.$root.selection_metrics.contains_vectors = true;
+      this.$root.active_style.stroke = this.$root.active_style.stroke || 4;
       this.$root.start_drawing_scribble();
+      this.$root.show_toolbar_props(true);
     },
     startDrawingArrow() {
       this.$root.active_style.stroke = 14;

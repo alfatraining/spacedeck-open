@@ -21,7 +21,6 @@ var URL = require('url').URL;
 
 var express = require('express');
 var router = express.Router();
-var glob = require('glob');
 
 router.get('/current', function(req, res, next) {
   if (req.user) {

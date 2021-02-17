@@ -1173,7 +1173,14 @@ var SpacedeckSections = {
           a.editor_name = this.guest_nickname;
         }
 
-        save_artifact(a, function() {
+        save_artifact(a, function(savedArtifact) {
+          if (id.indexOf('client_') > -1) {
+            const index = this.active_space_artifacts.findIndex(a => a._id === id)
+            this.active_space_artifacts[index] = {
+              ...this.active_space_artifacts[index],
+              _id: savedArtifact._id
+            }
+          }
           delete window.artifact_save_queue[id];
         }.bind(this), function(req) {
           if (req && req.status == 404) {
@@ -1879,7 +1886,15 @@ var SpacedeckSections = {
       var backup_ids = [];
 
       if (ids.length>1 && !skip_deselect) {
-        if (!confirm("Delete "+ids.length+" items?")) return;
+        if (!confirm(this.$t('board.deleteConfirmation', {count: ids.length}))) return;
+
+        bulk_delete_artifacts(this.active_space._id, ids, () => {
+          this.active_space_artifacts = this.active_space_artifacts.filter((artifact) => { return ids.indexOf(artifact._id) === -1})
+          this.end_transaction()
+          this.deselect(true)
+        })
+
+        return
       }
 
       for (var i=0; i<ids.length; i++) {
@@ -2523,7 +2538,8 @@ var SpacedeckSections = {
       save_space(this.active_space);
     },
 
-    show_toolbar_props: function() {
+    show_toolbar_props: function(force = false) {
+      if (force) this.toolbar_props_in = true;
       if (this.selection_metrics.count==0) return;
       arts = this.selected_artifacts();
       for (var i=0;i<arts.length; i++) {

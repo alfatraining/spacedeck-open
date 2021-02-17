@@ -1,19 +1,38 @@
-<!doctype html>
+<!DOCTYPE html>
 <html class="no-js">
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <title>Loading...</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="description" content="" />
+    <meta
+      name="viewport"
+      content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
 
     <link href="/images/favicon.png" rel="icon" type="image/x-icon" />
-    <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet' type='text/css'>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type='text/css'>
-    <link href="/stylesheets/style.css" rel="stylesheet" >
+    <link
+      href="https://fonts.googleapis.com/css?family=Inter"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link href="/stylesheets/style.css" rel="stylesheet" />
 
-    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+    <script>
+      if (typeof module === "object") {
+        window.module = module;
+        module = undefined;
+      }
+    </script>
 
     <script>
       //window.browser_lang = '< %= locale %>';
@@ -21,65 +40,25 @@
         webHost: location.host,
         webEndpoint: location.origin,
         apiEndpoint: location.origin,
-        websocketsEndpoint: location.origin.replace("https:","wss:").replace("http:","ws:")
+        websocketsEndpoint: location.origin
+          .replace("https:", "wss:")
+          .replace("http:", "ws:"),
       };
     </script>
 
-    <script src="/javascripts/jquery-2.1.4.min.js"></script>
-    <script src="/javascripts/i18next-1.11.2.js"></script>
-    <script src="/javascripts/clipboard.js"></script>
-
-    <script src="/javascripts/lodash.compat.js"></script>
-    <script src="/javascripts/fastclick.js"></script>
-    <script src="/javascripts/vue.js"></script>
-    <script src="/javascripts/moment.js"></script>
-    <script src="/javascripts/medium.patched.js"></script>
-    <script src="/javascripts/route-recognizer.js"></script>
-
-    <script src="/javascripts/backend.js"></script>
-    <script src="/javascripts/link_parser.js"></script>
-    <script src="/javascripts/vector-render.js"></script>
-    <script src="/javascripts/mousetrap.js"></script>
-    <script src="/javascripts/smoke.js"></script>
-    <script src="/javascripts/helper.js"></script>
-    <script src="/javascripts/packer.growing.js"></script>
-
-    <script src="/javascripts/spacedeck_routes.js"></script>
-    <script src="/javascripts/spacedeck_formatting.js"></script>
-    <script src="/javascripts/spacedeck_sections.js"></script>
-    <script src="/javascripts/spacedeck_spaces.js"></script>
-    <script src="/javascripts/spacedeck_teams.js"></script>
-    <script src="/javascripts/spacedeck_board_artifacts.js"></script>
-    <script src="/javascripts/spacedeck_users.js"></script>
-    <script src="/javascripts/spacedeck_account.js"></script>
-    <script src="/javascripts/spacedeck_modals.js"></script>
-    <script src="/javascripts/spacedeck_avatars.js"></script>
-    <script src="/javascripts/spacedeck_websockets.js"></script>
-
-    <script src="/javascripts/spacedeck_whiteboard.js"></script>
-    <script src="/javascripts/spacedeck_directives.js"></script>
-    <script src="/javascripts/spacedeck_vue.js"></script>
-
-    <script src="/build/js/alfaview-wb.js"></script>
-
-    <script>if (window.module) module = window.module;</script>
+    <script>
+      if (window.module) module = window.module;
+    </script>
   </head>
 
-  <body id="main" v-bind:class="{'present-mode':present_mode,'modal-open':active_modal}" v-on:click="handle_body_click($event)">
-    <Space></Space>
+  <body
+    id="main"
+    v-bind:class="{'present-mode':present_mode,'modal-open':active_modal}"
+    v-on:click="handle_body_click($event)"
+  >
+    <space></space>
+    <script src="/build/js/scripts.js"></script>
+    <script src="/build/js/spacedeck.js"></script>
+    <script src="/build/js/alfaview-wb.js"></script>
   </body>
-
-  <script type="text/javascript">
-    window.locales = {};
-    window.locales.en = {};
-    window.locales.de = {};
-    window.locales.fr = {};
-    window.locales.oc = {};
-    window.locales.es = {};
-    window.locales.en.translation = <%- include("./../locales/en.js") %>;
-    window.locales.de.translation = <%- include("./../locales/de.js") %>;
-    window.locales.fr.translation = <%- include("./../locales/fr.js") %>;
-    window.locales.oc.translation = <%- include("./../locales/oc.js") %>;
-    window.locales.es.translation = <%- include("./../locales/es.js") %>;
-  </script>
 </html>

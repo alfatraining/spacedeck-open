@@ -2,10 +2,13 @@ const webpack = require("webpack");
 const path = require("path");
 
 module.exports = {
-  entry: "./views/alfaview/main.js",
+  entry: {
+    "alfaview-wb": "./views/alfaview/main.js",
+    scripts: "./views/alfaview/scripts.js",
+  },
   output: {
     path: "./public/",
-    filename: "build/js/alfaview-wb.js",
+    filename: "build/js/[name].js",
   },
   resolve: {
     alias: {

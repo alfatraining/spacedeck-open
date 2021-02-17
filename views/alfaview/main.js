@@ -47,5 +47,6 @@ Vue.component("ObjectOptions", ObjectOptions);
 Vue.component("MinimapZoom", MinimapZoom);
 Vue.component("BoardExpiration", BoardExpiration);
 Vue.component("BoardMeta", BoardMeta);
-Vue.component("Space", Space);
+// eslint-disable-next-line
+Vue.component("space", Space);
 Vue.component("BoardError", BoardError);

@@ -15,7 +15,7 @@ function load_resource(method, path, data, on_success, on_error, on_progress) {
   req.onload = function(evt,b,c) {
     if (req.status>=200 && req.status<=299) {
       var parsed = null;
-      
+
       try {
         var parsed = JSON.parse(req.response);
       } catch(e) {};
@@ -147,7 +147,7 @@ function load_artifacts(id, on_success, on_error) {
 }
 
 function save_artifact(a, on_success, on_error) {
-  if (a._id) {
+  if (a._id && a._id.indexOf('client_') === -1) {
     load_resource("put", "/spaces/"+a.space_id+"/artifacts/"+a._id,a,on_success,on_error);
   } else {
     load_resource("post", "/spaces/"+a.space_id+"/artifacts",a,on_success,on_error);
@@ -177,6 +177,10 @@ function delete_space(s, on_success, on_error) {
 
 function delete_artifact(a, on_success, on_error) {
   load_resource("delete", "/spaces/"+a.space_id+"/artifacts/"+a._id);
+}
+
+function bulk_delete_artifacts(spaceId, artifactIds, on_success, on_error) {
+  load_resource("post", "/spaces/"+spaceId+"/artifacts/batch-delete", { artifactIds }, on_success, on_error);
 }
 
 function duplicate_space(s, to_space_id, on_success, on_error) {

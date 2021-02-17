@@ -6,7 +6,7 @@
 
 function setup_whiteboard_directives() {
   var mode_touch = false;
-  
+
   if ('ontouchstart' in window) {
     mode_touch = true;
     var edown = "touchstart";
@@ -38,7 +38,7 @@ function setup_whiteboard_directives() {
       $(el).bind("mousedown", this.handle_mouse_down_space.bind(this));
       $(el).bind("mousemove", this.handle_mouse_move.bind(this));
       $(el).bind("mouseup", this.handle_mouse_up_space.bind(this));
-      
+
       $(el).bind("wheel", this.handle_wheel_space.bind(this));
 
       $(document.body).bind("mouseleave", this.handle_mouse_leave.bind(this));
@@ -99,7 +99,7 @@ function setup_whiteboard_directives() {
         this.handle_mouse_down_space(evt);
         return;
       }
-      
+
       if ($scope.active_tool == "note") {
         this.handle_mouse_down_space(evt, true);
         return;
@@ -154,7 +154,7 @@ function setup_whiteboard_directives() {
 
       var a = $scope.find_artifact_by_id(evt.currentTarget.id.replace("artifact-",""));
       if (!a) return;
-      
+
       if (a.payload_uri) {
         $scope.download_selected_artifacts();
       }
@@ -200,10 +200,10 @@ function setup_whiteboard_directives() {
       var $scope = this.vm.$root;
 
       if (!evt.ctrlKey && !evt.shiftKey) return;
-      
+
       evt.preventDefault();
       evt.stopPropagation();
-      
+
       var amount = 1;
       var dy = evt.originalEvent.deltaY;
       if (dy>0) {
@@ -222,7 +222,7 @@ function setup_whiteboard_directives() {
       if (!force && evt.which != 2) {
         if (evt.target != evt.currentTarget && !_.include(["wrapper"],evt.target.className)) return;
       }
-      
+
       var $scope = this.vm.$root;
 
       $scope.opened_dialog="none";
@@ -234,7 +234,7 @@ function setup_whiteboard_directives() {
       if ((mode_touch && $scope.active_tool=="pointer") || evt.which == 2 || evt.buttons == 4) {
         $scope.active_tool = "pan";
       }
-      
+
       if ($scope.active_tool=="note") {
         this.deselect();
         this.mouse_state = "transform";
@@ -305,7 +305,7 @@ function setup_whiteboard_directives() {
         this.old_panx = el.scrollLeft;
         this.old_pany = el.scrollTop;
       }
-      
+
       var cursor = this.cursor_point_to_space(evt);
       $scope.mouse_ox = cursor.x;
       $scope.mouse_oy = cursor.y;
@@ -314,7 +314,7 @@ function setup_whiteboard_directives() {
 
     deselect: function() {
       var $scope = this.vm.$root;
-      
+
       $scope.deselect();
     },
 
@@ -342,7 +342,7 @@ function setup_whiteboard_directives() {
 
     rects_intersecting: function(r1,r2) {
       if (!r1 || !r2) return false;
-      
+
       if ( (r1.x+r1.w < r2.x)
         || (r1.x > r2.x+r2.w)
         || (r1.y+r1.h < r2.y)
@@ -352,7 +352,7 @@ function setup_whiteboard_directives() {
 
     artifacts_in_rect: function(rect) {
       if (!rect) return [];
-      
+
       var $scope = this.vm.$root;
 
       return _.filter($scope.active_space_artifacts, function(a) {
@@ -579,6 +579,7 @@ function setup_whiteboard_directives() {
       $scope.deselect();
 
       var a = {
+        _id: `client_${Date.now()}`,
         space_id: $scope.active_space._id,
         mime: "x-spacedeck/vector",
         description: "",
@@ -593,16 +594,16 @@ function setup_whiteboard_directives() {
         shape: "scribble"
       };
 
-      $scope.save_artifact(a, function(saved_a) {
-        $scope.update_board_artifact_viewmodel(saved_a);
-        $scope.active_space_artifacts.push(saved_a);
+      $scope.update_board_artifact_viewmodel(a);
+      $scope.active_space_artifacts.push(a);
 
-        this.select(evt,saved_a);
-        //$scope.tool_artifact = a;
-        $scope.transform_ox = 0;
-        $scope.transform_oy = 0;
-        $scope.begin_transaction();
-      }.bind(this));
+      this.select(evt,a);
+      //$scope.tool_artifact = a;
+      $scope.transform_ox = 0;
+      $scope.transform_oy = 0;
+      // $scope.begin_transaction();
+      // $scope.save_artifact(a, function(saved_a) {
+      // }.bind(this));
     },
 
     start_drawing_arrow: function(evt) {
@@ -687,7 +688,7 @@ function setup_whiteboard_directives() {
       var $scope = this.vm.$root;
 
       evt.preventDefault();
-      
+
       if (this.mouse_state == "lasso") {
         var lasso_rect = this.abs_rect(this.lasso);
 
@@ -695,7 +696,7 @@ function setup_whiteboard_directives() {
           var arts = this.artifacts_in_rect(lasso_rect);
           this.multi_select(arts);
         } else {
-          
+
           if (this._no_artifact_toolbar_this_round) {
             this._no_artifact_toolbar_this_round = false;
           } else {
@@ -707,7 +708,7 @@ function setup_whiteboard_directives() {
       }
       else if (_.include(["transform","move","vector_transform","scribble"],this.mouse_state)) {
         var ars = $scope.selected_artifacts();
-        
+
         for (var i=0; i<ars.length; i++) {
 
           if (_.include(["text","placeholder"],$scope.artifact_major_type(ars[i]))) {
@@ -733,7 +734,12 @@ function setup_whiteboard_directives() {
         this.mouse_state = "idle";
         $scope.mouse_state = this.mouse_state;
         $scope.end_transaction();
-        $scope.deselect();
+
+        // do not deselect if scribbling, allowing the right toolbar to stay open
+        if ($scope.active_tool !== "scribble") {
+          $scope.deselect();
+        } 
+        
         return;
       }
 
@@ -792,9 +798,9 @@ function setup_whiteboard_directives() {
           id: $scope.user._id||name
         };
 
-        $scope.websocket_send(cursor_msg);
+        // $scope.websocket_send(cursor_msg);
       }
-      
+
       // side effects ftw!
       $scope.snap_ruler_x = -1000;
       $scope.snap_ruler_y = -1000;
@@ -818,7 +824,7 @@ function setup_whiteboard_directives() {
 
       if (this.mouse_state == "move") {
         $scope.hide_toolbar_props();
-        
+
         var snap_dx = 0;
         var snap_dy = 0;
 
@@ -878,7 +884,7 @@ function setup_whiteboard_directives() {
         }
 
         $scope.hide_toolbar_props();
-        
+
         var ew = (edges.x2-edges.x1);
         var eh = (edges.y2-edges.y1);
 
@@ -924,7 +930,7 @@ function setup_whiteboard_directives() {
 
       } else if (this.mouse_state == "vector_transform") {
         $scope.hide_toolbar_props();
-        
+
         var _this = this;
         $scope.update_selected_artifacts(function(a) {
           var old_a = $scope.find_artifact_before_transaction(a);

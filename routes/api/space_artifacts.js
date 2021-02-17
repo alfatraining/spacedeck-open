@@ -19,7 +19,6 @@ var request = require('request');
 var url = require("url");
 var path = require("path");
 var crypto = require('crypto');
-var glob = require('glob');
 var gm = require('gm');
 
 var express = require('express');
@@ -81,6 +80,15 @@ router.get('/', (req, res) => {
     });
   });
 });
+
+router.post('/batch-delete', (req, res, next) => {
+  const { artifactIds } = req.body
+  db.Artifact.destroy({ where: { "_id": artifactIds } }).then((count) => {
+    db.Space.update({ updated_at: new Date() }, { where: { _id: req.space._id} });
+    const deletedArtifacts = { artifactIds, space_id: req.space._id}
+    res.distributeBulkDelete("Artifact", deletedArtifacts);
+  });
+})
 
 router.post('/', function(req, res, next) {
   var attrs = req.body;

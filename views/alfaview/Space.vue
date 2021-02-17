@@ -137,8 +137,8 @@
             ? 'url(' + activeSpace.background_uri + ')'
             : '',
           'background-color': '' + activeSpace.background_color,
-          'margin-left': bounds_margin_horiz + 'px',
-          'margin-top': bounds_margin_vert + 'px',
+          'margin-left': boundsMarginHoriz + 'px',
+          'margin-top': boundsMarginVert + 'px',
         }"
       >
         <div id="lasso"></div>

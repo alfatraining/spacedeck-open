@@ -10,7 +10,6 @@ var request = require('request');
 var url = require("url");
 var path = require("path");
 var crypto = require('crypto');
-var glob = require('glob');
 var gm = require('gm');
 
 var express = require('express');

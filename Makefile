@@ -8,11 +8,11 @@ dev-start:
 dev-stop:
 	docker-compose down
 
-watch-css:
-	docker exec -it spacedeck-dev sh -c "cd /app && npm run dev:frontend:css"
+watch-gulp:
+	docker exec -it spacedeck-dev sh -c "cd /app && npm run dev:frontend:gulp"
 
-watch-assets:
+watch-webpack:
 	docker exec -it spacedeck-dev sh -c "cd /app && npm run dev:frontend"
 
 watch:
-	make -j 2 watch-assets watch-css
+	make -j watch-gulp watch-webpack
