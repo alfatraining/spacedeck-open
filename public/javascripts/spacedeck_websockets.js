@@ -210,20 +210,20 @@ SpacedeckWebsockets = {
         if (msg.action == "update" || msg.action == "create" || msg.action == "delete" || msg.action == "bulkDelete"){
           this.handle_live_updates(msg);
 
-          if (msg.object.artifactHash && msg.action !== "delete") {
-            const [artifactCount, timestamp] = msg.object.artifactHash.split('-')
-            // refetch artifacts if gap greater than 3
-            if (Math.abs(this.active_space_artifacts.length - parseInt(artifactCount, 10)) > 3) {
-              console.log('artifacts out of sync ', this.active_space_artifacts.length, artifactCount)
-              const spaceId = msg.object.space_id
-              load_artifacts(spaceId, (serverArtifacts) => {
-                serverArtifacts.forEach((a, i) =>
-                  this.update_board_artifact_viewmodel(serverArtifacts[i])
-                );
-                this.active_space_artifacts = serverArtifacts;
-              });
-            }
-          }
+          // if (msg.object.artifactHash && msg.action !== "delete") {
+          //   const [artifactCount, timestamp] = msg.object.artifactHash.split('-')
+          //   // refetch artifacts if gap greater than 3
+          //   if (Math.abs(this.active_space_artifacts.length - parseInt(artifactCount, 10)) > 3) {
+          //     console.log('artifacts out of sync ', this.active_space_artifacts.length, artifactCount)
+          //     const spaceId = msg.object.space_id
+          //     load_artifacts(spaceId, (serverArtifacts) => {
+          //       serverArtifacts.forEach((a, i) =>
+          //         this.update_board_artifact_viewmodel(serverArtifacts[i])
+          //       );
+          //       this.active_space_artifacts = serverArtifacts;
+          //     });
+          //   }
+          // }
         }
 
         if (msg.action == "init") {
