@@ -124,13 +124,8 @@ export default {
       return downloadSpace(spaceWidth, spaceHeight);
     },
     clearSpace() {
-      const artifactIds = this.$root.active_space_artifacts.map((a) => a._id);
-      const spaceId = this.$root.active_space._id;
-
-      window.bulk_delete_artifacts(spaceId, artifactIds, () => {
-        this.$root.active_space_artifacts = [];
-        this.$root.deselect(true);
-      });
+      this.$root.select_all_artifacts();
+      this.$root.delete_selected_artifacts(null, false);
     },
   },
 };

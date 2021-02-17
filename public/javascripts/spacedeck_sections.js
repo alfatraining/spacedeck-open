@@ -1887,6 +1887,14 @@ var SpacedeckSections = {
 
       if (ids.length>1 && !skip_deselect) {
         if (!confirm("Delete "+ids.length+" items?")) return;
+
+        bulk_delete_artifacts(this.active_space._id, ids, () => {
+          this.active_space_artifacts = this.active_space_artifacts.filter((artifact) => { return ids.indexOf(artifact._id) === -1})
+          this.end_transaction()
+          this.deselect(true)
+        })
+
+        return
       }
 
       for (var i=0; i<ids.length; i++) {
