@@ -1886,7 +1886,7 @@ var SpacedeckSections = {
       var backup_ids = [];
 
       if (ids.length>1 && !skip_deselect) {
-        if (!confirm("Delete "+ids.length+" items?")) return;
+        if (!confirm(this.$t('board.deleteConfirmation', {count: ids.length}))) return;
 
         bulk_delete_artifacts(this.active_space._id, ids, () => {
           this.active_space_artifacts = this.active_space_artifacts.filter((artifact) => { return ids.indexOf(artifact._id) === -1})

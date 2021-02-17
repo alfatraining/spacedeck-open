@@ -23,4 +23,7 @@ export default {
     notFound:
       "Dieses Board wurde gelöscht oder Ihr Zugang ist abgelaufen.<br />Bitte versuchen Sie, das Board über den alfaview-client neu zu starten.",
   },
+  board: {
+    deleteConfirmation: "{count} Elemente löschen?",
+  },
 };

@@ -23,4 +23,7 @@ export default {
     notFound:
       "This board has been deleted or your access has expired.<br />Please try relaunching from the alfaview client.",
   },
+  board: {
+    deleteConfirmation: "Delete {count} items?",
+  },
 };
