@@ -5,9 +5,10 @@
   "scripts": {
     "start": "node spacedeck.js",
     "dev:frontend": "webpack --watch",
-    "dev:frontend:css": "gulp watch",
+    "dev:frontend:gulp": "gulp styles && gulp build-sd-js && gulp watch",
     "build:css": "gulp styles",
     "build:frontend": "SPACEDECK_ENV=production webpack",
+    "build:frontend-sd": "gulp build-sd-js",
     "lint": "eslint --config views/alfaview/.eslintrc --ext .js --ext .vue views/alfaview/"
   },
   "engines": {
@@ -67,6 +68,8 @@
   "author": "Lukas F. Hartmann, Martin Güther",
   "license": "AGPLv3",
   "devDependencies": {
+    "@babel/core": "^7.12.16",
+    "@babel/preset-env": "^7.12.16",
     "babel-core": "^6.26.3",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^6.4.1",
@@ -80,6 +83,8 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-vue": "^7.1.0",
+    "gulp-babel": "^8.0.0",
+    "gulp-uglify": "^3.0.2",
     "prettier": "^2.1.2",
     "terser-webpack-plugin-legacy": "^1.2.5",
     "vue-html-loader": "^1.2.4",
