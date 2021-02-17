@@ -734,7 +734,12 @@ function setup_whiteboard_directives() {
         this.mouse_state = "idle";
         $scope.mouse_state = this.mouse_state;
         $scope.end_transaction();
-        $scope.deselect();
+
+        // do not deselect if scribbling, allowing the right toolbar to stay open
+        if ($scope.active_tool !== "scribble") {
+          $scope.deselect();
+        } 
+        
         return;
       }
 

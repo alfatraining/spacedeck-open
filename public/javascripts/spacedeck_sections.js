@@ -2538,7 +2538,8 @@ var SpacedeckSections = {
       save_space(this.active_space);
     },
 
-    show_toolbar_props: function() {
+    show_toolbar_props: function(force = false) {
+      if (force) this.toolbar_props_in = true;
       if (this.selection_metrics.count==0) return;
       arts = this.selected_artifacts();
       for (var i=0;i<arts.length; i++) {
