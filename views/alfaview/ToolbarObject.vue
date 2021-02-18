@@ -5,9 +5,9 @@
     class="toolbar toolbar-properties avw-object-toolbar"
     :class="{ in: toolbarPropsIn, out: !toolbarPropsIn }"
   >
-    <div class="btn-group light vertical avw-button-group">
+    <div class="btn-group dark vertical avw-button-group">
       <div
-        class="dropdown top right light"
+        class="dropdown top right dark"
         :class="{
           open: openedDialog.match('color'),
           'option-1': openedDialog == 'color-fill',
@@ -27,6 +27,10 @@
             class="jewel"
             :style="{ 'background-color': activeStyle.fill_color }"
           ></span>
+          <span
+            v-if="activeStyle.fill_color == 'rgba(0,0,0,0)'"
+            class="icon icon-cross-1"
+          ></span>
         </button>
         <br />
         <button
@@ -38,6 +42,10 @@
           <span
             class="jewel jewel-stroke"
             :style="{ 'border-color': activeStyle.stroke_color }"
+          ></span>
+          <span
+            v-if="activeStyle.stroke_color == 'rgba(0,0,0,0)'"
+            class="icon icon-cross-1"
           ></span>
         </button>
         <br />
@@ -54,12 +62,16 @@
           >
             {{ activeStyle.font_size }}
           </span>
+          <span
+            v-if="activeStyle.text_color == 'rgba(0,0,0,0)'"
+            class="icon icon-cross-1"
+          ></span>
         </button>
         <Color></Color>
       </div>
 
       <div
-        class="dropdown top light right"
+        class="dropdown top dark right"
         :class="{ open: openedDialog == 'type-align' }"
       >
         <div
@@ -81,7 +93,7 @@
       </div>
 
       <div
-        class="dropdown top light right"
+        class="dropdown top dark right"
         :class="{ open: openedDialog == 'layout' }"
       >
         <div class="btn-collapse in">

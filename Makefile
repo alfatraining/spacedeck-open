@@ -1,4 +1,5 @@
 dev-init:
+  docker-compose down
 	docker build . -t spacedeck
 	docker-compose up --build -d
 

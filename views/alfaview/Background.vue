@@ -5,16 +5,19 @@
       class="color-wrap color-palette"
     >
       <div
-        v-for="(index, _) in swatches"
+        v-for="(index, swatch) in swatches"
         :key="index"
         class="adapt overflow-y-scroll"
       >
         <button
           class="btn btn-round btn-darken"
-          :style="{ 'background-color': swatches[index].hex }"
-          @click="applySwatchColor(swatches[index])"
+          :style="{ 'background-color': swatch.hex }"
+          @click="applySwatchColor(swatch)"
         >
-          <span class="icon"></span>
+          <span
+            class="icon"
+            :class="{ 'icon-cross-1': swatch.hex == 'rgba(0,0,0,0)' }"
+          ></span>
         </button>
       </div>
     </div>

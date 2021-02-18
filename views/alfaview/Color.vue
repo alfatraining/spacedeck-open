@@ -42,7 +42,7 @@
               <label class="color-hsva-hue">H</label>
               <input
                 v-model="colorPickerHue"
-                class="input input-md input-nude text-center"
+                class="input input-md input-nude text-center input-light"
                 spellcheck="false"
                 maxlength="3"
                 type="number"
@@ -52,7 +52,7 @@
               <label class="color-hsva-saturation">S</label>
               <input
                 v-model="colorPickerSaturation"
-                class="input input-md input-nude text-center"
+                class="input input-md input-nude text-center input-light"
                 spellcheck="false"
                 maxlength="3"
                 type="number"
@@ -62,7 +62,7 @@
               <label class="color-hsva-brightness">V</label>
               <input
                 v-model="colorPickerValue"
-                class="input input-md input-nude text-center"
+                class="input input-md input-nude text-center input-light"
                 spellcheck="false"
                 maxlength="3"
                 type="number"
@@ -72,7 +72,7 @@
               <label class="color-hsva-alpha">A</label>
               <input
                 v-model="colorPickerOpacity"
-                class="input input-md input-nude text-center"
+                class="input input-md input-nude text-center input-light"
                 spellcheck="false"
                 maxlength="3"
                 type="number"
@@ -95,7 +95,7 @@
           </button>
         </div> -->
         <div
-          v-for="(index, _) in swatches"
+          v-for="(index, swatch) in swatches"
           :key="index"
           class="adapt overflow-y-scroll"
         >
@@ -104,7 +104,10 @@
             :style="{ 'background-color': swatches[index].hex }"
             @click="applySwatchColor(swatches[index])"
           >
-            <span class="icon"></span>
+            <span
+              class="icon"
+              :class="{ 'icon-cross-1': swatch.hex == 'rgba(0,0,0,0)' }"
+            ></span>
           </button>
         </div>
       </div>
@@ -120,7 +123,7 @@
           <label class="label label-sm">{{ $t("toolbar.stroke") }}</label>
           <input
             v-model="activeStyle.stroke"
-            class="input no-b no-p text-center text-large"
+            class="input no-b no-p text-center text-large input-light"
             spellcheck="false"
             type="number"
           />
@@ -135,7 +138,7 @@
           >
             <span class="icon icon-triangles-vertical"></span>
           </button>
-          <span class="input-unit">px</span>
+          <span class="input-unit light">px</span>
         </div>
 
         <div class="form-group no-m">
@@ -144,7 +147,7 @@
           </label>
           <input
             v-model="activeStyle.border_radius"
-            class="input no-b no-p text-center text-large"
+            class="input no-b no-p text-center text-large input-light"
             spellcheck="false"
             type="number"
           />
@@ -159,7 +162,7 @@
           >
             <span class="icon icon-triangles-vertical"></span>
           </button>
-          <span class="input-unit">px</span>
+          <span class="input-unit light">px</span>
         </div>
       </div>
     </div>
@@ -175,7 +178,7 @@
           </label>
           <input
             v-model="activeStyle.font_size"
-            class="input no-b no-p text-center text-large"
+            class="input no-b no-p text-center text-large input-light"
             spellcheck="false"
             type="text"
             pattern="[0-9]"
@@ -194,7 +197,7 @@
           >
             <span class="icon icon-triangles-vertical"></span>
           </button>
-          <span class="input-unit">px</span>
+          <span class="input-unit light">px</span>
         </div>
         <div class="btn-group">
           <button

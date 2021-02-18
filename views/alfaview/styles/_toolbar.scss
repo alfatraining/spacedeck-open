@@ -31,9 +31,9 @@
 .avw-submenu {
   border: 1px solid $avw-background-color;
   border-radius: $avw-border-radius-large;
-  background-color: $avw-background-color-white;
+  background-color: $avw-background-color;
   position: absolute;
-  color: $avw-background-color;
+  color: $avw-font-color;
   left: 105px;
   z-index: 3500;
 }
@@ -54,6 +54,11 @@
     }
     .btn-collapse {
       width: 70px;
+    }
+
+    .icon-cross-1 {
+      left: 6px;
+      top: 2px;
     }
   }
   .dialog {
