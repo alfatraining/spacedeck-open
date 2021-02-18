@@ -1,8 +1,10 @@
-'use strict';
+"use strict";
 
-const db = require('../models/db');
 const { Op } = require("sequelize");
-var config = require('config');
+var config = require("config");
+
+const db = require("../models/db");
+const { RESYNC_ENABLED } = require("../common/constants");
 
 module.exports = (req, res, next) => {
   let spaceId = req.params.id;
@@ -10,21 +12,25 @@ module.exports = (req, res, next) => {
   let finalizeReq = async (space, role) => {
     if (role === "none") {
       res.status(403).json({
-        "error": "access denied"
+        error: "access denied",
       });
     } else {
-      req['space'] = space;
-      req['artifactCount'] = await db.Artifact.count({where: {space_id: space._id}})
-      req['spaceRole'] = role;
-      res.header("x-spacedeck-space-role", req['spaceRole']);
+      req["space"] = space;
+      if (RESYNC_ENABLED) {
+        req["artifactCount"] = await db.Artifact.count({
+          where: { space_id: space._id },
+        });
+      }
+      req["spaceRole"] = role;
+      res.header("x-spacedeck-space-role", req["spaceRole"]);
       next();
     }
   };
 
-  var finalizeAnonymousLogin = function(space, spaceAuth) {
+  var finalizeAnonymousLogin = function (space, spaceAuth) {
     var role = "none";
 
-    if (spaceAuth && (spaceAuth === space.edit_hash)) {
+    if (spaceAuth && spaceAuth === space.edit_hash) {
       role = "editor";
     } else {
       if (space.access_mode == "public") {
@@ -35,10 +41,10 @@ module.exports = (req, res, next) => {
     }
 
     if (req.user) {
-      db.getUserRoleInSpace(space, req.user, function(newRole) {
+      db.getUserRoleInSpace(space, req.user, function (newRole) {
         if (newRole == "admin" && (role == "editor" || role == "viewer")) {
           finalizeReq(space, newRole);
-        } else if (newRole == "editor" && (role == "viewer")) {
+        } else if (newRole == "editor" && role == "viewer") {
           finalizeReq(space, newRole);
         } else {
           finalizeReq(space, role);
@@ -50,19 +56,17 @@ module.exports = (req, res, next) => {
   };
 
   var userMapping = {
-    '_id': 1,
-    'nickname': 1,
-    'email': 1
+    _id: 1,
+    nickname: 1,
+    email: 1,
   };
 
   // find space by id or slug
-  db.Space.findOne({where: {
-                    [Op.or]: [
-                      {"_id": spaceId},
-                      {"edit_slug": spaceId}
-                    ]
-  }}).then(function(space) {
-
+  db.Space.findOne({
+    where: {
+      [Op.or]: [{ _id: spaceId }, { edit_slug: spaceId }],
+    },
+  }).then(function (space) {
     if (space) {
       if (space.access_mode == "public") {
         if (space.password) {
@@ -71,29 +75,31 @@ module.exports = (req, res, next) => {
               finalizeAnonymousLogin(space, req["spaceAuth"]);
             } else {
               res.status(403).json({
-                "error": "password_wrong"
+                error: "password_wrong",
               });
             }
           } else {
             res.status(401).json({
-              "error": "password_required"
+              error: "password_required",
             });
           }
         } else {
           finalizeAnonymousLogin(space, req["spaceAuth"]);
         }
-
       } else {
         // space is private
-        
+
         // special permission for screenshot/pdf export from backend
-        if (req.query['api_token'] && req.query['api_token'] == config.get('phantom_api_secret')) {
+        if (
+          req.query["api_token"] &&
+          req.query["api_token"] == config.get("phantom_api_secret")
+        ) {
           finalizeReq(space, "viewer");
           return;
         }
 
         if (req.user) {
-          db.getUserRoleInSpace(space, req.user, function(role) {
+          db.getUserRoleInSpace(space, req.user, function (role) {
             if (role == "none") {
               finalizeAnonymousLogin(space, req["spaceAuth"]);
             } else {
@@ -105,15 +111,15 @@ module.exports = (req, res, next) => {
             finalizeAnonymousLogin(space, req["spaceAuth"]);
           } else {
             res.status(403).json({
-              "error": "auth_required"
+              error: "auth_required",
             });
           }
         }
       }
     } else {
       res.status(404).json({
-        "error": "space_not_found"
+        error: "space_not_found",
       });
     }
   });
-}
+};

@@ -1174,7 +1174,7 @@ var SpacedeckSections = {
         }
 
         save_artifact(a, function(savedArtifact) {
-          if (id.indexOf('client_') > -1) {
+          if (id.indexOf(window.constants.CLIENT_ARTIFACT_ID_PREFIX) > -1) {
             const index = this.active_space_artifacts.findIndex(a => a._id === id)
             this.active_space_artifacts[index] = {
               ...this.active_space_artifacts[index],

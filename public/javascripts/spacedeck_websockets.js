@@ -1,10 +1,9 @@
-
 SpacedeckWebsockets = {
   data: {
-    users_online: {}
+    users_online: {},
   },
   methods: {
-    handle_live_updates: function(msg) {
+    handle_live_updates: function (msg) {
       if (msg.model == "Space" && msg.object) {
         if (msg.object.space_type == "space") {
           if (this.active_space) {
@@ -18,7 +17,10 @@ SpacedeckWebsockets = {
       if (msg.model == "Message") {
         if (msg.action == "create" && msg.object) {
           var new_message = msg.object;
-          if(this.active_space && this.active_space._id == new_message.space._id) {
+          if (
+            this.active_space &&
+            this.active_space._id == new_message.space._id
+          ) {
             this.active_space_messages.push(new_message);
             this.refresh_space_comments();
           } else console.log("message created in another space.");
@@ -28,12 +30,15 @@ SpacedeckWebsockets = {
       if (msg.model == "Artifact") {
         if (msg.action == "create" && msg.object) {
           var new_artifact = msg.object;
-          if (this.active_space && this.active_space._id == new_artifact.space_id) {
+          if (
+            this.active_space &&
+            this.active_space._id == new_artifact.space_id
+          ) {
             var o = new_artifact;
 
             if (o._id && !this.find_artifact_by_id(o._id)) {
               this.update_board_artifact_viewmodel(new_artifact);
-              this.active_space_artifacts.push(new_artifact)
+              this.active_space_artifacts.push(new_artifact);
             } else {
               console.log("warning: got create on existing artifact.");
               msg.action = "update"; // hackety hack!
@@ -59,10 +64,12 @@ SpacedeckWebsockets = {
         if (msg.action == "delete" && msg.object) {
           if (this.active_space) {
             var o = msg.object;
-            if (o._id){
+            if (o._id) {
               var existing_artifact = this.find_artifact_by_id(o._id);
               if (existing_artifact) {
-                var idx = this.active_space_artifacts.indexOf(existing_artifact);
+                var idx = this.active_space_artifacts.indexOf(
+                  existing_artifact
+                );
                 this.active_space_artifacts.splice(idx, 1);
               } else console.log("existing artifact to delete not found");
             } else console.error("object without _id");
@@ -71,23 +78,29 @@ SpacedeckWebsockets = {
 
         if (msg.action == "bulkDelete" && msg.object && this.active_space) {
           var artifactIds = msg.object.artifactIds;
-          if (artifactIds.length){
-            this.active_space_artifacts = this.active_space_artifacts.filter((artifact) => { return artifactIds.indexOf(artifact._id) === -1})
-            this.deselect(true)
+          if (artifactIds.length) {
+            this.active_space_artifacts = this.active_space_artifacts.filter(
+              (artifact) => {
+                return artifactIds.indexOf(artifact._id) === -1;
+              }
+            );
+            this.deselect(true);
           }
-        } 
+        }
       }
     },
 
-    subscribe: function(space) {
-      if (this.websocket && this.websocket.readyState==1) {
-        this.websocket.send(JSON.stringify({action: "subscribe", space_id: space._id}));
+    subscribe: function (space) {
+      if (this.websocket && this.websocket.readyState == 1) {
+        this.websocket.send(
+          JSON.stringify({ action: "subscribe", space_id: space._id })
+        );
       } else {
         console.error("socket not ready yet. (subscribe)");
       }
     },
 
-    is_member_online: function(space, member) {
+    is_member_online: function (space, member) {
       if (!member.user) {
         return false;
       }
@@ -96,19 +109,19 @@ SpacedeckWebsockets = {
         return false;
       }
 
-      var isOnline = _.find(this.users_online[space._id], function(u) {
-        return (u._id == member.user._id);
+      var isOnline = _.find(this.users_online[space._id], function (u) {
+        return u._id == member.user._id;
       });
 
       return isOnline;
     },
 
-    auth_websocket: function(space){
+    auth_websocket: function (space) {
       if (!this.websocket) {
         this.init_websocket();
       }
 
-      if (this.websocket && this.websocket.readyState==1) {
+      if (this.websocket && this.websocket.readyState == 1) {
         var token = "";
         if (this.user) token = this.user.token;
         var auth_params = {
@@ -116,16 +129,16 @@ SpacedeckWebsockets = {
           editor_auth: space_auth,
           editor_name: this.guest_nickname,
           auth_token: token,
-          space_id: space._id
+          space_id: space._id,
         };
         console.log("[websocket] auth space");
         this.websocket.send(JSON.stringify(auth_params));
       }
     },
 
-    websocket_send: function(msg) {
+    websocket_send: function (msg) {
       if (!this.websocket) return;
-      if (this.websocket.readyState!=1) return;
+      if (this.websocket.readyState != 1) return;
 
       try {
         this.websocket.send(JSON.stringify(msg));
@@ -134,7 +147,7 @@ SpacedeckWebsockets = {
       }
     },
 
-    init_websocket: function() {
+    init_websocket: function () {
       if (this.websocket) this.websocket = null;
 
       if (this.current_timeout) {
@@ -145,11 +158,14 @@ SpacedeckWebsockets = {
       try {
         this.websocket = new WebSocket(ENV.websocketsEndpoint + "/socket");
       } catch (e) {
-        console.log("[websocket] cannot establish websocket connection: ",e);
-        this.current_timeout = setTimeout(function() {
-          console.log("[websocket] reconnecting", e);
-          this.init_websocket();
-        }.bind(this),5000);
+        console.log("[websocket] cannot establish websocket connection: ", e);
+        this.current_timeout = setTimeout(
+          function () {
+            console.log("[websocket] reconnecting", e);
+            this.init_websocket();
+          }.bind(this),
+          5000
+        );
       }
 
       if (!this.websocket) {
@@ -157,7 +173,7 @@ SpacedeckWebsockets = {
         return;
       }
 
-      this.websocket.onopen = function(evt) {
+      this.websocket.onopen = function (evt) {
         if (this.current_timeout) {
           clearTimeout(this.current_timeout);
           this.current_timeout = null;
@@ -167,29 +183,31 @@ SpacedeckWebsockets = {
           this.auth_websocket(this.active_space);
         }
         this.online = true;
-
       }.bind(this);
 
-      this.websocket.onclose = function(evt) {
+      this.websocket.onclose = function (evt) {
         if (!window._spacedeck_location_change) {
           this.online = false;
         }
 
         if (!this.current_timeout) {
-          this.current_timeout = setTimeout(function() {
-            console.log("[websocket] onclose: reconnecting", evt);
-            this.init_websocket();
-          }.bind(this),5000);
+          this.current_timeout = setTimeout(
+            function () {
+              console.log("[websocket] onclose: reconnecting", evt);
+              this.init_websocket();
+            }.bind(this),
+            5000
+          );
         }
       }.bind(this);
 
-      this.websocket.onmessage = function(evt) {
+      this.websocket.onmessage = function (evt) {
         this.online = true;
 
         try {
           var msg = JSON.parse(evt.data);
         } catch (e) {
-          console.log("[websocket] malformed message: ",evt.data);
+          console.log("[websocket] malformed message: ", evt.data);
           return;
         }
 
@@ -199,23 +217,42 @@ SpacedeckWebsockets = {
 
         if (msg.action == "cursor") {
           this.handle_user_cursor_update(msg);
-        }
-        else if (msg.action == "viewport") {
+        } else if (msg.action == "viewport") {
           this.handle_presenter_viewport_update(msg);
-        }
-        else if (msg.action == "media") {
+        } else if (msg.action == "media") {
           this.handle_presenter_media_update(msg);
         }
 
-        if (msg.action == "update" || msg.action == "create" || msg.action == "delete" || msg.action == "bulkDelete"){
+        if (
+          msg.action == "update" ||
+          msg.action == "create" ||
+          msg.action == "delete" ||
+          msg.action == "bulkDelete"
+        ) {
           this.handle_live_updates(msg);
 
-          if (msg.object.artifactHash && msg.action !== "delete" && this.selected_artifacts().length === 0 && (this.active_tool === "pointer" || this.active_tool === "pan")) {
-            const [artifactCount, timestamp] = msg.object.artifactHash.split('-')
+          if (
+            window.constants.RESYNC_ENABLED &&
+            msg.object.artifactHash &&
+            msg.action !== "delete" &&
+            this.selected_artifacts().length === 0 &&
+            (this.active_tool === "pointer" || this.active_tool === "pan")
+          ) {
+            const [artifactCount, timestamp] = msg.object.artifactHash.split(
+              "-"
+            );
             // refetch artifacts if gap greater than 3
-            if (Math.abs(this.active_space_artifacts.length - parseInt(artifactCount, 10)) > 2) {
-              console.log('artifacts out of sync ', this.active_space_artifacts.length, artifactCount)
-              const spaceId = msg.object.space_id
+            if (
+              Math.abs(
+                this.active_space_artifacts.length - parseInt(artifactCount, 10)
+              ) > 2
+            ) {
+              console.log(
+                "artifacts out of sync ",
+                this.active_space_artifacts.length,
+                artifactCount
+              );
+              const spaceId = msg.object.space_id;
               load_artifacts(spaceId, (serverArtifacts) => {
                 serverArtifacts.forEach((a, i) =>
                   this.update_board_artifact_viewmodel(serverArtifacts[i])
@@ -235,7 +272,9 @@ SpacedeckWebsockets = {
             this.subscribe(this.active_space);
 
             if (this.unsaved_transactions()) {
-              console.log("[websockets-saver] found unsaved transactions, triggering save.");
+              console.log(
+                "[websockets-saver] found unsaved transactions, triggering save."
+              );
               this.process_artifact_save_queue();
             }
           }
@@ -251,17 +290,20 @@ SpacedeckWebsockets = {
 
           // filter ourselves
           if (this.user && this.user._id) {
-            users = _.filter(users, function(u) {
-              return (u && (u._id != this.user._id));
-            }.bind(this));
+            users = _.filter(
+              users,
+              function (u) {
+                return u && u._id != this.user._id;
+              }.bind(this)
+            );
           }
-          
-          users = _.filter(users, function(u) {
-            return (u && (u._id || u.nickname));
+
+          users = _.filter(users, function (u) {
+            return u && (u._id || u.nickname);
           });
-          
+
           this.users_online[spaceId] = users;
-          
+
           if (this.active_space) {
             if (this.active_space._id == spaceId) {
               this.active_space_users = users;
@@ -270,7 +312,7 @@ SpacedeckWebsockets = {
         }
       }.bind(this);
 
-      this.websocket.onerror = function(evt) {
+      this.websocket.onerror = function (evt) {
         console.log("websocket.onerror:", evt);
         if (!window._spacedeck_location_change) {
           this.online = false;
@@ -278,13 +320,15 @@ SpacedeckWebsockets = {
         }
 
         if (!this.current_timeout) {
-          this.current_timeout = setTimeout(function() {
-            console.log("websocket.onerror: reconnecting", evt);
-            this.init_websocket();
-          }.bind(this),5000);
+          this.current_timeout = setTimeout(
+            function () {
+              console.log("websocket.onerror: reconnecting", evt);
+              this.init_websocket();
+            }.bind(this),
+            5000
+          );
         }
-
       }.bind(this);
-    }
-  }
-}
+    },
+  },
+};
