@@ -14,6 +14,7 @@ module.exports = {
     alias: {
       vue: path.resolve(__dirname, "public/javascripts/vue.js"),
       javascripts: path.resolve(__dirname, "public/javascripts"),
+      common: path.resolve(__dirname, "common"),
     },
   },
   module: {

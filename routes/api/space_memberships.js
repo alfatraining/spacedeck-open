@@ -24,6 +24,9 @@ router.get('/', function(req, res, next) {
       space_id: req.space._id
     }, include: ['user']})
     .then(memberships => {
+      memberships.forEach(membership=>{
+        membership.user.api_token = undefined
+      })
       res.status(200).json(memberships);
     });
 });
@@ -35,7 +38,7 @@ router.post('/', function(req, res, next) {
     attrs.state = "pending";
     attrs._id = uuidv4();
     var membership = attrs;
-    
+
     var msg = attrs.personal_message;
 
     if (membership.email_invited != req.user.email) {
@@ -134,7 +137,7 @@ router.delete('/:membership_id', function(req, res, next) {
         _id: req.params.membership_id
       }}).then(function(mem) {
         // deleting an admin? need at least 1
-        if (mem.role != "admin" || adminCount > 1) { 
+        if (mem.role != "admin" || adminCount > 1) {
           mem.destroy().then(function() {
             res.sendStatus(204);
           });

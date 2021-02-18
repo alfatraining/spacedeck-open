@@ -579,7 +579,7 @@ function setup_whiteboard_directives() {
       $scope.deselect();
 
       var a = {
-        _id: `client_${Date.now()}`,
+        _id: `${window.constants.CLIENT_ARTIFACT_ID_PREFIX}${Date.now()}`,
         space_id: $scope.active_space._id,
         mime: "x-spacedeck/vector",
         description: "",

@@ -1,3 +1,3 @@
-import findIndex from "lodash/findIndex";
+import constants from "common/constants";
 
-window.lodash = { findIndex };
+window.constants = constants;
