@@ -1,6 +1,7 @@
 export default {
   toolbar: {
     select: "Select",
+    pan: "Drag",
     draw: "Draw",
     shape: "Shape",
     arrow: "Arrow",

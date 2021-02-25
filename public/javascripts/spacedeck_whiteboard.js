@@ -729,16 +729,16 @@ function setup_whiteboard_directives() {
         return;
       }
 
-      if (_.include(["zoom", "scribble"], $scope.active_tool)) {
+      if (_.include(["zoom", "scribble", "pan"], $scope.active_tool)) {
         // tools that stay active after use
         this.mouse_state = "idle";
         $scope.mouse_state = this.mouse_state;
         $scope.end_transaction();
 
         // do not deselect if scribbling, allowing the right toolbar to stay open
-        if ($scope.active_tool !== "scribble") {
+        if ($scope.active_tool !== "scribble" && $scope.active_tool !== "pan") {
           $scope.deselect();
-        } 
+        }
         
         return;
       }
