@@ -22,6 +22,14 @@
   border: none;
 }
 
+.avw-edit-text-button {
+  background-color: $avw-background-color;
+  color: $avw-font-color;
+  min-width: 32px;
+  height: 32px;
+  line-height: 50%;
+}
+
 .material-icons.md-18 {
   font-size: 18px;
 }

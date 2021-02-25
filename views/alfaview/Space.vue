@@ -200,12 +200,19 @@
                 </a>
               </span>
 
-              <input
-                v-show="isSelected(a)"
-                id="ios-focuser-{{a._id}}"
-                type="text"
-                class="ios-focuser"
-              />
+              <button
+                v-if="selectedArtifactId === a._id"
+                class="btn btn-icon btn-round edit avw-edit-text-button active"
+                @click="delayedEditArtifact()"
+                @touchstart="delayedEditArtifact()"
+              >
+                <i class="material-icons md-18">create</i>
+                <input
+                  id="ios-focuser-{{a._id}}"
+                  type="text"
+                  class="ios-focuser"
+                />
+              </button>
             </div>
 
             <!-- drawing (annotation) -->
@@ -249,12 +256,19 @@
                 </a>
               </span>
 
-              <input
-                v-show="isSelected(a)"
-                id="ios-focuser-{{a._id}}"
-                type="text"
-                class="ios-focuser"
-              />
+              <button
+                v-if="selectedArtifactId === a._id"
+                class="btn btn-icon btn-round edit avw-edit-text-button active"
+                @click="delayedEditArtifact()"
+                @touchstart="delayedEditArtifact()"
+              >
+                <i class="material-icons md-18">create</i>
+                <input
+                  id="ios-focuser-{{a._id}}"
+                  type="text"
+                  class="ios-focuser"
+                />
+              </button>
             </div>
 
             <!-- svg image -->
@@ -694,6 +708,11 @@ export default {
     selectedArtifactsJson() {
       return this.$root.selected_artifacts_json;
     },
+    selectedArtifactId() {
+      return this.$root.selected_artifacts()[0]
+        ? this.$root.selected_artifacts()[0]._id
+        : "";
+    },
     selectionMetrics() {
       return this.$root.selection_metrics;
     },
@@ -802,6 +821,9 @@ export default {
     },
     goToNextZone() {
       this.$root.go_to_next_zone();
+    },
+    delayedEditArtifact() {
+      this.$root.delayed_edit_artifact();
     },
     downloadSpace() {
       const spaceWidth = this.$root.active_space.width;

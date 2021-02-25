@@ -285,6 +285,7 @@ function setup_whiteboard_directives() {
         $scope.start_adding_placeholder(evt);
         return;
       } else if ($scope.active_tool=="pan") {
+        this.deselect();
         this.start_pan(evt);
         return;
       }
@@ -589,8 +590,8 @@ function setup_whiteboard_directives() {
         z: z,
         w: 64,
         h: 64,
-        stroke_color: $scope.active_style.stroke_color,
-        stroke: $scope.active_style.stroke,
+        stroke_color: $scope.active_style.stroke_color == "rgba(0,0,0,0)" ? "rgba(0,0,0,255)" : $scope.active_style.stroke_color,
+        stroke: $scope.active_style.stroke == 0 ? 4 : $scope.active_style.stroke,
         shape: "scribble"
       };
 
@@ -625,8 +626,8 @@ function setup_whiteboard_directives() {
         z: z,
         w: 64,
         h: 64,
-        stroke_color: $scope.active_style.stroke_color,
-        stroke: $scope.active_style.stroke,
+        stroke_color: $scope.active_style.stroke_color == "rgba(0,0,0,0)" ? "rgba(0,0,0,255)" : $scope.active_style.stroke_color,
+        stroke: $scope.active_style.stroke == 0 ? 4 : $scope.active_style.stroke,
         shape: "arrow"
       };
 
@@ -723,6 +724,9 @@ function setup_whiteboard_directives() {
 
           //save_artifact(ars[i], null, $scope.display_saving_error);
         }
+
+        // update vector handles
+        $scope.update_selection_metrics();
       }
 
       if (this.mouse_state == "text_editor") {
@@ -947,18 +951,14 @@ function setup_whiteboard_directives() {
 
           // special case for arrow's 3rd point
           if (a.shape == "arrow" && $scope.selected_control_point_idx!=2) {
-            /*control_points[2].dx += dx/2;
-            control_points[2].dy += dy/2; */
-
             control_points[2].dx = (control_points[0].dx+control_points[1].dx)/2;
             control_points[2].dy = (control_points[0].dy+control_points[1].dy)/2;
           }
 
           return _this.normalize_control_points(control_points, old_a);
-        });
+        }, false, true); // override_locked: false, temporary: true
 
       } else if (this.mouse_state == "scribble") {
-
         $scope.update_selected_artifacts(function(a) {
           var old_a = a;
 
