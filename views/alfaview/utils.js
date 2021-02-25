@@ -18,7 +18,7 @@ export const getBrowserLocale = () => {
 };
 
 export const downloadSpace = (spaceWidth, spaceHeight) => {
-  toPng(document.getElementById("space"), {
+  return toPng(document.getElementById("space"), {
     width: spaceWidth,
     height: spaceHeight,
   }).then(function (dataUrl) {

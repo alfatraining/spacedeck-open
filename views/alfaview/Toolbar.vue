@@ -10,6 +10,14 @@
     </button>
     <button
       class="btn btn-icon-labeled avw-button"
+      :class="{ active: activeTool == 'pan' }"
+      @click="enablePanMode()"
+    >
+      <i class="material-icons">pan_tool</i>
+      <span class="icon-label">{{ $t("toolbar.pan") }}</span>
+    </button>
+    <button
+      class="btn btn-icon-labeled avw-button"
       :class="{ active: activeTool == 'scribble' }"
       @click="startDrawingScribble"
     >
@@ -67,10 +75,15 @@
         class="avw-submenu"
       ></Background>
     </div>
-    <button class="btn btn-icon-labeled avw-button" @click="downloadSpace()">
+    <button
+      v-if="!isLoading"
+      class="btn btn-icon-labeled avw-button"
+      @click="downloadSpace()"
+    >
       <i class="material-icons">file_download</i>
       <span class="icon-label">{{ $t("toolbar.download") }}</span>
     </button>
+    <div v-if="isLoading" class="icon icon-selection-circle rotate"></div>
     <button class="btn btn-icon-labeled avw-button" @click="clearSpace()">
       <!-- <span class="icon icon-page-horizontal-remove"></span> -->
       <i class="material-icons">delete_sweep</i>
@@ -83,6 +96,11 @@
 import { downloadSpace } from "./utils";
 
 export default {
+  data() {
+    return {
+      isLoading: false,
+    };
+  },
   computed: {
     openedDialog() {
       return this.$root.opened_dialog;
@@ -119,11 +137,23 @@ export default {
     enableSelectMode() {
       this.$root.active_tool = "pointer";
     },
+    enablePanMode() {
+      this.$root.active_tool = "pan";
+    },
     downloadSpace() {
       const spaceWidth = this.$root.active_space.width;
       const spaceHeight = this.$root.active_space.height;
 
-      return downloadSpace(spaceWidth, spaceHeight);
+      // necessary so it always downloads space to 100% zoom
+      this.$root.zoom_to_original();
+      this.isLoading = true;
+      downloadSpace(spaceWidth, spaceHeight)
+        .then((resp) => {
+          return resp;
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
     },
     clearSpace() {
       this.$root.select_all_artifacts();
