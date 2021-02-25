@@ -1018,8 +1018,7 @@ var SpacedeckSections = {
       };
     },
 
-    update_selection_metrics: function(arts) {
-
+    update_selection_metrics: function(arts, temporary) {
       if (this.active_tool == "scribble") {
         this.selection_metrics.count = 1;
         return;
@@ -1052,8 +1051,6 @@ var SpacedeckSections = {
         // FIXME make sure that menus fit in window
         this.toolbar_props_x = pp.x+"px";
         this.toolbar_props_y = pp.y+"px";
-
-        //this.hide_toolbar_artifacts();
       }
 
       this.selection_metrics.x1 = sr.x1;
@@ -1068,24 +1065,26 @@ var SpacedeckSections = {
 
       if (!arts) arts = this.selected_artifacts();
 
-      this.first_selected_artifact = arts[0];
-      this.selection_metrics.count=arts.length;
-      this.selection_metrics.scribble_selection = false;
-      if (arts.length == 1 && arts[0].mime == "x-spacedeck/vector") {
-        if (arts[0].shape == "scribble") {
-          this.selection_metrics.scribble_selection = true;
+      if (!temporary) {
+        this.first_selected_artifact = arts[0];
+        this.selection_metrics.count=arts.length;
+        this.selection_metrics.scribble_selection = false;
+        if (arts.length == 1 && arts[0].mime == "x-spacedeck/vector") {
+          if (arts[0].shape == "scribble") {
+            this.selection_metrics.scribble_selection = true;
+          }
+          this.selection_metrics.vector_points = arts[0].control_points;
+          this.selection_metrics.vector_selection = true;
+        } else {
+          this.selection_metrics.vector_points = [{},{}];
+          this.selection_metrics.vector_selection = false;
         }
-        this.selection_metrics.vector_points = arts[0].control_points;
-        this.selection_metrics.vector_selection = true;
-      } else {
-        this.selection_metrics.vector_points = [{},{}];
-        this.selection_metrics.vector_selection = false;
-      }
-      this.selection_metrics.has_link=false;
-      this.insert_link_url="";
-      if (arts.length == 1 && arts[0].meta && arts[0].meta.link_uri && arts[0].meta.link_uri.length>0) {
-        this.selection_metrics.has_link=true;
-        this.insert_link_url = arts[0].meta.link_uri;
+        this.selection_metrics.has_link=false;
+        this.insert_link_url="";
+        if (arts.length == 1 && arts[0].meta && arts[0].meta.link_uri && arts[0].meta.link_uri.length>0) {
+          this.selection_metrics.has_link=true;
+          this.insert_link_url = arts[0].meta.link_uri;
+        }
       }
     },
 
@@ -1442,13 +1441,13 @@ var SpacedeckSections = {
       this.color_picker_rgb = rgb_to_hex(rgba.r,rgba.g,rgba.b);
     },
 
-    update_selected_artifacts: function(change_func, override_locked) {
+    update_selected_artifacts: function(change_func, override_locked, temporary) {
       var artifacts = this.selected_artifacts(!override_locked);
 
       if (!artifacts.length) return;
 
       this.update_artifacts(artifacts, change_func);
-      this.update_selection_metrics();
+      this.update_selection_metrics(null, temporary||false);
     },
 
     nudge_selected_artifacts: function(dx, dy, event) {
@@ -1941,10 +1940,7 @@ var SpacedeckSections = {
       }.bind(this));
     },
 
-    delayed_edit_artifact: function(evt) {
-      evt.stopPropagation();
-      evt.preventDefault();
-
+    delayed_edit_artifact: function() {
       var a = this.selected_artifacts()[0];
 
       var el = $("#ios-focuser-"+a._id);
@@ -1976,7 +1972,8 @@ var SpacedeckSections = {
       this.editing_artifact_id = a._id;
 
       var ms = 100;
-      if (delayed) ms = 500; // wait for slow devices
+      // TODO: possibly increase this value back to 500
+      if (delayed) ms = 200; // wait for slow devices
 
       window.setTimeout(function(){
         var el = $("#artifact-"+a._id+" .text-editing");
@@ -2104,8 +2101,6 @@ var SpacedeckSections = {
 
           if (a.description!=dom.innerHTML) {
             a.description = dom.innerHTML;
-
-            console.log("new DOM:",dom.innerHTML);
 
             this.update_board_artifact_viewmodel(a);
             this.queue_artifact_for_save(a);

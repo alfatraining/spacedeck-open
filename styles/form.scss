@@ -7,10 +7,13 @@
   table-layout: fixed;
   > div {
     display: table-cell !important;
-    border-right: 2px solid rgba(0,0,0,0.025);
+    border-right: 2px solid rgba(0, 0, 0, 0.025);
 
-    &:first-child{}
-    &:last-child{ border: none;}
+    &:first-child {
+    }
+    &:last-child {
+      border: none;
+    }
   }
 }
 
@@ -31,11 +34,11 @@ input:invalid {
   text-transform: uppercase;
 }
 
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-     margin: 0;
-     width: 0 !important;
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+  width: 0 !important;
 }
 
 select {
@@ -51,7 +54,7 @@ select {
   border: none;
   border-radius: $radius;
   // padding-left: 20px;
-  padding: 0 1em ;
+  padding: 0 1em;
   margin: 0px;
   max-width: 100%;
   vertical-align: middle;
@@ -62,8 +65,8 @@ select {
   //line-height: 60px;
 
   color: $dark;
-  background-color: rgba(0,0,0,0.01);
-  border: 1px solid rgba(0,0,0,0.1);
+  background-color: rgba(0, 0, 0, 0.01);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   height: 60px;
   text-align: left;
 
@@ -76,7 +79,7 @@ select {
   }
 
   &.input-darken {
-    background-color: rgba(0,0,0,0.05) !important;
+    background-color: rgba(0, 0, 0, 0.05) !important;
   }
 
   &.input-round {
@@ -107,12 +110,20 @@ select {
     font-size: 16px;
   }
 
-  &.text-center {text-align: center !important; padding: 0px !important;}
-  &.text-right {text-align: right !important; padding-right: 20px !important; padding-left: 0 !important;}
+  &.text-center {
+    text-align: center !important;
+    padding: 0px !important;
+  }
+  &.text-right {
+    text-align: right !important;
+    padding-right: 20px !important;
+    padding-left: 0 !important;
+  }
 
   &.input-white {
     background-color: white;
-    box-shadow: inset 0 0 1px 1px rgba(0, 0, 0, 0.05), inset 0 0px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 0 1px 1px rgba(0, 0, 0, 0.05),
+      inset 0 0px 4px rgba(0, 0, 0, 0.1);
   }
   &.input-light {
     color: $light;
@@ -123,11 +134,11 @@ select {
   }
 
   &.input-lighten {
-    background-color: rgba(255,255,255,0.05);
+    background-color: rgba(255, 255, 255, 0.05);
   }
 
   &.input-darken {
-    background-color: rgba(0,0,0,0.05);
+    background-color: rgba(0, 0, 0, 0.05);
   }
 
   &.input-transparent {
@@ -148,23 +159,25 @@ select {
   }
 }
 
-input[type=text],
-span.input{ cursor: text !important;}
+input[type="text"],
+span.input {
+  cursor: text !important;
+}
 
-input[type=number],
-input[type=number]:hover {
+input[type="number"],
+input[type="number"]:hover {
   -webkit-appearance: none !important;
   -moz-appearance: textfield !important;
-  box-shadow:none;
+  box-shadow: none;
 
   &::-webkit-inner-spin-button {
     -webkit-appearance: none;
-    cursor:pointer;
-    display:block;
-    width:8px;
+    cursor: pointer;
+    display: block;
+    width: 8px;
     color: #333;
-    text-align:center;
-    position:relative;
+    text-align: center;
+    position: relative;
   }
 }
 
@@ -176,14 +189,13 @@ textarea.input {
   line-height: 30px !important;
 }
 
-
 .tab-switch {
   display: block;
   position: relative;
   width: 100%;
   @include clearfix;
-  background-color: rgba(0,0,0,0.025);
-  border-radius: $radius*2;
+  background-color: rgba(0, 0, 0, 0.025);
+  border-radius: $radius * 2;
   cursor: pointer;
   box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.025);
   border: 2px solid rgba(0, 0, 0, 0.025);
@@ -197,8 +209,8 @@ textarea.input {
     }
 
     &.option-2 .option-highlight {
-      border-top-left-radius: $radius*2;
-      border-bottom-left-radius: $radius*2;
+      border-top-left-radius: $radius * 2;
+      border-bottom-left-radius: $radius * 2;
       border-top-right-radius: 100px;
       border-bottom-right-radius: 100px;
     }
@@ -210,28 +222,33 @@ textarea.input {
       }
 
       &.option-2 .option-highlight {
-        border-top-left-radius: $radius*2;
-        border-bottom-left-radius: $radius*2;
-        border-top-right-radius: $radius*2;
-        border-bottom-right-radius: $radius*2;
+        border-top-left-radius: $radius * 2;
+        border-bottom-left-radius: $radius * 2;
+        border-top-right-radius: $radius * 2;
+        border-bottom-right-radius: $radius * 2;
       }
 
       &.option-3 .option-highlight {
-        border-top-left-radius: $radius*2;
-        border-bottom-left-radius: $radius*2;
+        border-top-left-radius: $radius * 2;
+        border-bottom-left-radius: $radius * 2;
         border-top-right-radius: 100px;
         border-bottom-right-radius: 100px;
       }
     }
-
   }
 
   &.options-3 {
     .option-highlight,
-    .option {width: 33.333%; }
+    .option {
+      width: 33.333%;
+    }
 
-    &.option-2 .option-highlight {left: 33.333%; }
-    &.option-3 .option-highlight {left: 66.666%; }
+    &.option-2 .option-highlight {
+      left: 33.333%;
+    }
+    &.option-3 .option-highlight {
+      left: 66.666%;
+    }
   }
 
   &.option-2 .option-highlight {
@@ -243,8 +260,12 @@ textarea.input {
   }
 
   .option {
-    &:first-child {border-left: none !important;}
-    &:last-child {border-right: none !important;}
+    &:first-child {
+      border-left: none !important;
+    }
+    &:last-child {
+      border-right: none !important;
+    }
     display: block;
     width: 50%;
     float: left;
@@ -259,7 +280,9 @@ textarea.input {
     border-right: 1px solid rgba(0, 0, 0, 0.025);
     border-left: 1px solid rgba(0, 0, 0, 0.025);
     color: $dark;
-    &:hover {color: $darker; }
+    &:hover {
+      color: $darker;
+    }
   }
 
   .option-highlight {
@@ -270,7 +293,7 @@ textarea.input {
     position: absolute;
     background-color: white;
     z-index: 0;
-    border-radius: $radius*2;
+    border-radius: $radius * 2;
     border: 4px solid transparent;
     background-clip: content-box;
   }
@@ -283,7 +306,7 @@ textarea.input {
   display: inline-block;
   width: 75px;
   overflow: hidden;
-  background-color: rgba(0,0,0,0.05);
+  background-color: rgba(0, 0, 0, 0.05);
   position: relative;
   cursor: pointer;
   background-clip: content-box;
@@ -298,8 +321,7 @@ textarea.input {
     line-height: 30px;
     white-space: nowrap;
     font-size: 0;
-    width: 44*3px;
-
+    width: 44 * 3px;
   }
 
   &.on {
@@ -307,7 +329,6 @@ textarea.input {
       margin-left: -30px;
       background-color: $green;
     }
-
   }
   span {
     display: inline-block;
@@ -315,13 +336,20 @@ textarea.input {
     line-height: 30px;
     margin-left: 0px;
     height: 30px;
-    width: 44*2px;
+    width: 44 * 2px;
     vertical-align: middle;
     text-align: center;
     @include transition(all 0.1s ease-in-out);
 
-    &.off { text-align: right; padding-right: 4px;}
-    &.on { text-align: left; padding-left: 4px; color: white; }
+    &.off {
+      text-align: right;
+      padding-right: 4px;
+    }
+    &.on {
+      text-align: left;
+      padding-left: 4px;
+      color: white;
+    }
 
     &.off,
     &.on {
@@ -329,7 +357,7 @@ textarea.input {
       font-size: 12px;
       font-weight: bold;
       width: 30px;
-     }
+    }
 
     &.handle {
       width: 30px;
@@ -351,14 +379,18 @@ textarea.input {
 */
 
 .input-focus-dark {
-  &:empty:focus{color: $darker !important; }
-  &:focus{color: $darker !important; }
+  &:empty:focus {
+    color: $darker !important;
+  }
+  &:focus {
+    color: $darker !important;
+  }
 }
 
 .input-prefix {
   line-height: 60px;
   &:before {
-    content:attr(data-placeholder);
+    content: attr(data-placeholder);
     color: $medium;
     text-transform: capitalize;
     opacity: 0.5;
@@ -382,7 +414,7 @@ textarea.input {
   position: relative;
   text-align: left;
   height: auto;
-  @include transition( all 0.1s ease-in-out);
+  @include transition(all 0.1s ease-in-out);
 
   &.input-lg {
     font-size: 20px !important;
@@ -391,12 +423,12 @@ textarea.input {
   &:before {
     @include transform-origin(top left);
 
-      -webkit-transform: scale(1);
-          -ms-transform: scale(1);
-              transform: scale(1);
+    -webkit-transform: scale(1);
+    -ms-transform: scale(1);
+    transform: scale(1);
 
-    content:attr(data-placeholder);
-    @include transition( all 0.1s ease-in-out);
+    content: attr(data-placeholder);
+    @include transition(all 0.1s ease-in-out);
     left: 0;
     top: 0;
     position: absolute;
@@ -410,14 +442,17 @@ textarea.input {
   }
   // &:empty:not(:focus):before{opacity: 0.5; }
 
-  &:empty:focus:before{
+  &:empty:focus:before {
     opacity: 1;
     color: $darker !important;
   }
 
-
-  &:empty {padding-top: 20px; }
-  &:not(:empty) {padding-top: 25px; }
+  &:empty {
+    padding-top: 20px;
+  }
+  &:not(:empty) {
+    padding-top: 25px;
+  }
   &:not(:empty):before {
     opacity: 1;
     height: 35px;
@@ -427,14 +462,14 @@ textarea.input {
 }
 
 .editable:empty:before,
-[data-placeholder][contentEditable=true]:empty:not(:focus):before{
-    content:attr(data-placeholder);
-    opacity: 0.6;
+[data-placeholder][contentEditable="true"]:empty:not(:focus):before {
+  content: attr(data-placeholder);
+  opacity: 0.6;
 }
 
-[data-placeholder][contentEditable=true]:empty:focus:before{
-    content:attr(data-placeholder);
-    opacity: 0.6;
+[data-placeholder][contentEditable="true"]:empty:focus:before {
+  content: attr(data-placeholder);
+  opacity: 0.6;
 }
 
 form {
@@ -448,7 +483,7 @@ form {
 .form-set {
   .form-group {
     padding: 25px;
-    border-bottom: 2px solid rgba(0,0,0,0.05);
+    border-bottom: 2px solid rgba(0, 0, 0, 0.05);
     margin: 0;
   }
 }
@@ -461,32 +496,42 @@ form {
   > .input,
   > .label {
     display: table-cell !important;
-    &:first-child{
+    &:first-child {
       width: 130px;
       vertical-align: top;
       padding-top: 5px;
     }
-    &:last-child{
+    &:last-child {
       width: 100%;
     }
   }
 }
 
 .inverted {
-  a {color: $blue-lighter; cursor: pointer;
-    &:hover {color: $light; }
+  a {
+    color: $blue-lighter;
+    cursor: pointer;
+    &:hover {
+      color: $light;
+    }
   }
-  .label {color: $light; }
-  .input {color: $light; border-color: $blue-light;
+  .label {
+    color: $light;
+  }
+  .input {
+    color: $light;
+    border-color: $blue-light;
     @include placeholder_inverted();
   }
-  .btn-link {color: $light !important; }
+  .btn-link {
+    color: $light !important;
+  }
 }
 
 .fieldset {
   padding: 20px 30px;
   padding-bottom: 30px;
-  background-color: rgba(255,255,255,0.04);
+  background-color: rgba(255, 255, 255, 0.04);
   margin-bottom: 30px;
 }
 
@@ -495,7 +540,9 @@ form {
   display: block;
   margin-bottom: 30px;
   position: relative;
-  &:last-child {margin-bottom: 0px; }
+  &:last-child {
+    margin-bottom: 0px;
+  }
   small {
     float: left;
     width: 100%;
@@ -518,11 +565,21 @@ form {
     // border-radius: 100%;
     background-size: cover;
     background-position: center;
-    &.england { background-image: url('../images/flags/england.svg');}
-    &.italy { background-image: url('../images/flags/italy.svg');}
-    &.germany { background-image: url('../images/flags/germany.svg');}
-    &.france { background-image: url('../images/flags/france.svg');}
-    &.spain { background-image: url('../images/flags/spain.svg');}
+    &.england {
+      background-image: url("../images/flags/england.svg");
+    }
+    &.italy {
+      background-image: url("../images/flags/italy.svg");
+    }
+    &.germany {
+      background-image: url("../images/flags/germany.svg");
+    }
+    &.france {
+      background-image: url("../images/flags/france.svg");
+    }
+    &.spain {
+      background-image: url("../images/flags/spain.svg");
+    }
   }
 }
 
@@ -531,7 +588,7 @@ form {
   padding: 0px;
 
   &:first-child {
-    > .input{
+    > .input {
       border-top-left-radius: $radius;
       border-top-right-radius: $radius;
     }
@@ -539,19 +596,19 @@ form {
 
   &:last-child {
     margin-bottom: 30px;
-    > .input{
+    > .input {
       border-bottom-left-radius: $radius;
       border-bottom-right-radius: $radius;
     }
   }
 
   & + .form-group {
-    > .input{
+    > .input {
       border-top: 0px !important;
     }
   }
 
-  > .input{
+  > .input {
     border-radius: 0px;
   }
 }
@@ -566,14 +623,12 @@ form {
   width: 100%;
   white-space: nowrap;
 
-
   &.label-sm {
     font-size: 12px;
     // text-transform: uppercase;
     // letter-spacing: 0.05em;
     text-align: center;
   }
-
 
   &.label-range {
     margin-bottom: -13px !important;
@@ -606,7 +661,7 @@ form {
   bottom: 0;
 
   &.light {
-    color: $lightish
+    color: $lightish;
   }
 }
 
@@ -635,14 +690,16 @@ form {
       width: 44px;
     }
   }
-  &:active {opacity: 1; }
+  &:active {
+    opacity: 1;
+  }
 
   * {
     pointer-events: none;
   }
 }
 
-.input-overlay-wrapper{
+.input-overlay-wrapper {
   position: relative;
   .input-overlay {
     display: block;
@@ -661,7 +718,9 @@ form {
     pointer-events: none;
     opacity: 0.25;
   }
-  #user-slug{padding-left: 183px; }
+  #user-slug {
+    padding-left: 183px;
+  }
 }
 
 // .form-group {

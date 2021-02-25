@@ -213,7 +213,12 @@ function focus_contenteditable(el, end) {
 
   if (!range || !el) return;
   var p = $(el).find("p");
-  if (!p.length) return;
+
+  if (!p.length) {
+    const node = document.createElement("P");
+    el.appendChild(node)
+  }
+  p = $(el).find("p");
 
   // get last paragraph
   p = p[p.length-1];
