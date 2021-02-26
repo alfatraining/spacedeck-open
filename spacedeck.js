@@ -89,25 +89,26 @@ app.disable('x-powered-by');
 app.use(require("./middlewares/session"));
 app.use(require("./middlewares/i18n"));
 app.use("/api", require("./middlewares/api_helpers"));
+app.use("/api", require("./middlewares/whiteboardService"));
 app.use('/api/spaces/:id', require("./middlewares/space_helpers"));
 app.use('/api/spaces/:id/artifacts/:artifact_id', useMiddleware(require("./middlewares/artifact_helpers"), ['batch-delete']));
 
 app.use('/api/users', require('./routes/api/users'));
-app.use('/api/memberships', require('./routes/api/memberships'));
 app.use('/api/search', require('./routes/api/search'));
+// app.use('/api/memberships', require('./routes/api/memberships'));
 
 const spaceRouter = require('./routes/api/spaces');
 app.use('/api/spaces', spaceRouter);
 
 spaceRouter.use('/:id/artifacts', require('./routes/api/space_artifacts'));
 spaceRouter.use('/:id/memberships', require('./routes/api/space_memberships'));
-spaceRouter.use('/:id/messages', require('./routes/api/space_messages'));
-spaceRouter.use('/:id/digest', require('./routes/api/space_digest'));
-spaceRouter.use('/:id', require('./routes/api/space_exports'));
+// spaceRouter.use('/:id/messages', require('./routes/api/space_messages'));
+// spaceRouter.use('/:id/digest', require('./routes/api/space_digest'));
+// spaceRouter.use('/:id', require('./routes/api/space_exports'));
 
 app.use('/api/sessions', require('./routes/api/sessions'));
-//app.use('/api/webgrabber', require('./routes/api/webgrabber'));
 app.use('/', require('./routes/root'));
+//app.use('/api/webgrabber', require('./routes/api/webgrabber'));
 
 if (config.get('storage_local_path')) {
   app.use('/storage', serveStatic(config.get('storage_local_path')+"/"+config.get('storage_bucket'), {
