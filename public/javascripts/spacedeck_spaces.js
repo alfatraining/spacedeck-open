@@ -141,11 +141,11 @@ var SpacedeckSpaces = {
 
           this.active_space_role = role || "viewer"; // via req header from backend
 
-          if (!is_home) {
-            load_members(space, function(members) {
-              this.active_space_memberships = members;
-            }.bind(this));
-          }
+          // if (!is_home) {
+          //   load_members(space, function(members) {
+          //     this.active_space_memberships = members;
+          //   }.bind(this));
+          // }
 
           console.log("[websocket] auth start");
 
@@ -263,12 +263,12 @@ var SpacedeckSpaces = {
               this.active_space_loaded = true;
               this.extract_properties_from_selection(); // populates zones etc
               
-              load_comments(space._id, function(messages) {
-                if (!messages) messages = [];
+              // load_comments(space._id, function(messages) {
+              //   if (!messages) messages = [];
                 
-                this.active_space_messages = messages;
-                this.refresh_space_comments();
-              }.bind(this), function(xhr) { console.error(xhr); });
+              //   this.active_space_messages = messages;
+              //   this.refresh_space_comments();
+              // }.bind(this), function(xhr) { console.error(xhr); });
 
             }.bind(this));
 
