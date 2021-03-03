@@ -35,7 +35,7 @@ module.exports = (req, res, next) => {
         else db.User.findOne({where: {_id: session.user_id}})
           .then(user => {
             if (!user) {
-              var domain = (process.env.NODE_ENV == "production") ? new URL(config.get('endpoint')).hostname : req.headers.hostname;
+              var domain = req.headers.hostname;
               res.clearCookie('sdsession', { domain: domain });
 
               if (req.accepts("text/html")) {

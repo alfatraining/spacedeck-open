@@ -10,7 +10,7 @@ services:
       - mysql
       - nats
     environment:
-      - SPACEDECK_ENV=development
+      - NODE_ENV=development
       - SPACEDECK_NATS_ADDR=nats://nats:4222
       - SPACEDECK_NATS_AUTHENTICATION_USERNAME=dev-user
       - SPACEDECK_NATS_AUTHENTICATION_PASSWORD=dev-pass

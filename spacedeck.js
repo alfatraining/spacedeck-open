@@ -1,7 +1,5 @@
 "use strict";
 
-process.env.SPACEDECK_ENV && (process.env.NODE_ENV = process.env.SPACEDECK_ENV)
-
 const db = require('./models/db.js');
 require("log-timestamp");
 
@@ -131,7 +129,7 @@ db.create().then(() => {
   db.init();
 });
 
-// START WEBSERVER
+// START WEBSERVER 
 const host = config.get('host');
 const port = config.get('port');
 
