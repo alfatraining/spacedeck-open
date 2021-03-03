@@ -46,7 +46,7 @@ router.post('/', function(req, res) {
               res.sendStatus(500);
             })
             .then(() => {
-              var domain = (process.env.NODE_ENV == "production") ? new URL(config.get('endpoint')).hostname : req.headers.hostname;
+              var domain = req.headers.hostname;
               res.cookie('sdsession', token, { domain: domain, httpOnly: true });
               res.status(201).json(session);
             });
@@ -64,7 +64,7 @@ router.delete('/current', function(req, res, next) {
       .then(session => {
         session.destroy();
       });
-    var domain = (process.env.NODE_ENV == "production") ? new URL(config.get('endpoint')).hostname : req.headers.hostname;
+    var domain = req.headers.hostname;
     res.clearCookie('sdsession', { domain: domain });
     res.sendStatus(204);
   } else {

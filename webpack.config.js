@@ -40,17 +40,8 @@ module.exports = {
   },
 };
 
-module.exports.plugins = [
-  new webpack.DefinePlugin({
-    "process.env": {
-      NODE_ENV: JSON.stringify(process.env.SPACEDECK_ENV),
-    },
-  }),
-];
-
-if (process.env.SPACEDECK_ENV === "production") {
+if (process.env.NODE_ENV === "production") {
   module.exports.plugins = [
-    ...module.exports.plugins,
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false,

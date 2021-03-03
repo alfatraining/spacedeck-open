@@ -18,7 +18,7 @@ const sequelize = new Sequelize(
     acquire: 30000,
     idle: 10000
   },
-  logging: process.env.SPACEDECK_ENV === 'development' ?  (...msg) => console.log(msg) : false,
+  logging: process.env.NODE_ENV === 'development' ?  (...msg) => console.log(msg) : false,
   // http://docs.sequelizejs.com/manual/tutorial/querying.html#operators
   operatorsAliases: false
 });

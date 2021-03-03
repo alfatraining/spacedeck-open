@@ -7,7 +7,7 @@
     "dev:frontend": "webpack --watch",
     "dev:frontend:gulp": "gulp styles && gulp build-sd-js && gulp watch",
     "build:css": "gulp styles",
-    "build:frontend": "SPACEDECK_ENV=production webpack",
+    "build:frontend": "NODE_ENV=production webpack",
     "build:frontend-sd": "gulp build-sd-js",
     "lint": "eslint --config views/alfaview/.eslintrc --ext .js --ext .vue views/alfaview/"
   },
