@@ -634,7 +634,7 @@ function setup_whiteboard_directives() {
       $scope.save_artifact(a, function(saved_a) {
         $scope.update_board_artifact_viewmodel(saved_a);
         $scope.active_space_artifacts.push(saved_a);
-        $scope.select(evt,saved_a);
+        $scope.select(evt,a);
         $scope.selected_control_point_idx = 1;
         $scope.transform_ox = 0;
         $scope.transform_oy = 0;
