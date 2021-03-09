@@ -193,7 +193,7 @@ function save_artifact(a, on_success, on_error) {
     load_resource(
       "post",
       "/spaces/" + a.space_id + "/artifacts",
-      { ..._.omit(a, "_id"), view: _.omit(a.view, "_id") },
+      a._id && a._id.indexOf(window.constants.CLIENT_ARTIFACT_ID_PREFIX) > -1 ? { ..._.omit(a, "_id"), view: _.omit(a.view, "_id") } : a,
       on_success,
       on_error
     );
