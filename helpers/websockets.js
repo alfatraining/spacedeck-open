@@ -17,7 +17,7 @@ const onMessageListenerArtifacts = async (rawMessage, websockets) => {
   const spaceId = msg.space_id;
 
   if (
-    (msg.action === "create" || msg.action === "update" || msg.action === "delete" ) &&
+    (msg.action === "create" || msg.action === "update") &&
     msg.model === "Artifact" &&
     msg.object._id &&
     Object.keys(msg.object).length === 1
