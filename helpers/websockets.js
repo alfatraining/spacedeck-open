@@ -12,9 +12,26 @@ const _ = require("underscore");
 const crypto = require("crypto");
 const get = require("lodash/get");
 
-const onMessageListenerArtifacts = (rawMessage, websockets) => {
+const onMessageListenerArtifacts = async (rawMessage, websockets) => {
   const msg = JSON.parse(rawMessage);
   const spaceId = msg.space_id;
+
+  if (
+    (msg.action === "create" || msg.action === "update") &&
+    msg.model === "Artifact" &&
+    msg.object._id &&
+    Object.keys(msg.object).length === 1
+  ) {
+    // TODO: remove before merge
+    console.log("rereading artifact id: ", msg.object._id);
+    const artifact = await db.Artifact.findOne({
+      where: {
+        _id: msg.object._id,
+      },
+    });
+
+    msg.object = db.unpackArtifact(artifact);
+  }
 
   for (let i = 0; i < websockets.length; i++) {
     const ws = websockets[i];
