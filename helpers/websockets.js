@@ -17,13 +17,11 @@ const onMessageListenerArtifacts = async (rawMessage, websockets) => {
   const spaceId = msg.space_id;
 
   if (
-    (msg.action === "create" || msg.action === "update") &&
+    (msg.action === "create" || msg.action === "update" || msg.action === "delete" ) &&
     msg.model === "Artifact" &&
     msg.object._id &&
     Object.keys(msg.object).length === 1
   ) {
-    // TODO: remove before merge
-    console.log("rereading artifact id: ", msg.object._id);
     const artifact = await db.Artifact.findOne({
       where: {
         _id: msg.object._id,
