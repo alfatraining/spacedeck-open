@@ -111,6 +111,8 @@ function render_vector_drawing(a, padding) {
   } else {
     for (var idx=0; idx<a.control_points.length; idx++) {
       var p = a.control_points[idx];
+      p.dx = Math.round(p.dx * 100) / 100
+      p.dy = Math.round(p.dy * 100) / 100
       var command = (idx==0) ? 'M' : 'L';
 
       path.push(command+(p.dx+padding)+','+(p.dy+padding));
@@ -340,6 +342,9 @@ function simplify_scribble_points(control_points) {
   var idx=0;
   for (var i=0; i<control_points.length; i++) {
     var cp = control_points[i];
+
+    cp.dx = Math.round(cp.dx * 100) / 100
+    cp.dy = Math.round(cp.dy * 100) / 100
 
     var next = control_points[i+1];
     if (i>0) {
