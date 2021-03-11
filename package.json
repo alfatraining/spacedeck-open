@@ -9,7 +9,7 @@
     "build:css": "gulp styles",
     "build:frontend": "NODE_ENV=production webpack",
     "build:frontend-sd": "gulp build-sd-js",
-    "lint": "eslint --config views/alfaview/.eslintrc --ext .js --ext .vue views/alfaview/"
+    "lint": "eslint --config views/alfaview/.eslintrc --ext .js --ext .vue views/alfaview/ helpers/nats.js routes/api/search.js common/constants.js webpack.config.js Gulpfile.js"
   },
   "engines": {
     "node": ">=10.0.0"

@@ -6,15 +6,11 @@
       @click="enableSelectMode"
     >
       <i class="material-icons">crop_free</i>
-      <span class="icon-label">{{ $t("toolbar.select") }}</span>
+      <span class="icon-label">{{ $t('toolbar.select') }}</span>
     </button>
-    <button
-      class="btn btn-icon-labeled avw-button"
-      :class="{ active: activeTool == 'pan' }"
-      @click="enablePanMode()"
-    >
+    <button class="btn btn-icon-labeled avw-button" :class="{ active: activeTool == 'pan' }" @click="enablePanMode()">
       <i class="material-icons">pan_tool</i>
-      <span class="icon-label">{{ $t("toolbar.pan") }}</span>
+      <span class="icon-label">{{ $t('toolbar.pan') }}</span>
     </button>
     <button
       class="btn btn-icon-labeled avw-button"
@@ -22,7 +18,7 @@
       @click="startDrawingScribble"
     >
       <i class="material-icons">gesture</i>
-      <span class="icon-label">{{ $t("toolbar.draw") }}</span>
+      <span class="icon-label">{{ $t('toolbar.draw') }}</span>
     </button>
     <div class="avw-submenu-wrapper">
       <button
@@ -31,7 +27,7 @@
         @click="openDialog('shapes')"
       >
         <i class="material-icons">category</i>
-        <span class="icon-label">{{ $t("toolbar.shape") }}</span>
+        <span class="icon-label">{{ $t('toolbar.shape') }}</span>
       </button>
       <Shapes v-if="openedDialog == 'shapes'" class="avw-submenu"></Shapes>
     </div>
@@ -41,7 +37,7 @@
       @click="startDrawingArrow"
     >
       <i class="material-icons">sync_alt</i>
-      <span class="icon-label">{{ $t("toolbar.arrow") }}</span>
+      <span class="icon-label">{{ $t('toolbar.arrow') }}</span>
     </button>
     <!-- Disable file uploads for MVP -->
     <!-- <button class="btn btn-icon-labeled avw-button" @click="showFileUploadDialog()">Media</button>
@@ -59,7 +55,7 @@
       @click="activateTool('note')"
     >
       <i class="material-icons">text_fields</i>
-      <span class="icon-label">{{ $t("toolbar.text") }}</span>
+      <span class="icon-label">{{ $t('toolbar.text') }}</span>
     </button>
     <div class="avw-submenu-wrapper">
       <button
@@ -68,20 +64,13 @@
         @click="openDialog('background')"
       >
         <i class="material-icons">wallpaper</i>
-        <span class="icon-label">{{ $t("toolbar.background") }}</span>
+        <span class="icon-label">{{ $t('toolbar.background') }}</span>
       </button>
-      <Background
-        v-if="openedDialog == 'background'"
-        class="avw-submenu"
-      ></Background>
+      <Background v-if="openedDialog == 'background'" class="avw-submenu"></Background>
     </div>
-    <button
-      v-if="!isLoading"
-      class="btn btn-icon-labeled avw-button"
-      @click="downloadSpace()"
-    >
+    <button v-if="!isLoading" class="btn btn-icon-labeled avw-button" @click="downloadSpace()">
       <i class="material-icons">file_download</i>
-      <span class="icon-label">{{ $t("toolbar.download") }}</span>
+      <span class="icon-label">{{ $t('toolbar.download') }}</span>
     </button>
     <div v-if="isLoading" class="icon icon-selection-circle rotate"></div>
     <button class="btn btn-icon-labeled avw-button" @click="clearSpace()">
@@ -93,7 +82,7 @@
 </template>
 
 <script>
-import { downloadSpace } from "./utils";
+import { downloadSpace } from './utils';
 
 export default {
   data() {
@@ -111,7 +100,7 @@ export default {
   },
   methods: {
     openDialog(dialog) {
-      this.$root.active_tool = "";
+      this.$root.active_tool = '';
       this.$root.open_dialog(dialog);
     },
     startDrawingScribble() {
@@ -131,13 +120,13 @@ export default {
     // },
     activateTool(param) {
       this.$root.active_tool = `${param}`;
-      this.$root.opened_dialog = "none";
+      this.$root.opened_dialog = 'none';
     },
     enableSelectMode() {
-      this.$root.active_tool = "pointer";
+      this.$root.active_tool = 'pointer';
     },
     enablePanMode() {
-      this.$root.active_tool = "pan";
+      this.$root.active_tool = 'pan';
     },
     downloadSpace() {
       const spaceWidth = this.$root.active_space.width;

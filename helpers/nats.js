@@ -1,10 +1,10 @@
-"use strict";
+'use strict';
 
-const NATS = require("nats");
+const NATS = require('nats');
 
 module.exports = {
   connectNats: function () {
-    if (process.env.NODE_ENV === "development") {
+    if (process.env.NODE_ENV === 'development') {
       this.connection = NATS.connect({
         url: process.env.SPACEDECK_NATS_ADDR,
         user: process.env.SPACEDECK_NATS_AUTHENTICATION_USERNAME,
@@ -27,7 +27,7 @@ module.exports = {
     return this.connection;
   },
   sendMessage: function (action, model, attributes, channelId) {
-    const spaceId = model === "Artifact" ? attributes.space_id : attributes._id;
+    const spaceId = model === 'Artifact' ? attributes.space_id : attributes._id;
 
     const data = JSON.stringify({
       space_id: spaceId,
@@ -36,6 +36,7 @@ module.exports = {
       model: model,
       object: attributes,
     });
+
     this.connection.publish(`_spacedeck.updates.${spaceId}`, data);
   },
 };

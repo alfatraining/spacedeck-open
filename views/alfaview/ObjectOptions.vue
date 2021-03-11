@@ -1,11 +1,7 @@
 <template>
   <div v-if="activeSpaceLoaded" class="dialog">
     <div class="btn-group">
-      <button
-        class="btn btn-transparent btn-icon-labeled"
-        title="Delete"
-        @click="deleteSelectedArtifacts()"
-      >
+      <button class="btn btn-transparent btn-icon-labeled" title="Delete" @click="deleteSelectedArtifacts()">
         <span class="icon icon-trash"></span>
         <span class="icon-label">Delete</span>
       </button>
@@ -30,29 +26,19 @@
         <span class="icon-label">Unlock</span>
       </button>
 
-      <button
-        class="btn btn-transparent btn-icon-labeled"
-        title="Copy"
-        @click="duplicateSelectedArtifacts()"
-      >
+      <button class="btn btn-transparent btn-icon-labeled" title="Copy" @click="duplicateSelectedArtifacts()">
         <span class="icon icon-duplicate"></span>
         <span class="icon-label">Copy</span>
       </button>
 
-      <button
-        class="btn btn-transparent btn-icon-labeled"
-        title="Link"
-        @click="createLinkOnSelectedArtifacts()"
-      >
+      <button class="btn btn-transparent btn-icon-labeled" title="Link" @click="createLinkOnSelectedArtifacts()">
         <span class="icon icon-link"></span>
         <span class="icon-label">Link</span>
       </button>
 
       <span v-if="firstSelectedArtifact">
         <button
-          v-if="
-            selectionMetrics.count == 1 && firstSelectedArtifact.payload_uri
-          "
+          v-if="selectionMetrics.count == 1 && firstSelectedArtifact.payload_uri"
           class="btn btn-transparent btn-icon-labeled"
           title="Download"
           @click="downloadSelectedArtifacts()"

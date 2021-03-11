@@ -12,9 +12,7 @@
           @mousedown="applyFont($event, fonts[$index])"
           @touchstart="applyFont($event, fonts[$index])"
         >
-          <span :style="{ 'font-family': fonts[$index] }">{{
-            fonts[$index]
-          }}</span>
+          <span :style="{ 'font-family': fonts[$index] }">{{ fonts[$index] }}</span>
         </li>
       </ul>
     </div>

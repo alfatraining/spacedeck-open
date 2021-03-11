@@ -7,8 +7,7 @@
           v-sd-fader="true"
           class="color"
           :style="{
-            'background-color':
-              'hsl(' + (colorPickerHue / 255) * 360 + ', 100%, 50%)',
+            'background-color': 'hsl(' + (colorPickerHue / 255) * 360 + ', 100%, 50%)',
           }"
           sd-fader-var-x="colorPickerSaturation"
           sd-fader-var-y="colorPickerValue"
@@ -19,19 +18,11 @@
           <button class="fader-selector" style="pointer-events: none"></button>
         </div>
 
-        <div
-          v-sd-fader="true"
-          class="color-hue"
-          sd-fader-var-x="colorPickerHue"
-        >
+        <div v-sd-fader="true" class="color-hue" sd-fader-var-x="colorPickerHue">
           <button class="fader-selector" style="pointer-events: none"></button>
         </div>
 
-        <div
-          v-sd-fader="true"
-          class="color-opacity"
-          sd-fader-var-x="colorPickerOpacity"
-        >
+        <div v-sd-fader="true" class="color-opacity" sd-fader-var-x="colorPickerOpacity">
           <div class="fit"></div>
           <button class="fader-selector" style="pointer-events: none"></button>
         </div>
@@ -82,10 +73,7 @@
         </div>
       </div>
 
-      <div
-        class="color-wrap color-palette r-10"
-        :class="{ invis: colorMode != 'palette' }"
-      >
+      <div class="color-wrap color-palette r-10" :class="{ invis: colorMode != 'palette' }">
         <!-- <div class="adapt overflow-y-scroll">
           <button class="btn btn-round btn-darken"
             v-on:click="applySwatchColor(s)"
@@ -94,33 +82,22 @@
             <span class="icon" v-bind:class="{'icon-cross-0':s.hex=='rgba(0,0,0,0)'}"></span>
           </button>
         </div> -->
-        <div
-          v-for="(index, swatch) in swatches"
-          :key="index"
-          class="adapt overflow-y-scroll"
-        >
+        <div v-for="(index, swatch) in swatches" :key="index" class="adapt overflow-y-scroll">
           <button
             class="btn btn-round btn-darken"
             :style="{ 'background-color': swatches[index].hex }"
             @click="applySwatchColor(swatches[index])"
           >
-            <span
-              class="icon"
-              :class="{ 'icon-cross-1': swatch.hex == 'rgba(0,0,0,0)' }"
-            ></span>
+            <span class="icon" :class="{ 'icon-cross-1': swatch.hex == 'rgba(0,0,0,0)' }"></span>
           </button>
         </div>
       </div>
     </div>
 
-    <div
-      v-if="activeStyle"
-      v-show="openedDialog == 'color-stroke'"
-      class="dialog-section no-p-h no-p-b"
-    >
+    <div v-if="activeStyle" v-show="openedDialog == 'color-stroke'" class="dialog-section no-p-h no-p-b">
       <div class="input-row">
         <div class="form-group no-m">
-          <label class="label label-sm">{{ $t("toolbar.stroke") }}</label>
+          <label class="label label-sm">{{ $t('toolbar.stroke') }}</label>
           <input
             v-model="activeStyle.stroke"
             class="input no-b no-p text-center text-large input-light"
@@ -143,7 +120,7 @@
 
         <div class="form-group no-m">
           <label class="label label-sm">
-            {{ $t("toolbar.borderRadius") }}
+            {{ $t('toolbar.borderRadius') }}
           </label>
           <input
             v-model="activeStyle.border_radius"
@@ -167,14 +144,11 @@
       </div>
     </div>
 
-    <div
-      v-show="openedDialog == 'color-text'"
-      class="dialog-section no-p-b no-p-h"
-    >
+    <div v-show="openedDialog == 'color-text'" class="dialog-section no-p-b no-p-h">
       <div class="input-row">
         <div class="form-group no-m">
           <label class="label label-sm text-center">
-            {{ $t("toolbar.fontSize") }}
+            {{ $t('toolbar.fontSize') }}
           </label>
           <input
             v-model="activeStyle.font_size"
@@ -200,28 +174,16 @@
           <span class="input-unit light">px</span>
         </div>
         <div class="btn-group">
-          <button
-            class="btn btn-transparent"
-            @click="applyFormatting($event, 'bold')"
-          >
+          <button class="btn btn-transparent" @click="applyFormatting($event, 'bold')">
             <i class="material-icons">format_bold</i>
           </button>
-          <button
-            class="btn btn-transparent"
-            @click="applyFormatting($event, 'italic')"
-          >
+          <button class="btn btn-transparent" @click="applyFormatting($event, 'italic')">
             <i class="material-icons">format_italic</i>
           </button>
-          <button
-            class="btn btn-transparent"
-            @click="applyFormatting($event, 'underline')"
-          >
+          <button class="btn btn-transparent" @click="applyFormatting($event, 'underline')">
             <i class="material-icons">format_underlined</i>
           </button>
-          <button
-            class="btn btn-transparent"
-            @click="applyFormatting($event, 'strikeThrough')"
-          >
+          <button class="btn btn-transparent" @click="applyFormatting($event, 'strikeThrough')">
             <i class="material-icons">strikethrough_s</i>
           </button>
         </div>
