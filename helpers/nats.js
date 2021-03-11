@@ -27,10 +27,10 @@ module.exports = {
     return this.connection;
   },
   sendMessage: function (action, model, attributes, channelId) {
-    const spaceId = model === "Artifact" ? attributes.space_id : attributes._id;
+    const spaceId = model === 'Artifact' ? attributes.space_id : attributes._id;
     const stringifiedObject = JSON.stringify(attributes);
-    const msgSize = Buffer.byteLength(stringifiedObject, "utf8");
-    const maxMsgSize = this.connection.info.max_payload
+    const msgSize = Buffer.byteLength(stringifiedObject, 'utf8');
+    const maxMsgSize = this.connection.info.max_payload;
 
     if (msgSize > maxMsgSize) {
       attributes = { _id: attributes._id };
