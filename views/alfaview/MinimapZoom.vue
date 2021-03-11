@@ -38,9 +38,7 @@
       <button class="btn btn-icon btn-md avw-button" @click="zoomOut()">
         <i class="material-icons avw-zoom-bar__icon">remove</i>
       </button>
-      <button class="btn btn-md avw-button no-p" @click="zoomToOriginal()">
-        {{ viewportZoomPercent }}%
-      </button>
+      <button class="btn btn-md avw-button no-p" @click="zoomToOriginal()">{{ viewportZoomPercent }}%</button>
       <button class="btn btn-icon btn-md avw-button" @click="zoomIn()">
         <i class="material-icons avw-zoom-bar__icon">add</i>
       </button>

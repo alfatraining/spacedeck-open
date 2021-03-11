@@ -1,23 +1,13 @@
 <template>
   <div>
-    <div
-      v-if="backgroundMode === 'color' && colorMode == 'palette'"
-      class="color-wrap color-palette"
-    >
-      <div
-        v-for="(index, swatch) in swatches"
-        :key="index"
-        class="adapt overflow-y-scroll"
-      >
+    <div v-if="backgroundMode === 'color' && colorMode == 'palette'" class="color-wrap color-palette">
+      <div v-for="(index, swatch) in swatches" :key="index" class="adapt overflow-y-scroll">
         <button
           class="btn btn-round btn-darken"
           :style="{ 'background-color': swatch.hex }"
           @click="applySwatchColor(swatch)"
         >
-          <span
-            class="icon"
-            :class="{ 'icon-cross-1': swatch.hex == 'rgba(0,0,0,0)' }"
-          ></span>
+          <span class="icon" :class="{ 'icon-cross-1': swatch.hex == 'rgba(0,0,0,0)' }"></span>
         </button>
       </div>
     </div>
@@ -28,7 +18,7 @@
 export default {
   data() {
     return {
-      backgroundMode: this.$root.background_mode || "color",
+      backgroundMode: this.$root.background_mode || 'color',
       swatches: this.$root.swatches,
       colorMode: this.$root.color_mode,
       activeSpace: this.$root.active_space,
@@ -41,7 +31,7 @@ export default {
     },
     applySwatchColor(swatche) {
       this.$root.apply_swatch_color(swatche);
-      this.$root.opened_dialog = "none";
+      this.$root.opened_dialog = 'none';
     },
     handleSectionBackgroundUpload(event) {
       this.$root.handle_section_background_upload(event);

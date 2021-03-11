@@ -62,7 +62,7 @@ export default {
     },
     addZone() {
       this.$root.add_zone();
-      this.$root.opened_dialog = "none";
+      this.$root.opened_dialog = 'none';
     },
   },
 };

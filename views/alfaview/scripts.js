@@ -1,3 +1,3 @@
-import constants from "common/constants";
+import constants from 'common/constants';
 
 window.constants = constants;

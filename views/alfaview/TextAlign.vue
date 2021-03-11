@@ -1,46 +1,25 @@
 <template>
   <div class="dialog avw-dialog">
     <div class="btn-group">
-      <button
-        class="btn btn-transparent btn-icon"
-        @click="setArtifactStyleProp('align', 'left')"
-      >
+      <button class="btn btn-transparent btn-icon" @click="setArtifactStyleProp('align', 'left')">
         <i class="material-icons">format_align_left</i>
       </button>
-      <button
-        class="btn btn-transparent btn-icon"
-        @click="setArtifactStyleProp('align', 'center')"
-      >
+      <button class="btn btn-transparent btn-icon" @click="setArtifactStyleProp('align', 'center')">
         <i class="material-icons">format_align_center</i>
       </button>
-      <button
-        class="btn btn-transparent btn-icon"
-        @click="setArtifactStyleProp('align', 'right')"
-      >
+      <button class="btn btn-transparent btn-icon" @click="setArtifactStyleProp('align', 'right')">
         <i class="material-icons">format_align_right</i>
       </button>
-      <button
-        class="btn btn-transparent btn-icon"
-        @click="setArtifactStyleProp('align', 'justify')"
-      >
+      <button class="btn btn-transparent btn-icon" @click="setArtifactStyleProp('align', 'justify')">
         <i class="material-icons">format_align_justify</i>
       </button>
-      <button
-        class="btn btn-transparent btn-icon"
-        @click="setArtifactStyleProp('valign', 'top')"
-      >
+      <button class="btn btn-transparent btn-icon" @click="setArtifactStyleProp('valign', 'top')">
         <i class="material-icons">vertical_align_top</i>
       </button>
-      <button
-        class="btn btn-transparent btn-icon"
-        @click="setArtifactStyleProp('valign', 'middle')"
-      >
+      <button class="btn btn-transparent btn-icon" @click="setArtifactStyleProp('valign', 'middle')">
         <i class="material-icons">vertical_align_center</i>
       </button>
-      <button
-        class="btn btn-transparent btn-icon"
-        @click="setArtifactStyleProp('valign', 'bottom')"
-      >
+      <button class="btn btn-transparent btn-icon" @click="setArtifactStyleProp('valign', 'bottom')">
         <i class="material-icons">vertical_align_bottom</i>
       </button>
     </div>
