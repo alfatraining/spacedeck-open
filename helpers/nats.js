@@ -30,9 +30,9 @@ module.exports = {
     const spaceId = model === 'Artifact' ? attributes.space_id : attributes._id;
     const stringifiedObject = JSON.stringify(attributes);
     const msgSize = Buffer.byteLength(stringifiedObject, 'utf8');
-    const maxMsgSize = this.connection.info.max_payload;
+    // const maxMsgSize = this.connection.info.max_payload;
 
-    if (msgSize > maxMsgSize) {
+    if (msgSize > 1) {
       attributes = { _id: attributes._id };
     }
 

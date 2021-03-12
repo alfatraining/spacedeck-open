@@ -22,6 +22,7 @@ const onMessageListenerArtifacts = async (rawMessage, websockets) => {
     msg.object._id &&
     Object.keys(msg.object).length === 1
   ) {
+    console.log('Reread null artifact ', msg.object._id)
     const artifact = await db.Artifact.findOne({
       where: {
         _id: msg.object._id,
