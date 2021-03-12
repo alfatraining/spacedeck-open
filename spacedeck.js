@@ -126,7 +126,13 @@ module.exports = app;
 
 // CONNECT TO DATABASE
 db.create().then(() => {
-  db.init();
+  db.init().catch((err) => {
+    console.error(err)
+    process.exit(1)
+  });
+}).catch((err) => {
+  console.error(err)
+  process.exit(1)
 });
 
 // START WEBSERVER 
