@@ -1,6 +1,7 @@
 'use strict';
 
 const NATS = require('nats');
+const _ = require('underscore');
 
 module.exports = {
   connectNats: function () {
@@ -30,7 +31,7 @@ module.exports = {
     const spaceId = model === 'Artifact' ? attributes.space_id : attributes._id;
     const stringifiedObject = JSON.stringify(attributes);
     const msgSize = Buffer.byteLength(stringifiedObject, 'utf8');
-    const maxMsgSize = this.connection.info.max_payload;
+    const maxMsgSize = _.get(this.connection, 'info.max_payload', 2048);
 
     if (msgSize > maxMsgSize) {
       attributes = { _id: attributes._id };
