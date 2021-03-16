@@ -415,16 +415,22 @@ module.exports = {
   },
 
   unpackArtifact: (a) => {
-    if (a.tags && (typeof a.tags)=="string") {
-      a.tags = JSON.parse(a.tags);
+    try {
+      if (a.tags && (typeof a.tags)=="string") {
+        a.tags = JSON.parse(a.tags);
+      }
+      if (a.control_points && (typeof a.control_points)=="string") {
+        a.control_points = JSON.parse(a.control_points);
+      }
+      if (a.payload_alternatives && (typeof a.payload_alternatives)=="string") {
+        a.payload_alternatives = JSON.parse(a.payload_alternatives);
+      }
+      return a;
+    } catch (e) {
+      // log this incase it happens again so we can catch it
+      console.log('Failed to parse JSON in artifact: ', e, a)
+      return a
     }
-    if (a.control_points && (typeof a.control_points)=="string") {
-      a.control_points = JSON.parse(a.control_points);
-    }
-    if (a.payload_alternatives && (typeof a.payload_alternatives)=="string") {
-      a.payload_alternatives = JSON.parse(a.payload_alternatives);
-    }
-    return a;
   },
 
   packArtifact: (a) => {

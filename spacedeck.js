@@ -125,15 +125,12 @@ if (isDevelopment) {
 module.exports = app;
 
 // CONNECT TO DATABASE
-db.create().then(() => {
-  db.init().catch((err) => {
-    console.error(err)
-    process.exit(1)
+db.create()
+  .then(() => db.init())
+  .catch((err) => {
+    console.error(err);
+    process.exit(1);
   });
-}).catch((err) => {
-  console.error(err)
-  process.exit(1)
-});
 
 // START WEBSERVER 
 const host = config.get('host');

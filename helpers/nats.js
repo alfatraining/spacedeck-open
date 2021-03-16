@@ -1,6 +1,7 @@
 'use strict';
 
 const NATS = require('nats');
+const get = require('lodash/get');
 
 module.exports = {
   connectNats: function () {
@@ -28,6 +29,13 @@ module.exports = {
   },
   sendMessage: function (action, model, attributes, channelId) {
     const spaceId = model === 'Artifact' ? attributes.space_id : attributes._id;
+    const stringifiedObject = JSON.stringify(attributes);
+    const msgSize = Buffer.byteLength(stringifiedObject, 'utf8');
+    const maxMsgSize = get(this.connection, 'info.max_payload', 2048);
+
+    if (msgSize > maxMsgSize) {
+      attributes = { _id: attributes._id };
+    }
 
     const data = JSON.stringify({
       space_id: spaceId,

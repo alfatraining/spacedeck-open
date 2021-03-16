@@ -257,7 +257,8 @@ SpacedeckWebsockets = {
                 serverArtifacts.forEach((a, i) =>
                   this.update_board_artifact_viewmodel(serverArtifacts[i])
                 );
-                this.active_space_artifacts = serverArtifacts;
+                const localArtifacts = this.active_space_artifacts.filter((artifact) => artifact._id.indexOf(window.constants.CLIENT_ARTIFACT_ID_PREFIX) > -1)
+                this.active_space_artifacts = serverArtifacts.concat(localArtifacts);
               });
             }
           }
