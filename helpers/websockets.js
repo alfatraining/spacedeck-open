@@ -125,12 +125,6 @@ module.exports = {
                             ws,
                             function (err) {
                               serverScope.addLocalUser(user._id, ws);
-                              console.log(
-                                "[websockets] user " +
-                                  user.email +
-                                  " online in space " +
-                                  space._id
-                              );
                             }
                           );
                         }
@@ -143,7 +137,6 @@ module.exports = {
                       space.access_mode == "private" &&
                       space.edit_hash != editorAuth
                     ) {
-                      console.error("closing websocket: unauthed.");
                       ws.send(JSON.stringify({ error: "auth_failed" }));
                       // ws.close();
                       return;
@@ -155,12 +148,6 @@ module.exports = {
                       ws,
                       function (err) {
                         serverScope.addLocalUser(anonymousUserId, ws);
-                        console.log(
-                          "[websockets] anonymous user " +
-                            anonymousUserId +
-                            " online in space " +
-                            space._id
-                        );
                       }
                     );
                   }
@@ -209,7 +196,6 @@ module.exports = {
         ws.on(
           "close",
           function (evt) {
-            console.log("websocket closed: ", ws.id, ws.space_id);
             const spaceId = ws.space_id;
             serverScope.removeUserInSpace(
               spaceId,
@@ -243,26 +229,12 @@ module.exports = {
     const idx = this.current_websockets.indexOf(ws);
     if (idx > -1) {
       this.removed_items = this.current_websockets.splice(idx, 1);
-      console.log(
-        "removed local socket, current online on this process: ",
-        this.current_websockets.length
-      );
     } else {
       console.log("websocket not found to remove");
     }
   },
 
   addUserInSpace: function (username, space, ws, cb) {
-    console.log(
-      "[websockets] user " +
-        username +
-        " in " +
-        space.access_mode +
-        " space " +
-        space._id +
-        " with socket " +
-        ws.id
-    );
     ws["space_id"] = space._id.toString();
     cb();
   },
