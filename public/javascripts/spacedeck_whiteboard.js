@@ -790,8 +790,7 @@ function setup_whiteboard_directives() {
         if ($scope.logged_in) {
           name = $scope.user.nickname || $scope.user.email;
         } else {
-          // TODO: get from cookie (?)
-          name = window.localStorage.guest_nickname || "anonymous";
+          name = $scope.guest_nickname || "anonymous"
         }
 
         var cursor_msg = {

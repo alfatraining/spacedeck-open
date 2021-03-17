@@ -123,7 +123,11 @@ SpacedeckWebsockets = {
 
       if (this.websocket && this.websocket.readyState == 1) {
         var token = "";
-        if (this.user) token = this.user.token;
+
+        if (this.user && this.user.token) token = this.user.token;
+        else {
+          token = window.jsCookie.get("sdsession") 
+        }
         var auth_params = {
           action: "auth",
           editor_auth: space_auth,

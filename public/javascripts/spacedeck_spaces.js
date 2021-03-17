@@ -320,7 +320,7 @@ var SpacedeckSpaces = {
           });
         }
       } else {
-        this.guest_nickname = "";
+        this.guest_nickname = window.jsCookie.get("guest_nickname");
         userReady();
       }
     },
