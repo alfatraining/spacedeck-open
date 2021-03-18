@@ -1,6 +1,5 @@
 
 function boot_spacedeck() {
-  console.log("booting...");
   // custom directives
 
   setup_directives();
@@ -117,29 +116,6 @@ function boot_spacedeck() {
     data: data,
     methods: methods
   });
-
-  var lang = "en";
-
-  window.refreshLocale = function() {
-    if (spacedeck && spacedeck.user && spacedeck.user.preferences) {
-      lang = spacedeck.user.preferences.language || "en";
-    } else if (window.browser_lang) {
-      lang = window.browser_lang;
-    }
-  }
-
-  window.refreshLocale();
-  
-  i18n.init({ lng: lang, resStore: window.locales }, function(err, t) {
-    console.log("i18n initialized: "+lang);
-  });
-
-  window.__ = function() { 
-    var params = Array.prototype.slice.call(arguments);
-    params.shift();
-    window.refreshLocale();
-    return i18n.t(arguments[0], { postProcess: "sprintf", sprintf: params });
-  };
 
   spacedeck.setup_section_module();
   spacedeck.load_user(function() {

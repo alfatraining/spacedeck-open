@@ -29,9 +29,6 @@ router.get('/current', function(req, res, next) {
     delete u.password_reset_token;
     delete u.confirmation_token;
     u.token = req.cookies['sdsession'];
-
-    console.log(u);
-    
     res.status(200).json(u);
   } else {
     res.status(401).json({"error":"user_not_found"});

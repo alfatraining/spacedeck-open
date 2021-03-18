@@ -147,8 +147,6 @@ var SpacedeckSpaces = {
           //   }.bind(this));
           // }
 
-          console.log("[websocket] auth start");
-
           if (space.space_type == "folder") {
             this.active_space = {advanced:{}};
             document.title = "Spacedeck";

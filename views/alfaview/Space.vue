@@ -622,7 +622,7 @@ export default {
         });
     };
 
-    fetchBoardInterval = setInterval(getBoardStatus, 6000);
+    fetchBoardInterval = setInterval(getBoardStatus, 60000);
     getBoardStatus();
   },
   methods: {
