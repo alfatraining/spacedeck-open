@@ -42,6 +42,7 @@ function setup_whiteboard_directives() {
       $(el).bind("wheel", this.handle_wheel_space.bind(this));
 
       $(document.body).bind("mouseleave", this.handle_mouse_leave.bind(this));
+      $(document.body).bind("mouseenter", this.handle_mouse_enter.bind(this));
 
       $(el).find(".handle.resize-nw").bind(edown, function(e){this.handle_transform_mouse_down(e,1,1)}.bind(this));
       $(el).find(".handle.resize-n").bind(edown, function(e){this.handle_transform_mouse_down(e,0.5,1)}.bind(this));
@@ -63,7 +64,11 @@ function setup_whiteboard_directives() {
 
       this.space_zoom = 1;
       this.artifacts_before_transaction = [];
-      $scope.active_tool = "pointer";
+      if($scope.active_space_role=="viewer") {
+        $scope.active_tool = "pan"  
+      } else {
+        $scope.active_tool = "pointer"
+      }
     },
     update: function () {
     },
@@ -765,6 +770,18 @@ function setup_whiteboard_directives() {
       $scope.end_transaction();
 
       this.render_lasso();
+    },
+
+    handle_mouse_enter: function(evt) {
+      var $scope = this.vm.$root;
+
+      this.mouse_state = "idle";
+      this.lasso =null;
+      if($scope.active_space_role=="viewer") {
+        $scope.active_tool = "pan"  
+      } else {
+        $scope.active_tool = "pointer"
+      }
     },
 
     handle_mouse_move: function(evt) {

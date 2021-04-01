@@ -2566,7 +2566,9 @@ var SpacedeckSections = {
     },
 
     deactivate_tool: function(evt) {
-      this.active_tool = "pointer";
+      if(this.active_space_role!="viewer") {
+        this.active_tool = "pointer";
+      }
     },
 
     start_adding_artifact: function(evt) {
