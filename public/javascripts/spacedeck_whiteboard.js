@@ -776,7 +776,6 @@ function setup_whiteboard_directives() {
       var $scope = this.vm.$root;
 
       this.mouse_state = "idle";
-      this.lasso =null;
       if($scope.active_space_role=="viewer") {
         $scope.active_tool = "pan"  
       } else {
