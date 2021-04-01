@@ -73,12 +73,6 @@
       @dblclick="handleSpaceDoubleclick"
     >
     <!-- eslint-enable -->
-      <div
-        id="space-clipboard"
-        style="position: fixed; top: 0; left: 0; z-index: 0; opacity: 0; background-color: white"
-      >
-        <textarea id="clipboard-ta" v-model="selectedArtifactsJson" cols="2" rows="2" class="mousetrap"></textarea>
-      </div>
 
       <div
         class="space-bounds"

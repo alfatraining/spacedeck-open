@@ -33,6 +33,7 @@ var SpacedeckSections = {
 
     editing_artifact_id: null,
     selected_artifacts_dict: {},
+    in_memory_clipboard: {},
     first_selected_artifact: null,
     selection_metrics: {
       contains_text: false,
@@ -216,9 +217,11 @@ var SpacedeckSections = {
       Mousetrap.bind('shift+left', function(evt)      { this.if_editable(function() {this.nudge_selected_artifacts(-10,0,evt);}) }.bind(this));
       Mousetrap.bind('shift+right', function(evt)     { this.if_editable(function() {this.nudge_selected_artifacts(10,0,evt);}) }.bind(this));
       Mousetrap.bind('space', function(evt)           { this.activate_pan_tool(evt); }.bind(this));
+      Mousetrap.bind(['command+c',      'ctrl+c'      ], function(evt) { evt.preventDefault(); evt.stopPropagation(); this.if_editable(function() {this.copy_selected_artifacts();}) }.bind(this));
+      Mousetrap.bind(['command+v',      'ctrl+v'      ], function(evt) { evt.preventDefault(); evt.stopPropagation(); this.if_editable(function() {this.paste_in_memory_clipboard();}) }.bind(this));
 
-      $(document).bind("beforecopy", this.handle_onbeforecopy.bind(this));
-      $(window).bind("beforeunload", this.handle_onunload.bind(this));
+      // $(document).bind("beforecopy", this.handle_onbeforecopy.bind(this));
+      // $(window).bind("beforeunload", this.handle_onunload.bind(this));
       $(window).bind("resize", this.handle_window_resize.bind(this));
     },
 
@@ -647,7 +650,6 @@ var SpacedeckSections = {
 
     prepare_clipboard: function() {
       if ('ontouchstart' in window) return; // don't do this on touch devices
-
       this.selected_artifacts_json = JSON.stringify(this.selected_artifacts());
       //$("#space-clipboard > textarea")[0].blur();
 
@@ -667,11 +669,10 @@ var SpacedeckSections = {
 
     handle_onbeforecopy: function(evt) {
       if (this.editing_artifact_id) return;
-
       var focused_tag = evt.target.nodeName.toLowerCase();
       if (focused_tag != "body") return;
 
-      this.prepare_clipboard_step2();
+      // this.prepare_clipboard_step2();
 
       window.setTimeout(function() {
         if (!$("#space-clipboard > textarea").length) return; // not ready yet
@@ -880,7 +881,7 @@ var SpacedeckSections = {
       this.update_board_artifact_viewmodel(a);
       this.extract_properties_from_selection();
       this.update_selection_metrics();
-      this.prepare_clipboard();
+      // this.prepare_clipboard();
       this.show_toolbar_props();
     },
 
@@ -896,7 +897,7 @@ var SpacedeckSections = {
 
       this.update_selection_metrics();
       this.extract_properties_from_selection();
-      this.prepare_clipboard();
+      // this.prepare_clipboard();
       this.show_toolbar_props();
     },
 
@@ -911,7 +912,7 @@ var SpacedeckSections = {
 
       this.extract_properties_from_selection();
       this.update_selection_metrics();
-      this.prepare_clipboard();
+      // this.prepare_clipboard();
       this.show_toolbar_props();
     },
 
@@ -938,7 +939,7 @@ var SpacedeckSections = {
 
       blur();
       //this.prepare_clipboard();
-      this.prepare_clipboard_step2();
+      // this.prepare_clipboard_step2();
       this.discover_zones();
 
       var prev_selected = this.selected_artifacts();
@@ -2200,6 +2201,16 @@ var SpacedeckSections = {
       this.update_selected_artifacts(function(a) {
         return {locked: !a.locked};
       }, true);
+    },
+
+    copy_selected_artifacts: function() {
+      this.in_memory_clipboard = _.cloneDeep(this.selected_artifacts())
+    },
+
+    paste_in_memory_clipboard: function() {
+      for (var i=0; i<this.in_memory_clipboard.length; i++) {
+        this.clone_artifact(this.in_memory_clipboard[i],50,50);
+      }
     },
 
     duplicate_selected_artifacts: function() {
