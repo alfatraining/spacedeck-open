@@ -51,8 +51,10 @@ SpacedeckWebsockets = {
             if (o && o._id) {
               var existing_artifact = this.find_artifact_by_id(o._id);
               const selectedArtifact = this.selected_artifacts()[0]
-              // if the updated artifact if selected, simply deselect
-              if (selectedArtifact && selectedArtifact._id === o._id && !_.isEqual(selectedArtifact, o)) {
+
+              // if the updated artifact is updated, excluding time based props, simply deselect
+              if (selectedArtifact && selectedArtifact._id === o._id && 
+                !window.isEqual({...selectedArtifact, artifactHash: '', updated_at: '', updatedAt: ''}, {...o, artifactHash: '', updated_at: '', updatedAt: ''})) {
                 this.deselect(true)
               }
 
