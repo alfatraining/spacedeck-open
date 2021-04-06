@@ -65,7 +65,7 @@ function setup_whiteboard_directives() {
       this.space_zoom = 1;
       this.artifacts_before_transaction = [];
       if($scope.active_space_role=="viewer") {
-        $scope.active_tool = "pan"  
+        $scope.active_tool = "pan"
       } else {
         $scope.active_tool = "pointer"
       }
@@ -170,7 +170,6 @@ function setup_whiteboard_directives() {
     handle_transform_mouse_down: function(evt,origin_x,origin_y) {
       evt.stopPropagation();
       evt.preventDefault();
-
       var $scope = this.vm.$root;
 
       $scope.begin_transaction();
@@ -748,7 +747,7 @@ function setup_whiteboard_directives() {
         if ($scope.active_tool !== "scribble" && $scope.active_tool !== "pan") {
           $scope.deselect();
         }
-        
+
         return;
       }
 
@@ -766,7 +765,6 @@ function setup_whiteboard_directives() {
 
       this.mouse_state = "idle";
       this.lasso = null;
-      $scope.active_tool = "pointer";
       $scope.end_transaction();
 
       this.render_lasso();
@@ -774,12 +772,8 @@ function setup_whiteboard_directives() {
 
     handle_mouse_enter: function(evt) {
       var $scope = this.vm.$root;
-
-      this.mouse_state = "idle";
-      if($scope.active_space_role=="viewer") {
-        $scope.active_tool = "pan"  
-      } else {
-        $scope.active_tool = "pointer"
+      if( $scope.active_space_role=="viewer" && this.mouse_state !== 'idle') {
+        $scope.active_tool = "pan"
       }
     },
 
