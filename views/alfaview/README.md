@@ -22,12 +22,8 @@ curl 'http://localhost:9666/api/spaces' -X POST -H 'Content-Type: application/js
 - on the curl url, edit_slug section NEEDS to be the same as the one used at the "Create space" step.
 - curl 'http://localhost:9666/api/spaces/${edit_slug}/memberships' -X POST -H 'Content-Type: application/json' -H 'X-Spacedeck-API-Token: alfaview_api_token' -d '{"email_invited":"example@hotmail.com", "role":"editor"}' -v 
 
-
 ##### Create session
-- curl 'http://localhost:9666/api/sessions' -H 'Content-Type: application/json' -X POST -d '{"email":"example@hotmail.com","password":"example"}' 
-
-##### List sessions
-- curl 'http://localhost:9666/api/sessions' -H 'Content-Type: application/json' -H 'X-Spacedeck-API-Token: alfaview_api_token' -X POST -d '{"email":"example@hotmail.com","password":"example"}'
+- curl 'http://localhost:9666/api/sessions' -H 'Content-Type: application/json' -H 'X-Spacedeck-API-Token: alfaview_api_token' -X POST -d '{"email":"example@hotmail.com","password":"example"}' 
 
 Listing sessions will return an object such as 
 ```
