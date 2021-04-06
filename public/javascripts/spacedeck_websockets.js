@@ -50,6 +50,12 @@ SpacedeckWebsockets = {
             var o = msg.object;
             if (o && o._id) {
               var existing_artifact = this.find_artifact_by_id(o._id);
+              const selectedArtifact = this.selected_artifacts()[0]
+              // if the updated artifact if selected, simply deselect
+              if (selectedArtifact && selectedArtifact._id === o._id && !_.isEqual(selectedArtifact, o)) {
+                this.deselect(true)
+              }
+
               if (!existing_artifact) {
                 existing_artifact = o;
               } else {
