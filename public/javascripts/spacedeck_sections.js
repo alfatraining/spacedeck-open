@@ -1125,13 +1125,14 @@ var SpacedeckSections = {
       this.active_space.width =Math.max((parseInt(er.x2/window.innerWidth)+2)*window.innerWidth, window.innerWidth);
       this.active_space.height=Math.max((parseInt(er.y2/window.innerHeight)+2)*window.innerHeight, window.innerHeight);
 
-      if (this._last_bounds_width != this.active_space.width ||
-        this._last_bounds_height != this.active_space.height) {
-        this._last_bounds_width = this.active_space.width;
-        this._last_bounds_height = this.active_space.height;
+      // these values are never used
+      // if (this._last_bounds_width != this.active_space.width ||
+      //   this._last_bounds_height != this.active_space.height) {
+      //   this._last_bounds_width = this.active_space.width;
+      //   this._last_bounds_height = this.active_space.height;
 
-        save_space(this.active_space);
-      }
+      //   save_space(this.active_space);
+      // }
 
       this.resize_minimap();
       this.discover_zones();
@@ -1193,6 +1194,7 @@ var SpacedeckSections = {
 
       // mark version dirty locally
       if (this.active_space) {
+        // maybe remove this because it possibly does not serve a purpose
         this.active_space.updated_at = (new Date()).getTime();
       }
 

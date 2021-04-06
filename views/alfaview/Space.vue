@@ -602,7 +602,7 @@ export default {
         })
         .then((response) => {
           // update value in instance periodically
-          this.$root.active_space.updatedAt = get(response, 'body.updatedAt');
+          this.$root.active_space.updatedAt = get(response, 'data.updatedAt');
           this.spaceFound = true;
         })
         .catch(() => {
