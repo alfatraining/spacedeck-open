@@ -54,7 +54,7 @@ SpacedeckWebsockets = {
 
               // if the updated artifact is updated, excluding time based props, simply deselect
               if (selectedArtifact && selectedArtifact._id === o._id && 
-                !window.isEqual({...selectedArtifact, artifactHash: '', updated_at: '', updatedAt: ''}, {...o, artifactHash: '', updated_at: '', updatedAt: ''})) {
+                !_.isEqual({...selectedArtifact, artifactHash: '', updated_at: '', updatedAt: ''}, {...o, artifactHash: '', updated_at: '', updatedAt: ''})) {
                 this.deselect(true)
               }
 
