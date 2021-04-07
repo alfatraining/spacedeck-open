@@ -51,7 +51,6 @@ SpacedeckWebsockets = {
             if (o && o._id) {
               var existing_artifact = this.find_artifact_by_id(o._id);
 
-
               if (!existing_artifact) {
                 existing_artifact = o;
               } else {
@@ -74,18 +73,20 @@ SpacedeckWebsockets = {
             var o = msg.object;
             if (o._id) {
               var existing_artifact = this.find_artifact_by_id(o._id);
-              const selectedArtifact = this.selected_artifacts()[0]
 
               if (existing_artifact) {
+                const selectedArtifacts = this.selected_artifacts()
+
+                if (_.findWhere(selectedArtifacts, { _id: o._id })) {
+                  this.selected_artifacts_dict = _.omit(this.selected_artifacts_dict, o._id);
+                  this.update_selection_metrics();
+                }
+
                 var idx = this.active_space_artifacts.indexOf(
                   existing_artifact
                 );
                 this.active_space_artifacts.splice(idx, 1);
                 
-                // if the updated artifact is updated, excluding time based props, simply deselect
-                if (selectedArtifact && selectedArtifact._id === o._id) {
-                  this.deselect(true)
-                }
               } else console.log("existing artifact to delete not found");
             } else console.error("object without _id");
           }
