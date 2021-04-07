@@ -472,7 +472,7 @@
             <span class="value-w">{{ selectionMetrics.w }}</span>
           </div>
 
-          <div v-show="selectionMetrics.vector_points" :style="selectionMetrics.vector_style">
+          <div v-show="selectionMetrics.vector_points && mouseState !== 'vector_transform'" :style="selectionMetrics.vector_style">
             <span
               v-for="p in selectionMetrics.vector_points"
               :style="{ left: p.dx + 'px', top: p.dy + 'px' }"

@@ -194,6 +194,7 @@ function setup_whiteboard_directives() {
       $scope.begin_transaction();
       var cursor = this.cursor_point_to_space(evt);
       this.mouse_state = "vector_transform";
+      $scope.mouse_state = "vector_transform"
       $scope.mouse_ox = cursor.x;
       $scope.mouse_oy = cursor.y;
       //$scope.transform_ox = origin_x;

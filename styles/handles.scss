@@ -77,9 +77,9 @@
   right: 0;
   z-index: 800;
   pointer-events: none;
-  
+
   background: rgba(255,255,255,0.1);
-  
+
   &:after{
     border: 4px dotted #000000;
     content: "";
@@ -96,7 +96,7 @@
 
 .extreme-zoom .handles {
   border: 8px solid rgba(255,255,255,0.5);
-  
+
   &:after{
     border: 8px dotted #000000;
     top: -4px;
@@ -108,13 +108,13 @@
 
 .extreme-zoom .handle {
   @include scale(8,8);
-  
+
   &:hover {
     @include scale(12,12);
   }
 }
 
-.mouse-scribble, .mouse-vector_transform {
+.mouse-scribble { // ,.mouse-vector_transform
   .handles, .handles:after {
     display: none !important;
   }
@@ -255,7 +255,7 @@
   // opacity: 0;
   pointer-events: none !important;
   @include transition( all 0.1s 0.05s ease-in-out);
-  text-align: center;  
+  text-align: center;
   background-color: $dark;
   color: $light;
   font-size: 10px;
@@ -263,22 +263,22 @@
     @include transition( all 0.3s ease-in-out);
     content: "";
     position: absolute;
-    width: 0; 
-    height: 0; 
+    width: 0;
+    height: 0;
     pointer-events: none !important;
   }
 }
 
-.handle > div > div > div:active .value-w, 
-.handle:active .value-h{ 
+.handle > div > div > div:active .value-w,
+.handle:active .value-h{
   @include transition( all 0.05s 0s cubic-bezier(0, 0, 0.7, 1.7));
   opacity: 1;
   @include scale(1,1);
 }
 
 
-.edge-handle:active .value-w, 
-.edge-handle:active .value-h{ 
+.edge-handle:active .value-w,
+.edge-handle:active .value-h{
   @include transition( all 0.05s 0s cubic-bezier(0, 0, 0.7, 1.7));
   opacity: 1;
   @include scale(1,1);
@@ -287,11 +287,11 @@
 .edge-handle {
   @include user-select(none);
   pointer-events:auto;
-  
+
   z-index: 1000;
   position: absolute;
   background-clip: content-box;
-  
+
   @include transition( background-color 0.05s ease-in-out);
 
   &:active,
@@ -338,7 +338,7 @@
   border: 1px solid black;
   margin: -5px;
   padding: 4px;
-  
+
   &:hover {
       background-color: black;
       cursor: move;
@@ -366,7 +366,7 @@
   margin: -30px;
   @include transition(all 0.1s ease-in-out);
   @include scale(0.5,0.5);
-  
+
   &:hover {
     @include scale(1,1);
     .value-h,
@@ -374,15 +374,15 @@
       display: block;
     }
   }
-  
+
   // &:after {
   //   @include transition( all 0.3s ease-in-out);
   //   content: "";
   //   position: absolute;
   //   top: 0px;
   //   margin-left: -20px;
-  //   width: 0; 
-  //   height: 0; 
+  //   width: 0;
+  //   height: 0;
   //   border-left: 20px solid transparent;
   //   border-right: 20px solid transparent;
   //   border-top: 20px solid $dark;
