@@ -89,7 +89,7 @@ var SpacedeckBoardArtifacts = {
 
   artifact_is_text_blank: function(a) {
     if (a.description) {
-      desc = a.description.toString();
+      var desc = a.description.toString();
       var filtered = desc.replace(/<[^>]+>/g,"").replace(/\s/g,"");
       return (filtered.length<1);
     } else {
@@ -98,7 +98,7 @@ var SpacedeckBoardArtifacts = {
   },
 
   artifact_classes: function(a) {
-    clzs = ["artifact", "artifact-"+this.artifact_major_type(a), a.mime.replace("/","-")];
+    var clzs = ["artifact", "artifact-"+this.artifact_major_type(a), a.mime.replace("/","-")];
 
     if (this.artifact_is_selected(a) && this.editing_artifact_id!=a._id) clzs.push("selected");
     if (!a._id) clzs.push("creating");
@@ -321,7 +321,7 @@ var SpacedeckBoardArtifacts = {
   artifact_enclosing_rect: function(arts) {
     if (arts.length==0) return null;
 
-    r = {
+    var r = {
       x1: parseInt(_.min(arts.map(function(a){return a.x}))),
       y1: parseInt(_.min(arts.map(function(a){return a.y}))),
       x2: parseInt(_.max(arts.map(function(a){return a.x+a.w}))),
