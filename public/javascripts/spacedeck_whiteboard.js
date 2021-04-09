@@ -555,9 +555,10 @@ function setup_whiteboard_directives() {
         h: note_h,
         align: "center",
         valign: "middle",
-        stroke_color: "#000000",
-        fill_color: "rgb(241, 196, 15)",
+        stroke_color: "rgba(0,0,0,1)",
+        fill_color: "rgba(241,196,15,1)",
         stroke: 0,
+        border_radius: 0,
         padding_left: 10,
         padding_right: 10,
         padding_top: 10,
@@ -666,7 +667,7 @@ function setup_whiteboard_directives() {
         z: z,
         w: 64,
         h: 64,
-        stroke_color: "#000000",
+        stroke_color: "rgba(0,0,0,1)",
         stroke: 2,
         shape: "line"
       };

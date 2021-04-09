@@ -118,7 +118,7 @@
           <span class="input-unit light">px</span>
         </div>
 
-        <div class="form-group no-m">
+        <div v-if="hasStyleBorderRadius" class="form-group no-m">
           <label class="label label-sm">
             {{ $t('toolbar.borderRadius') }}
           </label>
@@ -214,6 +214,9 @@ export default {
     },
     openedDialog() {
       return this.$root.opened_dialog;
+    },
+    hasStyleBorderRadius() {
+      return this.activeStyle.border_radius !== null && this.activeStyle.border_radius !== undefined;
     },
   },
   methods: {
