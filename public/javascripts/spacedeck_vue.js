@@ -61,23 +61,15 @@ function boot_spacedeck() {
   methods = _.extend(methods, SpacedeckUsers.methods);
   methods = _.extend(methods, SpacedeckWebsockets.methods);
   methods = _.extend(methods, SpacedeckSpaces.methods);
-  methods = _.extend(methods, SpacedeckTeams.methods);
   methods = _.extend(methods, SpacedeckBoardArtifacts);
   methods = _.extend(methods, SpacedeckFormatting);
   methods = _.extend(methods, SpacedeckSections.methods);
-  methods = _.extend(methods, SpacedeckAvatars.methods);
-  methods = _.extend(methods, SpacedeckModals.methods);
-  methods = _.extend(methods, SpacedeckAccount.methods);
   methods = _.extend(methods, SpacedeckRoutes);
 
   data = _.extend(data, SpacedeckUsers.data);
-  data = _.extend(data, SpacedeckAccount.data);
   data = _.extend(data, SpacedeckWebsockets.data);
   data = _.extend(data, SpacedeckSpaces.data);
-  data = _.extend(data, SpacedeckTeams.data);
   data = _.extend(data, SpacedeckSections.data);
-  data = _.extend(data, SpacedeckAvatars.data);
-  data = _.extend(data, SpacedeckModals.data);
 
   Vue.filter('select', function (array, key, operant, value) {
       var res = _.filter(array, function(e){

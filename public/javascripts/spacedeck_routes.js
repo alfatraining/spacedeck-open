@@ -132,7 +132,7 @@ var SpacedeckRoutes = {
               }
             } else {
               this.active_view = "login";
-              token = get_query_param("code");
+              var token = get_query_param("code");
               if (token) {
                 this.login_with_token(token);
               }
