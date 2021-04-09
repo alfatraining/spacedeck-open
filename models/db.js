@@ -13,7 +13,7 @@ const sequelize = new Sequelize(
     decimalNumbers: true  // required for MySQL so decimal number are not returned as strings!
   },
   pool: {
-    max: 5,
+    max: 12,
     min: 0,
     acquire: 30000,
     idle: 10000
