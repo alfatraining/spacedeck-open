@@ -95,12 +95,22 @@ SpacedeckWebsockets = {
         if (msg.action == "bulkDelete" && msg.object && this.active_space) {
           var artifactIds = msg.object.artifactIds;
           if (artifactIds.length) {
+            const selectedArtifacts = this.selected_artifacts()
+            
+            artifactIds.forEach(id => {
+              if (_.findWhere(selectedArtifacts, { _id: id })) {
+                this.selected_artifacts_dict = _.omit(this.selected_artifacts_dict, id);
+              }
+            });
+            if (selectedArtifacts.length !== Object.keys(this.selected_artifacts_dict).length) {
+              this.update_selection_metrics();
+            }
+
             this.active_space_artifacts = this.active_space_artifacts.filter(
               (artifact) => {
                 return artifactIds.indexOf(artifact._id) === -1;
               }
             );
-            this.deselect(true);
           }
         }
       }
