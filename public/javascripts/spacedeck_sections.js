@@ -69,10 +69,10 @@ var SpacedeckSections = {
       line_height: 1.5,
       letter_spacing: 0,
 
-      stroke_color: "#000000",
-      fill_color: "#00000000",
-      text_color: "#000000",
-      background_color: "#ffffff",
+      stroke_color: "rgba(0,0,0,1)",
+      fill_color: "rgba(0,0,0,1)",
+      text_color: "rgba(0,0,0,1)",
+      background_color: "rgba(255,255,255,1)",
 
       padding: 0,
       padding_horz: 0,
@@ -1234,9 +1234,11 @@ var SpacedeckSections = {
           var changed = false;
 
           for (k in changes[i]) {
-            //console.log("change: ",k,": ",changes[i][k],"<-",a[k])
-            a[k] = changes[i][k];
-            changed = true;
+            if (a[k] !== null && a[k] !== undefined) {
+              //console.log("change: ",k,": ",changes[i][k],"<-",a[k])
+              a[k] = changes[i][k];
+              changed = true; 
+            }
           }
 
           this.update_board_artifact_viewmodel(a);
@@ -1735,15 +1737,19 @@ var SpacedeckSections = {
         z: point.z,
         w: w,
         h: h,
-        stroke_color: "#ffffff",
-        text_color: "#ffffff",
+        stroke_color: "rgba(255,255,255,1)",
+        text_color: "rgba(255,255,255,1)",
         stroke: 0,
-        fill_color: "#000000",
+        fill_color: "rgba(0,0,0,1)",
         shape: shape_type,
         valign: "middle",
         align: "center",
       };
 
+      if (shape_type === "square") {
+        // on squares border radius has an effect on how it is displayed
+        a.border_radius = 0;
+      }
       if (this.guest_nickname) {
         a.editor_name = this.guest_nickname;
       }
