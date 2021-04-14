@@ -608,7 +608,7 @@ function setup_whiteboard_directives() {
       //$scope.tool_artifact = a;
       $scope.transform_ox = 0;
       $scope.transform_oy = 0;
-      // $scope.begin_transaction();
+      $scope.begin_transaction();
       // $scope.save_artifact(a, function(saved_a) {
       // }.bind(this));
     },

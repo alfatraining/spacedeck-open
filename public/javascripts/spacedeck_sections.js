@@ -960,7 +960,9 @@ var SpacedeckSections = {
           this.selected_artifacts_dict[a._id] = a;
         }
       }
-      this.delete_selected_artifacts(null, true); // delete all selected in loop
+
+      // FIXME: this wasn't doing anything at all, investigate if side effects occur
+      // this.delete_selected_artifacts(null, true); // delete all selected in loop
 
       this.selected_artifacts_dict = {};
       this.editing_artifact_id = null;
@@ -1092,13 +1094,14 @@ var SpacedeckSections = {
     begin_transaction: function() {
       this.transaction_running = true;
 
-      if (!this.undo_stack.length || this.undo_stack[this.undo_stack.length-1].action!="empty") {
-        this.undo_stack.push({action:"empty"});
-      } else {
-        //console.log("undo slot is already empty.");
-      }
+      // TODO: remove or enable undo related code
+      // if (!this.undo_stack.length || this.undo_stack[this.undo_stack.length-1].action!="empty") {
+      //   this.undo_stack.push({action:"empty"});
+      // } else {
+      //   //console.log("undo slot is already empty.");
+      // }
 
-      this.redo_stack = [];
+      // this.redo_stack = [];
 
       this.artifacts_before_transaction = this.active_space_artifacts.map(function(a) {
         return _.cloneDeep(a);
@@ -1174,12 +1177,20 @@ var SpacedeckSections = {
           a.editor_name = this.guest_nickname;
         }
 
+        if(window.temp_artifact_ignore_map[id]) {
+          delete window.artifact_save_queue[id];
+          continue;
+        }
+
+        if (id.indexOf(window.constants.CLIENT_ARTIFACT_ID_PREFIX) > -1) {
+          window.temp_artifact_ignore_map[id] = id
+        }
+
         save_artifact(a, function(savedArtifact) {
           if (id.indexOf(window.constants.CLIENT_ARTIFACT_ID_PREFIX) > -1) {
             const index = this.active_space_artifacts.findIndex(a => a._id === id)
-            // remove the old artifact with id like 'client_' and push the new one to update the dom
-            this.active_space_artifacts.splice(index, 1) 
-            this.active_space_artifacts.push(savedArtifact)
+            // replace the old artifact with id like 'client_' with the new one from the server
+            this.active_space_artifacts[index] = savedArtifact
           }
           delete window.artifact_save_queue[id];
         }.bind(this), function(req) {
@@ -1197,7 +1208,6 @@ var SpacedeckSections = {
         // maybe remove this because it possibly does not serve a purpose
         this.active_space.updated_at = (new Date()).getTime();
       }
-
       //window.artifact_save_queue = {};
     },
 
@@ -1213,6 +1223,10 @@ var SpacedeckSections = {
         window.artifact_save_queue = {};
       }
 
+      if (!window.temp_artifact_ignore_map) {
+        window.temp_artifact_ignore_map = {};
+      }
+
       if (!a._id) {
         console.log("warning: illegal artifact queued for save");
       }
@@ -1222,7 +1236,10 @@ var SpacedeckSections = {
         a.shape_svg = a.view.vector_svg;
       }
 
-      window.artifact_save_queue[a._id] = a;
+      // only queue artifact if it is not in the ignore list
+      if (!window.temp_artifact_ignore_map[a._id]) {
+        window.artifact_save_queue[a._id] = a;
+      }
     },
 
     update_properties: function(artifact_ids, changes) {
@@ -1237,7 +1254,7 @@ var SpacedeckSections = {
             if (a[k] !== null && a[k] !== undefined) {
               //console.log("change: ",k,": ",changes[i][k],"<-",a[k])
               a[k] = changes[i][k];
-              changed = true; 
+              changed = true;
             }
           }
 
