@@ -35,6 +35,10 @@ var SpacedeckSections = {
     selected_artifacts_dict: {},
     in_memory_clipboard: {},
     first_selected_artifact: null,
+    arrow_options: {
+      vector_point_adjustment_dx: 0,
+      vector_point_adjustment_dy: 0,
+    },
     selection_metrics: {
       contains_text: false,
       contains_images: false,
@@ -1009,9 +1013,73 @@ var SpacedeckSections = {
       return this.enclosing_rect(this.selected_artifacts());
     },
 
+    // This function exists so the selection box includes the arrow-head.
+    // This is achieved by calculating the arrow point, and adjusting both the selection box and the arrow's control points.
+    // Arrow_option also stores the adjustment values so they can be used in Space.vue
+    calculateArrowPositions: function(a) {
+      // Control points by their position in the array [start,end,middle]
+      var start = a.control_points[0]
+      var end = a.control_points[1]
+      
+      var arrowLeft = end.dx < start.dx
+      var arrowUp = end.dy < start.dy
+      var startX;
+      var endX;
+      var startY;
+      var endY;
+      if(arrowLeft) {
+        startX = a.x + a.w
+        endX = a.x
+      } else {
+        startX = a.x
+        endX = a.x + a.w
+      }
+
+      if(arrowUp) {
+        startY = a.y + a.h
+        endY = a.y
+      } else {
+        startY = a.y
+        endY = a.y + a.h
+      }
+    	// Calculate the angle of the arrow in radian
+      var rad = Math.atan2(endY - startY, endX - startX);
+
+      // Calculate the rayon (the length of the arrow)
+      // Note: Your arrow size depends on the the 'strokeWidth' attribute of your line
+      // 3 is the constant taken from vector-render.js
+      var r = 3 * a.stroke;
+      var xAdjust = r * Math.cos(rad)
+      var yAdjust = r * Math.sin(rad)
+      
+      // Adjusting vector points for arrow handles
+      // Arrow options are consumed inside space.vue component
+      arrowUp && (this.arrow_options.vector_point_adjustment_dy = - yAdjust)
+      arrowLeft && (this.arrow_options.vector_point_adjustment_dx = - xAdjust)
+
+      var result = {
+        x1: a.x + (arrowLeft ? xAdjust : 0),
+        y1: a.y + (arrowUp ? yAdjust : 0),
+        x2: a.x + a.w + (!arrowLeft ? xAdjust : 0),
+        y2: a.y + a.h + (!arrowUp ? yAdjust : 0)
+      }
+      return result
+    },
+
     enclosing_rect: function(arts) {
       if (arts.length==0) return null;
       arts = _.filter(arts); // remove any nulls
+
+      if(arts.length==1) {
+        var artifact = arts[0]
+        if(artifact.shape=='arrow') {
+          return this.calculateArrowPositions(artifact)
+        } else {
+          // reset arrow_options on each update if the artifact is not an arrow
+          this.arrow_options.vector_point_adjustment_dx = 0
+          this.arrow_options.vector_point_adjustment_dy = 0
+        }
+      }
 
       return {
         x1: parseInt(_.min(arts.map(function(a){return ((!a || !a.x)?0:a.x)}))),

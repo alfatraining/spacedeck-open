@@ -137,6 +137,11 @@ var SpacedeckBoardArtifacts = {
         if (a.border_radius) {
           styles.push("border-radius:"+a.border_radius+"px");
         }
+      } else {
+        //  Prevents any click events from occuring on the svg area.
+        //  It is now possible to click artifacts in the area around the 'invisible' 
+        //  svg box that was preventing the click event to pass through.
+        styles.push("pointer-events:none;")
       }
 
       if (a.fill_color && !svg_style) {
@@ -293,7 +298,8 @@ var SpacedeckBoardArtifacts = {
     if (mtype != "vector" && mtype != "shape") return "";
 
     var shape = a.shape || "";
-    var padding = 32 + a.stroke*2;
+    // Increased padding handles the case of the arrow curve going outside the drawing border
+    var padding = 32 + a.stroke * (shape=='arrow' ? 10 : 2)
     var path_svg;
     var fill = "";
 
