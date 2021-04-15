@@ -478,7 +478,10 @@
           >
             <span
               v-for="p in selectionMetrics.vector_points"
-              :style="{ left: p.dx + 'px', top: p.dy + 'px' }"
+              :style="{
+                left: p.dx + arrowOptions.vector_point_adjustment_dx + 'px',
+                top: p.dy + arrowOptions.vector_point_adjustment_dy + 'px',
+              }"
               class="vector-handle"
               data-idx="{{$index}}"
             ></span>
@@ -513,6 +516,9 @@ export default {
     };
   },
   computed: {
+    arrowOptions() {
+      return this.$root.arrow_options;
+    },
     userCursors() {
       return this.$root.user_cursors;
     },
