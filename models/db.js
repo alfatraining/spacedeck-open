@@ -12,12 +12,11 @@ const sequelize = new Sequelize(
   dialectOptions: {
     decimalNumbers: true,  // required for MySQL so decimal number are not returned as strings!
     ssl: {
-      ssl: true,      
       rejectUnauthorized: false
     },
   },
   pool: {
-    max: 12,
+    max: 40,
     min: 0,
     acquire: 30000,
     idle: 10000
@@ -222,15 +221,8 @@ module.exports = {
         dialectOptions: {
           decimalNumbers: true,  // required for MySQL so decimal number are not returned as strings!
           ssl: {
-            ssl: true,      
             rejectUnauthorized: false
           },
-        },
-        pool: {
-          max: 40,
-          min: 0,
-          acquire: 30000,
-          idle: 10000
         },
       });
     
