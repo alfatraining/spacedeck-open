@@ -11,7 +11,10 @@ const sequelize = new Sequelize(
   dialect: 'mysql',
   dialectOptions: {
     decimalNumbers: true,  // required for MySQL so decimal number are not returned as strings!
-    ssl: true
+    ssl: {
+      ssl: true,      
+      rejectUnauthorized: false
+    },
   },
   pool: {
     max: 12,
@@ -216,6 +219,19 @@ module.exports = {
         password: process.env.SPACEDECK_DB_PASSWORD,
         host: process.env.SPACEDECK_DB_HOST,
         dialect: 'mysql',
+        dialectOptions: {
+          decimalNumbers: true,  // required for MySQL so decimal number are not returned as strings!
+          ssl: {
+            ssl: true,      
+            rejectUnauthorized: false
+          },
+        },
+        pool: {
+          max: 12,
+          min: 0,
+          acquire: 30000,
+          idle: 10000
+        },
       });
     
     return initDB.query(`CREATE DATABASE IF NOT EXISTS ${process.env.SPACEDECK_DB_NAME}`)
