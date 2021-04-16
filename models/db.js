@@ -10,7 +10,8 @@ const sequelize = new Sequelize(
   host: process.env.SPACEDECK_DB_HOST,
   dialect: 'mysql',
   dialectOptions: {
-    decimalNumbers: true  // required for MySQL so decimal number are not returned as strings!
+    decimalNumbers: true,  // required for MySQL so decimal number are not returned as strings!
+    ssl: true
   },
   pool: {
     max: 12,
