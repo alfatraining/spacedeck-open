@@ -36,6 +36,13 @@ module.exports = (req, res, next) => {
       } else {
         return res.status(401).send('Unauthorized');
       }
+
+    case 'search':
+      if (presharedKeyMatched) {
+        return next();
+      } else {
+        return res.status(401).send('Unauthorized');
+      }
     default:
       return next();
   }
