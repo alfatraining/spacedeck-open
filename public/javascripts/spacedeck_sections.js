@@ -1253,15 +1253,16 @@ var SpacedeckSections = {
         if (id.indexOf(window.constants.CLIENT_ARTIFACT_ID_PREFIX) > -1) {
           window.temp_artifact_ignore_map[id] = id
         }
-
+        
         save_artifact(a, function(savedArtifact) {
           if (id.indexOf(window.constants.CLIENT_ARTIFACT_ID_PREFIX) > -1) {
             const index = this.active_space_artifacts.findIndex(a => a._id === id)
-             // remove the old artifact with id like 'client_' and push the new one to update the dom
-             this.active_space_artifacts.splice(index, 1) 
-             this.active_space_artifacts.push(savedArtifact)
+            // remove the old artifact with id like 'client_' and push the new one to update the dom
+            this.active_space_artifacts.splice(index, 1) 
+            this.active_space_artifacts.push(savedArtifact)
+            delete window.artifact_save_queue[id];
           }
-          delete window.artifact_save_queue[id];
+          savedArtifact._id && delete window.artifact_save_queue[savedArtifact._id];
         }.bind(this), function(req) {
           if (req && req.status == 404) {
             // artifact was already deleted, ignore
