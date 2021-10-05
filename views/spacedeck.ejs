@@ -4,31 +4,17 @@
     <meta charset="utf-8" />
     <title>alfaview - whiteboard</title>
     <meta name="description" content="" />
-    <meta
-      name="viewport"
-      content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta
-      name="apple-mobile-web-app-status-bar-style"
-      content="black-translucent"
-    />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
     <link href="/images/favicon.png" rel="icon" type="image/x-icon" />
-    <link
-      href="https://fonts.googleapis.com/css?family=Inter"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet"
-      type="text/css"
-    />
+    <link href="https://fonts.googleapis.com/css?family=Inter" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css" />
     <link href="/stylesheets/style.css" rel="stylesheet" />
 
     <script>
-      if (typeof module === "object") {
+      if (typeof module === 'object') {
         window.module = module;
         module = undefined;
       }
@@ -40,9 +26,8 @@
         webHost: location.host,
         webEndpoint: location.origin,
         apiEndpoint: location.origin,
-        websocketsEndpoint: location.origin
-          .replace("https:", "wss:")
-          .replace("http:", "ws:"),
+        websocketsEndpoint: location.origin.replace('https:', 'wss:').replace('http:', 'ws:'),
+        environment: '<%= process.env.NODE_ENV %>',
       };
     </script>
 
