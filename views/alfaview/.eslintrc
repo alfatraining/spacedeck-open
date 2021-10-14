@@ -71,6 +71,7 @@
     "globals": {
       "NODE_ENV": true,
       "ENV": true,
-      "Vue": true
+      "Vue": true,
+      "DEBUG_LOGGING": true
     }
   }
