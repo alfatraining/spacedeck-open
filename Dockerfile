@@ -1,8 +1,10 @@
-FROM node:10-alpine3.11
+FROM node:12-buster-slim
 
 WORKDIR /app
 
-RUN apk add mysql-client
+RUN apt-get update -qq \
+  && apt-get install -y --no-install-recommends default-mysql-client \
+  && rm -rf /var/lib/apt/lists/*
 
 # build audiowaveform from source
 
@@ -36,4 +38,3 @@ COPY . .
 
 EXPOSE 9666
 CMD ["node", "spacedeck.js"]
-
