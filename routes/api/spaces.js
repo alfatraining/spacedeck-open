@@ -8,7 +8,6 @@ const uuidv4 = require('uuid/v4');
 
 var mailer = require('../../helpers/mailer');
 var uploader = require('../../helpers/uploader');
-var space_render = require('../../helpers/space-render');
 var phantom = require('../../helpers/phantom');
 var payloadConverter = require('../../helpers/artifact_converter');
 
