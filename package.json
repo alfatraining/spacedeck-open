@@ -25,7 +25,7 @@
     "cookie-parser": "~1.4.5",
     "dayjs": "^1.10.4",
     "downloadjs": "^1.4.7",
-    "ejs": "3.1.6",
+    "ejs": "3.1.7",
     "express": "^4.17.1",
     "extract-zip": "^1.7.0",
     "file-type": "^7.6.0",
