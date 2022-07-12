@@ -11,6 +11,7 @@ import TextDigits from './TextDigits.vue';
 import ObjectOptions from './ObjectOptions.vue';
 import MinimapZoom from './MinimapZoom.vue';
 import BoardExpiration from './BoardExpiration.vue';
+import LegalLinks from './LegalLinks.vue';
 import BoardMeta from './BoardMeta.vue';
 import Space from './Space.vue';
 import BoardError from './BoardError.vue';
@@ -46,6 +47,7 @@ Vue.component('TextDigits', TextDigits);
 Vue.component('ObjectOptions', ObjectOptions);
 Vue.component('MinimapZoom', MinimapZoom);
 Vue.component('BoardExpiration', BoardExpiration);
+Vue.component('LegalLinks', LegalLinks);
 Vue.component('BoardMeta', BoardMeta);
 // eslint-disable-next-line
 Vue.component("space", Space);

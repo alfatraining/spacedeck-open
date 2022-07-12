@@ -19,6 +19,9 @@ export default {
   },
   boardMetadata: {
     deletionMessage: 'Board wird automatisch gelöscht am: {date}',
+    legalNotice: 'Impressum',
+    privacyPolicyStatement: 'Datenschutzerklärung',
+    termsAndConditions: 'Allgemeine Geschäftsbedingungen',
   },
   errors: {
     notFound:
