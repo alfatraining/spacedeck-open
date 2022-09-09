@@ -1,4 +1,4 @@
-FROM node:12-buster-slim
+FROM git-registry.alfa.sx:4567/alfatraining/docker/node:14.20-buster-slim
 
 WORKDIR /app
 
