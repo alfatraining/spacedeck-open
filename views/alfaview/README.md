@@ -1,8 +1,12 @@
+### Node version
+- This project uses node version 14.20
+
 ### Starting the project
 
 - Run `make dev-init` in the root folder to install dependencies, generate the alfaview components, and start up the containers
 - `make dev-start` and `make dev-stop` can be used to start and stop without intalling dependencies and generating files again
-- Additionally `make watch` can be used to watch the files under `views/alfaview`
+
+- Local development: Run `make watch` to build the frontend files and watch the files under path `views/alfaview`
 
 
 ### Creating a space for test
