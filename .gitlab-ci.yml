@@ -1,6 +1,10 @@
+stages:
+  - check_js
+  - build
+
 lint_js:
   image: git-registry.alfa.sx:4567/alfatraining/docker/node:14.20-alpine3.16
-  stage: build
+  stage: check_js
   except:
     - deployment/production
     - deployment/staging
@@ -10,6 +14,26 @@ lint_js:
     - yarn lint
   cache:
     key: "${CI_COMMIT_REF_NAME}_${CI_BUILD_REF_NAME}"
+    paths:
+      - npm-packages-offline-cache
+  tags:
+    - kubernetes
+
+audit_js:
+  image: git-registry.alfa.sx:4567/alfatraining/docker/node:14.20-alpine3.16
+  stage: check_js
+  except:
+    - deployment/production
+    - deployment/staging
+    - master
+  allow_failure: true
+  script:
+  # checks for packages with high severity security vulnerabilities
+  # yarn audit will return a non-zero exit code if any level of vulnerability is matched - exit code greater than 8 is HIGH or CRITICAL
+    - yarn
+    - /bin/sh -c 'yarn audit --groups "dependencies"; [[ $? -ge 8 ]] && exit 1 || exit 0'
+  cache:
+    key: "${CI_COMMIT_REF_SLUG}"
     paths:
       - npm-packages-offline-cache
   tags:
