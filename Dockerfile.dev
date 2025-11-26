@@ -1,4 +1,14 @@
-FROM spacedeck
+FROM git-registry.alfa.sx:4567/alfatraining/docker/node:14.20-bullseye-slim
+
+WORKDIR /app
+
+RUN apt-get update -qq \
+  && apt-get install -y --no-install-recommends default-mysql-client \
+  && rm -rf /var/lib/apt/lists/*
+
+COPY package*.json ./
+RUN npm install
+COPY . .
 
 RUN npm install --global gulp-cli
 RUN npm install --global nodemon
