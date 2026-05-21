@@ -31,7 +31,7 @@ services:
         target: /app/public
 
   mysql:
-    image: mysql:8.0.44
+    image: "git-registry.alfa.sx:4567/alfatraining/docker/mysql:8.0"
     command: --default-authentication-plugin=mysql_native_password
     container_name: "mysql"
     restart: unless-stopped
@@ -44,7 +44,7 @@ services:
       MYSQL_DATABASE: "spacedeck"
 
   nats:
-    image: "nats:2.1"
+    image: "git-registry.alfa.sx:4567/alfatraining/docker/nats:latest"
     container_name: "nats"
     command: "--user dev-user --pass dev-pass"
     expose:
