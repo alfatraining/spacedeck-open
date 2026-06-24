@@ -10,26 +10,26 @@
     </div>
     <!-- | orderBy 'order' -->
     <div
-      v-for="(z, key) in zones"
-      :key="key"
+      v-for="(z, index) in zones"
+      :key="index"
       class="dialog-section no-p"
       style="white-space: nowrap; text-align: left; cursor: pointer"
-      @click="zoomToZone(zones[$index])"
+      @click="zoomToZone(z)"
     >
       <button class="btn btn-sm btn-transparent">
-        {{ zones[$index].description }}
+        {{ z.description }}
       </button>
       <button
-        v-if="$index == currentZoneIndex"
+        v-if="index == currentZoneIndex"
         class="btn btn-sm btn-round btn-transparent btn-icon"
-        @click="sortZoneUp(zones[$index])"
+        @click="sortZoneUp(z)"
       >
         <span class="icon icon-triangle-up"></span>
       </button>
       <button
-        v-if="$index == currentZoneIndex"
+        v-if="index == currentZoneIndex"
         class="btn btn-sm btn-round btn-transparent btn-icon"
-        @click="sortZoneDown(zones[$index])"
+        @click="sortZoneDown(z)"
       >
         <span class="icon icon-triangle-down"></span>
       </button>

@@ -22,17 +22,20 @@ import de from './locales/de';
 import { getBrowserLocale } from './utils';
 
 Vue.use(VueI18n);
-const locales = {
-  en: en,
-  de: de,
-};
 
-Vue.config.lang = getBrowserLocale();
-Vue.config.fallbackLang = 'en';
-
-Object.keys(locales).forEach(function (lang) {
-  Vue.locale(lang, locales[lang]);
+const i18n = new VueI18n({
+  locale: getBrowserLocale(),
+  fallbackLocale: 'en',
+  messages: {
+    en: en,
+    de: de,
+  },
 });
+
+window.alfaview = window.alfaview || {};
+window.alfaview.getI18N = function () {
+  return i18n;
+};
 
 Vue.component('Toolbar', Toolbar);
 Vue.component('Shapes', Shapes);

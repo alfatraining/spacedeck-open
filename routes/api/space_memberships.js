@@ -3,14 +3,13 @@ var config = require('config');
 const db = require('../../models/db');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
-const uuidv4 = require('uuid/v4');
+const { v4: uuidv4 } = require('uuid');
 
 var mailer = require('../../helpers/mailer');
 
 var async = require('async');
 var fs = require('fs');
 var _ = require("underscore");
-var request = require('request');
 var url = require("url");
 var path = require("path");
 var crypto = require('crypto');
@@ -64,7 +63,7 @@ router.post('/', function(req, res, next) {
 
           var openText = req.i18n.__("space_invite_membership_action");
           if (user) {
-            req.i18n.__("open");
+            openText = req.i18n.__("open");
           }
 
           const name = req.user.nickname || req.user.email
@@ -113,9 +112,9 @@ router.put('/:membership_id', function(req, res, next) {
           } else {
             var attrs = req.body;
             mem.role = attrs.role;
-            mem.save(function() {
+            mem.save().then(function() {
               res.status(201).json(mem);
-            });
+            }).catch(next);
           }
         }
       });

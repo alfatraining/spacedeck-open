@@ -6,7 +6,7 @@ const os = require('os');
 const db = require('../../models/db');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
-const uuidv4 = require('uuid/v4');
+const { v4: uuidv4 } = require('uuid');
 
 var payloadConverter = require('../../helpers/artifact_converter');
 var nats = require('../../helpers/nats');
@@ -15,7 +15,6 @@ var async = require('async');
 var fs = require('fs');
 var _ = require("underscore");
 var archiver = require('archiver');
-var request = require('request');
 var url = require("url");
 var path = require("path");
 var crypto = require('crypto');

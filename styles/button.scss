@@ -339,7 +339,7 @@
 
     &:before {
       @include scale(1,1);
-      @extend .icon-triangle-3-bottom:before;
+      content: "\E247";
     }
 
     &:after {

@@ -15,7 +15,7 @@ module.exports = {
     return Promise.all([
       migration.changeColumn('users', 'api_token',
         {
-          type: Sequelize.STRING
+          type: DataTypes.STRING
         }
       )
     ])

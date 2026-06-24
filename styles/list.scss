@@ -415,22 +415,22 @@
     }
 
     &.home > span:after{
-      @extend .icon-home:before;
+      content: "\E107";
       opacity: 0.25;
     }
 
     &.folder-up > span:after,
     &.folder > span:after {
-      @extend .icon-folder:before;
+      content: "\E0E7";
       color: $yellow;
     }
 
     &.space > span:after {
-      @extend .icon-page-horizontal:before;
+      content: "\E15F";
       opacity: 0.25;
     }
     &.shaed > span:after {
-      @extend .icon-page-horizontal-up:before;
+      content: "\E166";
       opacity: 0.25;
     }
 
@@ -458,7 +458,7 @@
           right: -4px;
           color: $medium !important;
           color: $light !important;
-          @extend .icon-shape-circle:before;
+          content: "\E1A5";
         }
 
 

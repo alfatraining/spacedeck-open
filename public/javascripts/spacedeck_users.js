@@ -44,7 +44,7 @@ SpacedeckUsers = {
     finalize_login: function(session_token, on_success) {
       this.load_user(function(user) {
         if (this.invitation_token) {
-          accept_invitation(this.invitation_token, function(memberships){
+          accept_invitation(this.invitation_token, get_query_param("code"), function(memberships){
             this.redirect_to("/spaces/"+memberships.space_id);
           }.bind(this), function(xhr){
             console.error(xhr);
@@ -221,7 +221,7 @@ SpacedeckUsers = {
       }.bind(this));
     },
 
-    logout: function() {
+    logout: function(on_success) {
       this.active_view="login";
       this.logged_in = false;
       delete_session(function() {
@@ -234,7 +234,11 @@ SpacedeckUsers = {
         api_token = null;
         this.user = {};
         this.active_content_type = "login";
-        this.redirect_to("/");
+        if (on_success) {
+          on_success();
+        } else {
+          this.redirect_to("/");
+        }
 
       }.bind(this));
     },

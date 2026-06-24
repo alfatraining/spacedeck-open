@@ -8,7 +8,7 @@ const path = require('path')
 const db = require('../models/db')
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op
-const uuidv4 = require('uuid/v4')
+const { v4: uuidv4 } = require('uuid')
 
 require('../models/db')
 
@@ -28,11 +28,7 @@ module.exports = {
       fs.mkdirSync(importDir)
     }
   
-    extract(zipPath, {dir: importDir}, function(err) {
-      if (err) {
-        console.log(err)
-        return
-      }
+    extract(zipPath, {dir: importDir}).then(function() {
       console.log('[import] extracted to',importDir)
 
       let spacesJson = fs.readFileSync(importDir+'/spaces.json')
@@ -76,7 +72,7 @@ module.exports = {
           }
 
           db.Space.create(space)
-            .error((err) => {
+            .catch((err) => {
               console.error("[import] space upsert err:",err)
             })
           
@@ -117,12 +113,14 @@ module.exports = {
 
             db.packArtifact(a)
 
-            db.Artifact.create(a).error(function(err) {
+            db.Artifact.create(a).catch(function(err) {
               console.error("[import] artifact upsert err:",err)
             })
           }
         }
       }
+    }).catch(function(err) {
+      console.error('[import] failed:', err)
     })
   }
 }

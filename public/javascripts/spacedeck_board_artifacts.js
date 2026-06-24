@@ -658,8 +658,8 @@ var SpacedeckBoardArtifacts = {
   },
 
   remove_artifact_comment: function(comment) {
-    delete_comment(this.active_space._id, comment._id, function(comment) {
-      this.active_space_messages.pop(comment);
+    delete_comment(this.active_space._id, comment._id, function() {
+      this.active_space_messages = _.filter(this.active_space_messages, function(c){ return c._id != comment._id; });
     }.bind(this), function(xhr){
       console.error(xhr);
     }.bind(this));

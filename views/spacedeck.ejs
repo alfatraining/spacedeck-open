@@ -34,12 +34,15 @@
     </script>
   </head>
 
-  <body
-    id="main"
-    v-bind:class="{'present-mode':present_mode,'modal-open':active_modal}"
-    v-on:click="handle_body_click($event)"
-  >
-    <space></space>
+  <body>
+    <div
+      id="app"
+      style="height:100%"
+      v-bind:class="{'present-mode':present_mode,'modal-open':active_modal}"
+      v-on:click="handle_body_click($event)"
+    >
+      <space></space>
+    </div>
     <script src="/build/js/scripts.js"></script>
     <script src="/build/js/spacedeck.js"></script>
     <script src="/build/js/alfaview-wb.js"></script>

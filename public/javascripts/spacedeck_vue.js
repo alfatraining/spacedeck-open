@@ -29,7 +29,8 @@ function boot_spacedeck() {
     password_reset_confirm_error: null,
     reset_token: null,
 
-    global_spinner: false
+    global_spinner: false,
+    active_modal: null
   };
 
   var methods = {
@@ -104,9 +105,10 @@ function boot_spacedeck() {
   });
 
   window.spacedeck = new Vue({
-    el: "body",
+    el: '#app',
     data: data,
-    methods: methods
+    methods: methods,
+    i18n: window.alfaview && window.alfaview.getI18N ? window.alfaview.getI18N() : undefined
   });
 
   spacedeck.setup_section_module();

@@ -1,6 +1,6 @@
 export default {
   toolbar: {
-    select: 'Select',
+    select: 'Auswählen',
     pan: 'Ziehen',
     draw: 'Zeichnen',
     shape: 'Grafik',
@@ -8,14 +8,14 @@ export default {
     text: 'Text',
     background: 'Hintergrund',
     download: 'Herunterladen',
-    clear: 'Alle löschen',
+    clear: 'Alles löschen',
     align: 'Ausrichtung',
     layout: 'Layout',
     duplicate: 'Duplizieren',
     delete: 'Löschen',
-    stroke: 'Strich',
+    stroke: 'Stärke',
     fontSize: 'Schriftgröße',
-    borderRadius: 'Border radius',
+    borderRadius: 'Rahmenradius',
   },
   boardMetadata: {
     deletionMessage: 'Board wird automatisch gelöscht am: {date}',
@@ -29,5 +29,6 @@ export default {
   },
   board: {
     deleteConfirmation: '{count} Elemente löschen?',
+    emptyPlaceholder: 'Erstellen Sie erste Elemente mit der Werkzeugleiste.',
   },
 };

@@ -2,7 +2,7 @@
 
 var config = require('config');
 const db = require('../../models/db');
-const uuidv4 = require('uuid/v4');
+const { v4: uuidv4 } = require('uuid');
 const os = require('os');
 
 var mailer = require('../../helpers/mailer');
@@ -14,7 +14,6 @@ var crypto = require('crypto');
 var async = require('async');
 var _ = require('underscore');
 var fs = require('fs');
-var request = require('request');
 var gm = require('gm');
 var validator = require('validator');
 var URL = require('url').URL;
@@ -80,40 +79,35 @@ router.post('/', function(req, res) {
           };
 
           db.User.create(u)
-            .error(err => {
-              res.sendStatus(400);
-            })
-            .then(u => {
+            .then(createdUser => {
               var homeFolder = {
                 _id: uuidv4(),
                 name: req.i18n.__("home"),
                 space_type: "folder",
-                creator_id: u._id
+                creator_id: createdUser._id
               };
-              db.Space.create(homeFolder)
-                .error(err => {
-                  res.sendStatus(400);
-                })
+              return db.Space.create(homeFolder)
                 .then(homeFolder => {
-                  u.home_folder_id = homeFolder._id;
-                  u.save()
-                    .then(() => {
-                      // home folder created,
-                      // auto accept pending invites
-                      db.Membership.update({
-                        "state": "active"
-                      }, {
-                        where: {
-                          "email_invited": u.email,
-                          "state": "pending"
-                        }
-                      });
-                      res.status(201).json({});          
-                    })
-                    .error(err => {
-                      res.status(400).json(err);
-                    });
+                  createdUser.home_folder_id = homeFolder._id;
+                  return createdUser.save();
                 })
+                .then(() => {
+                  // home folder created,
+                  // auto accept pending invites
+                  db.Membership.update({
+                    "state": "active"
+                  }, {
+                    where: {
+                      "email_invited": createdUser.email,
+                      "state": "pending"
+                    }
+                  });
+                  res.status(201).json({});
+                });
+            })
+            .catch(err => {
+              console.error("[register] user creation failed:", err);
+              if (!res.headersSent) res.sendStatus(400);
             });
         });
       });
@@ -146,9 +140,9 @@ router.put('/:id', function(req, res, next) {
     newAttr.updated_at = new Date();
     delete newAttr['_id'];
 
-    db.User.update(newAttr, {where: {"_id": user._id}}).then(function(updatedUser) {
+    db.User.update(newAttr, {where: {"_id": user._id}}).then(function() {
       res.status(200).json(newAttr);
-    });
+    }).catch(next);
   } else {
     res.sendStatus(403);
   }
@@ -190,12 +184,11 @@ router.delete('/:id',  (req, res, next) => {
       // all objects (indirectly) belonging to the user have
       // to be walked and deleted first.
       
-      user.destroy().then(err => {
-        if(err)res.status(400).json(err);
-        else res.sendStatus(204);
-      });
+      user.destroy()
+        .then(() => res.sendStatus(204))
+        .catch(err => res.status(400).json(err));
     } else {
-      res.bad_request("Please enter the correct current password.");
+      res.status(400).json({error: "Please enter the correct current password."});
     }
   } else {
     res.status(403).json({error: "Access denied."});
@@ -209,13 +202,9 @@ router.put('/:user_id/confirm', (req, res) => {
   if (user.confirmation_token === token) {
     user.confirmation_token = null;
     user.confirmed_at = new Date();
-    user.save(function(err, updatedUser) {
-      if(err) {
-        res.sendStatus(400);
-      } else {
-        res.status(200).json(updatedUser);
-      }
-    });
+    user.save()
+      .then(updatedUser => res.status(200).json(updatedUser))
+      .catch(() => res.sendStatus(400));
   } else {
     res.sendStatus(400);
   }

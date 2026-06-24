@@ -8,9 +8,12 @@ const config = require("config");
 
 const WebSocketServer = require("ws").Server;
 const nats = require("./nats");
+const { StringCodec } = require("nats");
 const _ = require("underscore");
 const crypto = require("crypto");
 const get = require("lodash/get");
+
+const sc = StringCodec();
 
 const onMessageListenerArtifacts = async (rawMessage, websockets) => {
   const msg = JSON.parse(rawMessage);
@@ -57,10 +60,18 @@ const onMessageListenerCursors = (rawMessage, websockets) => {
   }
 };
 
+// Helper to process NATS v2 subscription messages via async iterator
+async function processSubscription(sub, handler, websockets) {
+  for await (const msg of sub) {
+    const data = sc.decode(msg.data);
+    handler(data, websockets);
+  }
+}
+
 module.exports = {
   startWebsockets: function (server) {
     if (!this.current_websockets) {
-      this.nats = nats.getConnection();
+      this.natsConn = nats.getConnection();
       this.current_websockets = [];
       this.natsUpdatesMap = {};
       this.natsCursorsMap = {};
@@ -79,31 +90,17 @@ module.exports = {
           const spaceId = msg.space_id;
 
           // Only subscribe to nats event if the serverScope has not already subscribed to it
-          if (!get(serverScope, `natsUpdatesMap[${spaceId}]`)) {
-            serverScope.natsUpdatesMap[
-              spaceId
-            ] = serverScope.nats.subscribe(
-              `_spacedeck.updates.${spaceId}`,
-              (rawMessage) =>
-                onMessageListenerArtifacts(
-                  rawMessage,
-                  serverScope.current_websockets
-                )
+          if (serverScope.natsConn && !get(serverScope, `natsUpdatesMap[${spaceId}]`)) {
+            const sub = serverScope.natsConn.subscribe(
+              `_spacedeck.updates.${spaceId}`
+            );
+            serverScope.natsUpdatesMap[spaceId] = sub;
+            processSubscription(
+              sub,
+              onMessageListenerArtifacts,
+              serverScope.current_websockets
             );
           }
-
-          // if (!get(serverScope, `natsCursorsMap[${spaceId}]`)) {
-          //   serverScope.natsCursorsMap[
-          //     spaceId
-          //   ] = serverScope.nats.subscribe(
-          //     `_spacedeck.cursors.${spaceId}`,
-          //     (rawMessage) =>
-          //       onMessageListenerCursors(
-          //         rawMessage,
-          //         serverScope.current_websockets
-          //       )
-          //   );
-          // }
 
           if (msg.action == "auth") {
             const token = msg.auth_token;
@@ -138,7 +135,6 @@ module.exports = {
                       space.edit_hash != editorAuth
                     ) {
                       ws.send(JSON.stringify({ error: "auth_failed" }));
-                      // ws.close();
                       return;
                     }
 
@@ -186,10 +182,12 @@ module.exports = {
           ) {
             msg.space_id = socket.space_id;
             msg.from_socket_id = socket.id;
-            serverScope.nats.publish(
-              `_spacedeck.cursors.${msg.space_id}`,
-              JSON.stringify(msg)
-            );
+            if (serverScope.natsConn) {
+              serverScope.natsConn.publish(
+                `_spacedeck.cursors.${msg.space_id}`,
+                sc.encode(JSON.stringify(msg))
+              );
+            }
           }
         });
 
@@ -210,7 +208,7 @@ module.exports = {
         ws.on(
           "error",
           function (ws, err) {
-            console.error(err, res);
+            console.error(err);
           }.bind(this)
         );
       }.bind(this)
@@ -245,36 +243,5 @@ module.exports = {
 
   distributeUsers: function (spaceId) {
     if (!spaceId) return;
-
-    /*this.state.smembers("space_" + spaceId, function(err, list) {
-      async.map(list, function(item, callback) {
-        this.state.get(item, function(err, userId) {
-          console.log(item, "->", userId);
-          callback(null, userId);
-        });
-      }.bind(this), function(err, userIds) {
-        const uniqueUserIds = _.unique(userIds);
-        const validUserIds = _.filter(uniqueUserIds, function(uId) {
-          return mongoose.Types.ObjectId.isValid(uId);
-        });
-
-        const nonValidUserIds = _.filter(uniqueUserIds, function(uId) {
-          return (uId !== null && !mongoose.Types.ObjectId.isValid(uId));
-        });
-
-        const anonymousUsers = _.map(nonValidUserIds, function(nonValidId) {
-          const realNickname = nonValidId.slice(nonValidId.indexOf("-")+1);
-          return {nickname: realNickname, email: null, avatar_thumbnail_uri: null };
-        });
-
-        db.User.findAll({where: {
-          "_id" : { "$in" : validUserIds }}, attributes: ["nickname","email","avatar_thumbnail_uri"]})
-          .then(users) {
-            const allUsers = users.concat(anonymousUsers);
-            const strUsers = JSON.stringify({users: allUsers, space_id: spaceId});
-            this.state.publish("users", strUsers);
-          }.bind(this));
-      }.bind(this));
-    }.bind(this));*/
   },
 };

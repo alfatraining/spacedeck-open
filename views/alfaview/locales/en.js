@@ -29,5 +29,6 @@ export default {
   },
   board: {
     deleteConfirmation: 'Delete {count} items?',
+    emptyPlaceholder: 'Use the toolbar to add content.',
   },
 };

@@ -1,7 +1,7 @@
 <template>
   <div style="height: 100%">
     <div v-cloak v-if="activeSpaceLoaded" class="header-right">
-      <span v-for="au in active_space_users">
+      <span v-for="(au, auIdx) in activeSpaceUsers" :key="auIdx">
         <button
           v-cloak
           class="member btn btn-md btn-round"
@@ -48,7 +48,7 @@
       <div v-cloak v-if="activeView == 'space' && !presentMode && activeSpaceArtifacts.length == 0" class="space-empty">
         <div class="table-fake">
           <div class="cell">
-            <p>Use the toolbar to add content.</p>
+            <p>{{ $t('board.emptyPlaceholder') }}</p>
           </div>
         </div>
       </div>
@@ -67,12 +67,12 @@
       v-if="!isLoading && activeView == 'space' && activeSpaceLoaded"
       id="space"
       v-sd-whiteboard
-      class="section board active mouse-{{mouseState}} tool-{{activeTool}}"
+      :class="`section board active mouse-${mouseState} tool-${activeTool}`"
       :style="{ 'background-color': activeSpace.background_color }"
       @scroll="handleScroll"
       @dblclick="handleSpaceDoubleclick"
     >
-    <!-- eslint-enable -->
+      <!-- eslint-enable -->
 
       <div
         class="space-bounds"
@@ -99,7 +99,8 @@
         <div id="lasso"></div>
         <div
           v-for="a in activeSpaceArtifacts"
-          id="artifact-{{a._id}}"
+          :id="`artifact-${a._id}`"
+          :key="`artifact-${a._id}`"
           :style="a.view.style"
           :class="[
             a.view.classes,
@@ -124,13 +125,12 @@
               <div class="text-table">
                 <div class="text-cell" :style="a.view.text_cell_style">
                   <div v-show="editingArtifactId == a._id" v-sd-richtext:obj="a" class="text-column text-editing">
-                    <!-- eslint-disable-next-line vue/no-parsing-error -->
-                    {{{ a.description }}}
+                    <span v-html="a.description"></span>
                   </div>
                   <div
                     v-show="editingArtifactId != a._id"
                     class="text-column"
-                    v-html="a.description | urls_to_links"
+                    v-html="urlsToLinks(a.description)"
                   ></div>
                 </div>
               </div>
@@ -148,7 +148,7 @@
                 @touchstart="delayedEditArtifact()"
               >
                 <i class="material-icons md-18">create</i>
-                <input id="ios-focuser-{{a._id}}" type="text" class="ios-focuser" />
+                <input :id="`ios-focuser-${a._id}`" type="text" class="ios-focuser" />
               </button>
             </div>
 
@@ -166,7 +166,7 @@
                   <div
                     v-show="editingArtifactId != a._id"
                     class="text-column"
-                    v-html="a.description | urls_to_links"
+                    v-html="urlsToLinks(a.description)"
                   ></div>
                 </div>
               </div>
@@ -183,7 +183,7 @@
                 @touchstart="delayedEditArtifact()"
               >
                 <i class="material-icons md-18">create</i>
-                <input id="ios-focuser-{{a._id}}" type="text" class="ios-focuser" />
+                <input :id="`ios-focuser-${a._id}`" type="text" class="ios-focuser" />
               </button>
             </div>
 
@@ -209,7 +209,12 @@
                 autoplay
                 loop
               >
-                <source v-for="rep in a.payload_alternatives" :src="rep.payload_uri" :type="rep.mime" />
+                <source
+                  v-for="(rep, repIdx) in a.payload_alternatives"
+                  :key="repIdx"
+                  :src="rep.payload_uri"
+                  :type="rep.mime"
+                />
               </video>
 
               <span v-if="a.view.link.length > 0" class="link-wrapper">
@@ -227,7 +232,12 @@
               :style="a.view.inner_style + ';background-image: url(' + a.view.thumbnail_uri + ');'"
             >
               <video preload="metadata" :poster="a.view.thumbnail_uri">
-                <source v-for="rep in a.payload_alternatives" :src="rep.payload_uri" :type="rep.mime" />
+                <source
+                  v-for="(rep, repIdx) in a.payload_alternatives"
+                  :key="repIdx"
+                  :src="rep.payload_uri"
+                  :type="rep.mime"
+                />
                 <source v-if="a.payload_uri && a.mime" :src="a.payload_uri" :type="a.mime" />
               </video>
 
@@ -258,7 +268,12 @@
             <!-- audio -->
             <div v-if="a.view.major_type == 'audio'" v-audioplayer="a" class="audio" :style="a.view.inner_style">
               <audio>
-                <source v-for="alt in a.payload_alternatives" :src="alt.payload_uri" :type="alt.mime" />
+                <source
+                  v-for="(alt, altIdx) in a.payload_alternatives"
+                  :key="altIdx"
+                  :src="alt.payload_uri"
+                  :type="alt.mime"
+                />
                 <source v-if="a.payload_uri" :src="a.payload_uri" :type="a.mime" />
               </audio>
 
@@ -332,11 +347,7 @@
             <div v-if="a.view.major_type == 'zone'" class="zone" :style="a.view.inner_style">
               <div class="text-cell">
                 <div v-show="editingArtifactId == a._id" v-sd-richtext:obj="a" class="text-column text-editing"></div>
-                <div
-                  v-show="editingArtifactId != a._id"
-                  class="text-column"
-                  v-html="a.description | urls_to_links"
-                ></div>
+                <div v-show="editingArtifactId != a._id" class="text-column" v-html="urlsToLinks(a.description)"></div>
               </div>
             </div>
 
@@ -477,19 +488,20 @@
             :style="selectionMetrics.vector_style"
           >
             <span
-              v-for="p in selectionMetrics.vector_points"
+              v-for="(p, pIdx) in selectionMetrics.vector_points"
+              :key="pIdx"
               :style="{
                 left: p.dx + arrowOptions.vector_point_adjustment_dx + 'px',
                 top: p.dy + arrowOptions.vector_point_adjustment_dy + 'px',
               }"
               class="vector-handle"
-              data-idx="{{$index}}"
+              :data-idx="pIdx"
             ></span>
           </div>
         </div>
         <!-- handles end -->
 
-        <div v-for="c in userCursors" class="cursor" :style="{ left: c.x + 'px', top: c.y + 'px' }">
+        <div v-for="(c, cIdx) in userCursors" :key="cIdx" class="cursor" :style="{ left: c.x + 'px', top: c.y + 'px' }">
           <span class="btn btn-round btn-sm btn-dark">
             <span class="icon icon-tool-pointer"></span>
             {{ c.name }}
@@ -630,7 +642,7 @@ export default {
   },
   methods: {
     isSelected(itm) {
-      this.$root.is_selected(itm);
+      return this.$root.is_selected(itm);
     },
     handleSpaceDoubleclick(evt) {
       this.$root.handle_space_doubleclick(evt);
@@ -646,6 +658,10 @@ export default {
     },
     delayedEditArtifact() {
       this.$root.delayed_edit_artifact();
+    },
+    urlsToLinks(text) {
+      // eslint-disable-next-line no-undef
+      return typeof urls_to_links === 'function' ? urls_to_links(text) : text;
     },
     downloadSpace() {
       const spaceWidth = this.$root.active_space.width;

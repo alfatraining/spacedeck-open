@@ -12,7 +12,7 @@ module.exports = (req, res, next) => {
     db.User.findOne({where: {api_token: api_token}}).then(user => {
       req.user = user;
       next();
-    }).error(err => {
+    }).catch(err => {
       res.status(403).json({
         "error": "invalid_api-token"
       });
@@ -35,7 +35,7 @@ module.exports = (req, res, next) => {
         else db.User.findOne({where: {_id: session.user_id}})
           .then(user => {
             if (!user) {
-              var domain = req.headers.hostname;
+              var domain = req.hostname;
               res.clearCookie('sdsession', { domain: domain });
 
               if (req.accepts("text/html")) {
@@ -55,7 +55,7 @@ module.exports = (req, res, next) => {
             }
           });
       })
-      .error(err => {
+      .catch(err => {
         console.error("Session resolve error",err);
         next();
       });
