@@ -16,7 +16,8 @@
       @mouseup="handleMinimapMouseup($event)"
     >
       <div
-        v-for="a in activeSpaceArtifacts"
+        v-for="(a, aIdx) in activeSpaceArtifacts"
+        :key="aIdx"
         :style="{
           left: '' + a.x / minimapScale + 'px',
           top: '' + a.y / minimapScale + 'px',

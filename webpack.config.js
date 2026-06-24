@@ -1,13 +1,14 @@
-const webpack = require('webpack');
 const path = require('path');
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
+  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   entry: {
     'alfaview-wb': './views/alfaview/main.js',
     scripts: './views/alfaview/scripts.js',
   },
   output: {
-    path: './public/',
+    path: path.resolve(__dirname, 'public'),
     filename: 'build/js/[name].js',
   },
   resolve: {
@@ -18,37 +19,35 @@ module.exports = {
     },
   },
   module: {
-    // avoid webpack trying to shim process
     noParse: /es6-promise\.js$/,
-    loaders: [
+    rules: [
       {
         test: /\.vue$/,
-        loader: 'vue',
+        loader: 'vue-loader',
       },
       {
         test: /\.js$/,
-        // excluding some local linked packages.
-        // for normal use cases only node_modules is needed.
         exclude: /node_modules|vue\/dist|vue-router\/|vue-loader\/|vue-hot-reload-api\//,
-        loader: 'babel',
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
+          },
+        },
+      },
+      {
+        test: /\.css$/,
+        use: ['vue-style-loader', 'css-loader'],
       },
     ],
   },
-  babel: {
-    presets: ['es2015'],
-    plugins: ['transform-runtime', 'transform-object-rest-spread'],
-  },
+  plugins: [],
+  optimization:
+    process.env.NODE_ENV === 'production'
+      ? {
+          minimize: true,
+          minimizer: [new TerserPlugin()],
+        }
+      : undefined,
+  devtool: process.env.NODE_ENV === 'production' ? false : 'source-map',
 };
-
-if (process.env.NODE_ENV === 'production') {
-  module.exports.plugins = [
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false,
-      },
-    }),
-    new webpack.optimize.OccurenceOrderPlugin(),
-  ];
-} else {
-  module.exports.devtool = '#source-map';
-}

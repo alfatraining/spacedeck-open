@@ -169,8 +169,12 @@ const server = http.Server(app).listen(port, host, () => {
   }
 });
 
-nats.connectNats();
-websockets.startWebsockets(server);
+nats.connectNats().then(() => {
+  websockets.startWebsockets(server);
+}).catch((err) => {
+  console.error('NATS connection failed, starting without NATS:', err.message);
+  websockets.startWebsockets(server);
+});
 
 /*process.on('message', (message) => {
   console.log("Process message:", message);

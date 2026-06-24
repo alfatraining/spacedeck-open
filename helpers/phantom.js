@@ -32,39 +32,13 @@ module.exports = {
       }
     };
 
-    phantom.create({ path: require('phantomjs-prebuilt').path }, function (err, browser) {
-      if (err) {
-        console.error(err);
-      } else {
-        return browser.createPage(function (err, page) {
-          console.log("page created, opening ",space_url);
-
-          if (type=="pdf") {
-            var psz = {
-              width: space.width+"px",
-              height: space.height+"px"
-            };
-            page.set('paperSize', psz);
-          }
-
-          page.set('settings.resourceTimeout',timeout);
-          page.set('settings.javascriptEnabled',false);
-
-          return page.open(space_url, function (err,status) {
-            page.render(export_path, function() {
-              on_success_called = true;
-              if (on_success) {
-                on_success(export_path);
-              }
-              page.close();
-              browser.exit();
-            });
-          });
-        });        
-      }
-
-    }, {
-      onExit: on_exit
-    });
+    // PhantomJS support has been removed: node-phantom-simple / phantomjs-prebuilt
+    // are no longer installed (the require at the top of this file is commented out).
+    // Screenshot/PDF export is currently unavailable. Fail gracefully via on_error
+    // instead of throwing "ReferenceError: phantom is not defined".
+    console.error("[space-screenshot] screenshot/PDF export is unavailable: PhantomJS support has been removed.");
+    if (on_error) {
+      on_error(new Error("screenshot_export_unavailable"));
+    }
   }
 };

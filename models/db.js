@@ -1,5 +1,5 @@
 const Umzug = require('umzug');
-const uuidv4 = require('uuid/v4')
+const { v4: uuidv4 } = require('uuid')
 
 const Sequelize = require('sequelize');
 const sequelize = new Sequelize(
@@ -21,9 +21,7 @@ const sequelize = new Sequelize(
     acquire: 30000,
     idle: 10000
   },
-  logging: process.env.DEBUG_LOGGING === true ?  (...msg) => console.log(msg) : false,
-  // http://docs.sequelizejs.com/manual/tutorial/querying.html#operators
-  operatorsAliases: false
+  logging: process.env.DEBUG_LOGGING === 'true' ? (sql) => console.log(sql) : false
 });
 
 var User;

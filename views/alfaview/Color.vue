@@ -82,11 +82,11 @@
             <span class="icon" v-bind:class="{'icon-cross-0':s.hex=='rgba(0,0,0,0)'}"></span>
           </button>
         </div> -->
-        <div v-for="(index, swatch) in swatches" :key="index" class="adapt overflow-y-scroll">
+        <div v-for="(swatch, index) in swatches" :key="index" class="adapt overflow-y-scroll">
           <button
             class="btn btn-round btn-darken"
-            :style="{ 'background-color': swatches[index].hex }"
-            @click="applySwatchColor(swatches[index])"
+            :style="{ 'background-color': swatch.hex }"
+            @click="applySwatchColor(swatch)"
           >
             <span class="icon" :class="{ 'icon-cross-1': swatch.hex == 'rgba(0,0,0,0)' }"></span>
           </button>

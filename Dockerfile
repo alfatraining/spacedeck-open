@@ -1,4 +1,4 @@
-FROM git-registry.alfa.sx:4567/alfatraining/docker/node:14.20-bullseye-slim
+FROM git-registry.alfa.sx:4567/alfatraining/docker/node:26.3-bookworm-slim
 
 WORKDIR /app
 
@@ -30,10 +30,9 @@ RUN apt-get update -qq \
 # RUN apk add graphicsmagick ffmpeg ffmpeg-dev ghostscript
 
 # install node package
-
-COPY package*.json ./
-RUN npm install
 COPY . .
+RUN npm install --global yarn@1
+RUN yarn
 # start app
 
 EXPOSE 9666

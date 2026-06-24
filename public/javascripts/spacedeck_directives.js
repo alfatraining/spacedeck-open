@@ -2,23 +2,37 @@
 /*
   Spacedeck Directives
   This module registers custom Vue directives for Spacedeck.
+  Rewritten for Vue 2 directive API.
 */
+
+function _getByPath(obj, path) {
+  return path.split('.').reduce(function(o, key) {
+    return o && o[key];
+  }, obj);
+}
+
+function _setByPath(obj, path, value) {
+  var parts = path.split('.');
+  var target = obj;
+  for (var i = 0; i < parts.length - 1; i++) {
+    target = target[parts[i]];
+  }
+  Vue.set(target, parts[parts.length - 1], value);
+}
 
 function setup_directives() {
   Vue.directive('clipboard', {
-    bind: function () {
-      this.clipboard = new Clipboard(".clipboard-btn");
+    bind: function (el) {
+      el._clipboard = new Clipboard(".clipboard-btn");
     },
-    update: function (value) {
-    },
-    unbind: function () {
-      this.clipboard.destroy()
+    unbind: function (el) {
+      if (el._clipboard) el._clipboard.destroy();
     }
   });
 
   Vue.directive('t', {
-    update: function (value, key) {
-      this.el.innerHTML = key;
+    update: function (el, binding) {
+      el.innerHTML = binding.value;
     }
   });
 
@@ -33,9 +47,15 @@ function setup_directives() {
   }
 
   Vue.directive('videoplayer', {
-    update: function (a) {
-      var el = this.el;
-      var scope = this.vm.$root;
+    bind: function (el, binding, vnode) {
+      el._vp_bound = false;
+    },
+    update: function (el, binding, vnode) {
+      var a = binding.value;
+      if (!a || el._vp_bound) return;
+      el._vp_bound = true;
+
+      var scope = vnode.context.$root;
       var video = el.querySelectorAll("video")[0];
       var play_button = el.querySelectorAll(".play")[0];
       var pause_button = el.querySelectorAll(".pause")[0];
@@ -76,7 +96,7 @@ function setup_directives() {
 
         } catch (e) {
           // catch InvalidStateError
-        }      
+        }
       }
 
       el.addEventListener("remote_play",play_func);
@@ -105,9 +125,15 @@ function setup_directives() {
   });
 
   Vue.directive('audioplayer', {
-    update: function (a) {
-      var el = this.el;
-      var scope = this.vm.$root;
+    bind: function (el, binding, vnode) {
+      el._ap_bound = false;
+    },
+    update: function (el, binding, vnode) {
+      var a = binding.value;
+      if (!a || el._ap_bound) return;
+      el._ap_bound = true;
+
+      var scope = vnode.context.$root;
       var play_button = el.querySelectorAll(".play")[0];
       var pause_button = el.querySelectorAll(".pause")[0];
       var stop_button = el.querySelectorAll(".stop")[0];
@@ -216,7 +242,7 @@ function setup_directives() {
       el.addEventListener("remote_play",play_func);
       el.addEventListener("remote_pause",pause_func);
       el.addEventListener("remote_stop",stop_func);
-      
+
       play_button.addEventListener(edown, function(evt) {
         try {
           play_func();
@@ -250,7 +276,7 @@ function setup_directives() {
 
       set_inpoint.addEventListener(edown, function(evt) {
         if (!a.meta) a.meta = {};
-        
+
         a.meta.play_from = audio.currentTime;
         if (a.meta.play_to<a.meta.play_from) a.meta.play_to = audio.duration;
         update_markers();
@@ -261,7 +287,7 @@ function setup_directives() {
 
       set_outpoint.addEventListener(edown, function(evt) {
         if (!a.meta) a.meta = {};
-        
+
         a.meta.play_to = audio.currentTime;
         if (a.meta.play_to<a.meta.play_from) a.meta.play_from = 0.0;
         update_markers();
@@ -272,7 +298,7 @@ function setup_directives() {
 
       reset_points.addEventListener(edown, function(evt) {
         if (!a.meta) a.meta = {};
-        
+
         a.meta.play_from = 0.0;
         a.meta.play_to = audio.duration;
         update_markers();
@@ -284,32 +310,42 @@ function setup_directives() {
   });
 
   Vue.directive('sd-richtext', {
-    twoWay: true,
-    update: function(obj) {
-      this.mode = 'rich';
+    bind: function(el, binding, vnode) {
+      var obj = binding.value;
+      if (!obj) return;
 
-      $(this.el).addClass("text-editing");
+      $(el).addClass("text-editing");
 
-      this.medium = new Medium({
-        element: this.el,
+      var medium = new Medium({
+        element: el,
         mode: Medium.richMode,
         attributes: {
-		      remove: ['class','href','onclick','onmousedown','onmouseup']
-	      },
+          remove: ['class','href','onclick','onmousedown','onmouseup']
+        },
       });
-      this.medium.value(obj.description);
-      this.medium.element.addEventListener('keyup', function() {
-        obj.description = this.medium.value();
+      medium.value(obj.description);
+      medium.element.addEventListener('keyup', function() {
+        obj.description = medium.value();
         spacedeck.queue_artifact_for_save(obj);
-      }.bind(this));
+      });
 
-      spacedeck.medium_for_object[obj._id] = this.medium;
+      el._medium = medium;
+      spacedeck.medium_for_object[obj._id] = medium;
+    },
+    update: function(el, binding) {
+      var obj = binding.value;
+      if (!obj || !el._medium) return;
+      // Re-sync if the object changed
+      if (el._medium_obj_id !== obj._id) {
+        el._medium.value(obj.description);
+        el._medium_obj_id = obj._id;
+        spacedeck.medium_for_object[obj._id] = el._medium;
+      }
     }
   });
 
   Vue.directive('focus', {
-    bind: function () {
-      var el = this.el;
+    inserted: function (el) {
       window.setTimeout(function() {
         if (el.contentEditable && el.contentEditable!="inherit") {
           var range = document.createRange();
@@ -323,9 +359,7 @@ function setup_directives() {
   });
 
   Vue.directive('sd-draggable', {
-    update: function(data) {
-      var el = this.el;
-
+    bind: function(el, binding) {
       el.addEventListener(
         'dragstart',
         function(evt) {
@@ -336,33 +370,35 @@ function setup_directives() {
             return;
           }
 
-          evt.dataTransfer.setData('application/json', JSON.stringify(data));
+          evt.dataTransfer.setData('application/json', JSON.stringify(binding.value));
           $(el).addClass("dragging");
         },
         false
       );
+    },
+    update: function(el, binding) {
+      el._sd_draggable_data = binding.value;
     }
   });
 
   Vue.directive('sd-droppable', {
-    isFn: true,
-    bind: function() {
-      var el = this.el;
-      var expression = this.expression;
+    bind: function(el, binding, vnode) {
+      var expression = binding.expression;
+      // Strip quotes from expression string
+      expression = expression.replace(/['"]/g, '');
       var parts = expression.split(";");
       var func_key = parts[0];
       var data_key = parts[1];
+      var rootVm = vnode.context.$root;
 
       el.addEventListener(
         'dragover',
         function(e) {
           e.dataTransfer.dropEffect = 'copy';
-          // allows us to drop
           if (e.preventDefault) e.preventDefault();
           el.classList.add('over');
-
           return false;
-        }.bind(this),
+        },
         false
       );
 
@@ -370,9 +406,8 @@ function setup_directives() {
         'dragenter',
         function(e) {
           el.classList.add('over');
-
           return false;
-        }.bind(this),
+        },
         false
       );
 
@@ -394,35 +429,37 @@ function setup_directives() {
           $(e.currentTarget).find(".over").removeClass('over');
           $(e.currentTarget).find(".dragging").removeClass('dragging');
 
-          var func = this.vm.$root[func_key].bind(this.vm.$root);
-          if (this._scope) {
-            var obj = this._scope[data_key];
-          } else {
-            var obj = this.vm[data_key];
-          }
+          var func = rootVm[func_key].bind(rootVm);
+          var obj = vnode.context[data_key] || rootVm[data_key];
           func(e, obj);
 
           return false;
-        }.bind(this),
+        },
         false
       );
     }
   });
 
   Vue.directive('sd-fader', {
-    bind: function (section) {
+    bind: function (el, binding, vnode) {
 
       function clamp(v, mn, mx) {
         return Math.max(mn,Math.min(mx,v));
       }
 
-      var scope = this.vm.$root;
+      var scope = vnode.context.$root;
 
-      this.fader_state = "idle";
-      this.fader_mx = 0;
-      this.fader_my = 0;
+      // Store state on the element since Vue 2 directives don't have `this` context
+      var state = {
+        fader_state: "idle",
+        fader_mx: 0,
+        fader_my: 0,
+        fader_oldx: 0,
+        fader_oldy: 0
+      };
+      el._sd_fader = state;
 
-      var $el = $(this.el);
+      var $el = $(el);
 
       var handle = $el.find(".fader-selector");
       var indicator = $el.find(".fader-indicator");
@@ -432,6 +469,10 @@ function setup_directives() {
       var fader_var_x = $el.attr("sd-fader-var-x");
       var fader_var_y = $el.attr("sd-fader-var-y");
 
+      var xfader = !!fader_var_x;
+      var yfader = !!fader_var_y;
+      var encoder = !handle[0];
+
       var knob_size = 0;
       var minx = 0;
       var miny = 0;
@@ -439,13 +480,9 @@ function setup_directives() {
       var maxy = 0;
 
       var nx = 0;
-      if (xfader) nx = scope.$get(fader_var_x);
+      if (xfader) nx = _getByPath(scope, fader_var_x) || 0;
       var ny = 0;
-      if (yfader) ny = scope.$get(fader_var_y);
-
-      var xfader = !!fader_var_x;
-      var yfader = !!fader_var_y;
-      var encoder = !handle[0];
+      if (yfader) ny = _getByPath(scope, fader_var_y) || 0;
 
       var step = parseFloat($el.attr("sd-fader-step"))||1;
       var sensitivity = parseFloat($el.attr("sd-fader-sens"))||1;
@@ -470,47 +507,42 @@ function setup_directives() {
         if (indicator[0]) {
           indicator[0].style.height = ny+"px";
         }
-      }.bind(this);
+      };
 
       var move_handle = function(dx,dy) {
         discover_minmax();
         if (xfader) {
           nx = clamp(dx, minx, maxx);
-          scope.$set(fader_var_x, nx);
+          _setByPath(scope, fader_var_x, nx);
         }
 
         if (yfader) {
           ny = clamp(dy, miny, maxy);
           if (step<1) ny = ny.toFixed(1); // float precision hack
 
-          scope.$set(fader_var_y, ny);
+          _setByPath(scope, fader_var_y, ny);
         }
-      }.bind(this);
+      };
 
       var handle_move = function(evt) {
         evt = fixup_touches(evt);
 
-        var dx = parseInt((evt.pageX - this.fader_mx) * sensitivity);
-        var dy = parseInt((evt.pageY - this.fader_my) * sensitivity);
+        var dx = parseInt((evt.pageX - state.fader_mx) * sensitivity);
+        var dy = parseInt((evt.pageY - state.fader_my) * sensitivity);
 
         dx *= step;
         dy *= step;
 
-        move_handle(this.fader_oldx+dx,this.fader_oldy-dy);
-      }.bind(this);
+        move_handle(state.fader_oldx+dx,state.fader_oldy-dy);
+      };
 
       var handle_up = function(evt) {
-        this.fader_state = "idle";
+        state.fader_state = "idle";
 
         $("body").off(emove, handle_move);
         $("body").off("mouseleave "+eup+" blur", handle_up);
 
         window._sd_fader_moving = false; // signal for other event systems
-      }.bind(this);
-
-      function prevent_event(evt) {
-        evt.preventDefault();
-        evt.stopPropagation();
       };
 
       $el.on(edown,function(evt) {
@@ -520,49 +552,46 @@ function setup_directives() {
         evt = fixup_touches(evt);
         var offset = $(evt.target).offset();
 
-        this.fader_state = "drag";
+        state.fader_state = "drag";
         if (!encoder) {
           move_handle(evt.pageX-offset.left, maxy - (evt.pageY - offset.top) + knob_size/2);
         }
 
         if (yfader) {
-          ny = scope.$get(fader_var_y);
+          ny = _getByPath(scope, fader_var_y) || 0;
         }
 
         $("body").on(emove, handle_move);
         $("body").on("mouseleave "+eup+" blur", handle_up);
 
-        this.fader_mx = evt.pageX;
-        this.fader_my = evt.pageY;
-        this.fader_oldx = nx||0;
-        this.fader_oldy = ny||0;
+        state.fader_mx = evt.pageX;
+        state.fader_my = evt.pageY;
+        state.fader_oldx = nx||0;
+        state.fader_oldy = ny||0;
 
         window._sd_fader_moving = true; // signal for other event systems
-      }.bind(this));
+      });
 
       // initial state
       position_handle();
 
       if (xfader) {
         scope.$watch(fader_var_x, function(a) {
-          nx = parseInt(scope.$get(fader_var_x));
+          nx = parseInt(_getByPath(scope, fader_var_x));
           position_handle();
         });
       }
 
       if (yfader) {
         scope.$watch(fader_var_y, function(a) {
-          ny = parseInt(scope.$get(fader_var_y));
+          ny = parseInt(_getByPath(scope, fader_var_y));
           position_handle();
         });
       }
     },
 
-    unbind: function() {
-      var scope = this.vm.$root;
-      var $el = $(this.el);
-      var fader_var_x = $el.attr("sd-fader-var-x");
-      var fader_var_y = $el.attr("sd-fader-var-y");
+    unbind: function(el) {
+      delete el._sd_fader;
     }
   });
 }

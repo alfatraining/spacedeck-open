@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="backgroundMode === 'color' && colorMode == 'palette'" class="color-wrap color-palette">
-      <div v-for="(index, swatch) in swatches" :key="index" class="adapt overflow-y-scroll">
+      <div v-for="(swatch, index) in swatches" :key="index" class="adapt overflow-y-scroll">
         <button
           class="btn btn-round btn-darken"
           :style="{ 'background-color': swatch.hex }"
@@ -37,7 +37,7 @@ export default {
       this.$root.handle_section_background_upload(event);
     },
     removeSectionBackground() {
-      this.$root.remove_section_background;
+      this.$root.remove_section_background();
     },
     handleTouchSelectBackgroundImage() {
       this.$root.handle_touch_select_background_image();

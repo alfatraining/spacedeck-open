@@ -2,17 +2,17 @@
 @import "mixins";
 @import "unicode";
 
-.checkbox.checked:before { opacity: 1; @extend .icon-input-checkbox-checked:before;}
-.radio.checked:before    { opacity: 1; @extend .icon-input-radio-checked:before;}
+.checkbox.checked:before { opacity: 1; content: "\E10C";}
+.radio.checked:before    { opacity: 1; content: "\E10E";}
 
-.checkbox:hover:before { @extend .icon-input-checkbox-checked:before;}
-.radio:hover:before    { @extend .icon-input-radio-checked:before;}
+.checkbox:hover:before { content: "\E10C";}
+.radio:hover:before    { content: "\E10E";}
 
-.checkbox:active:before { opacity: 1; @extend .icon-input-checkbox-checked:before; }
-.radio:active:before    { opacity: 1; @extend .icon-input-radio-checked:before; }
+.checkbox:active:before { opacity: 1; content: "\E10C"; }
+.radio:active:before    { opacity: 1; content: "\E10E"; }
 
-.checkbox:hover:before { @extend .icon-input-checkbox-checked:before; }
-.radio:hover:before    { @extend .icon-input-radio-checked:before; }
+.checkbox:hover:before { content: "\E10C"; }
+.radio:hover:before    { content: "\E10E"; }
 
 .checkbox:active { color: white; }
 .radio:active    { color: white; }
@@ -53,7 +53,7 @@
   &:before {
     opacity: 0.25;
     @include icon;
-    @extend .icon-input-radio:before;
+    content: "\E10D";
     margin-left: -18px;
     // margin-top: -8px;
     line-height: 60px;

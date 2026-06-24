@@ -187,15 +187,15 @@ function createThumbnailForVideo(fileName, filePath, callback) {
   });
 }
 
-function getMime(fileName, filePath, callback) {
+async function getMime(fileName, filePath, callback) {
   var ext = path.extname(fileName);
   var presetMime = mime.lookup(fileName);
-  
+
   if (presetMime) {
     callback(null, presetMime);
   } else {
     const buffer = readChunk.sync(filePath, 0, 4100);
-    var mimeType = fileType(buffer);
+    var mimeType = (await fileType.fromBuffer(buffer))?.mime;
     callback(null, mimeType);
   }
 }

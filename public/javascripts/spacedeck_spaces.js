@@ -233,7 +233,7 @@ var SpacedeckSpaces = {
               }
               this.active_space_artifacts = artifacts;
 
-              this.$set("active_space", space);
+              this.active_space = space;
               this.active_space = space;
 
               this.auth_websocket(this.active_space);

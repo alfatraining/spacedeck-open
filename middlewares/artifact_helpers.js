@@ -16,5 +16,5 @@ module.exports = (req, res, next) => {
     } else {
       res.sendStatus(404);
     }
-  });
+  }).catch(next);
 };

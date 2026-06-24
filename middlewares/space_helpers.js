@@ -121,5 +121,8 @@ module.exports = (req, res, next) => {
         error: "space_not_found",
       });
     }
+  }).catch(() => {
+    res.status(500);
+    next();
   });
 };

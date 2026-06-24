@@ -23,24 +23,11 @@ var SpacedeckRoutes = {
           path: "/s/:hash",
           handler: function(params, on_success) {
             var parts = params.hash.split("-");
-            if (path.length > 0) {
+            if (parts.length > 1) {
               this.load_space(parts.slice(1).join("-"), on_success, null, parts[0]);
             } else {
               // FIXME error handling
               on_success();
-            }
-          }.bind(this)
-        }
-      ]);
-
-      this.router.add([
-        {
-          path: "/confirm/:token",
-          handler: function(params) {
-            if (!this.logged_in) {
-              this.redirect_to("/login");
-            } else {
-              this.confirm_account(params.token);
             }
           }.bind(this)
         }
@@ -123,7 +110,7 @@ var SpacedeckRoutes = {
           handler: function(params) {
             if (this.logged_in) {
               if(this.invitation_token) {
-                accept_invitation(this.accept_invitation, function(m) {
+                accept_invitation(this.invitation_token, get_query_param("code"), function(m) {
                   window._spacedeck_location_change = true;
                   location.href = "spaces/"+m.space_id;
                 }.bind(this), function(xhr) { console.error(xhr); });
@@ -185,22 +172,6 @@ var SpacedeckRoutes = {
               location.href = "/";
             } else {
               this.active_view = "account";
-            }
-          }.bind(this)
-        }
-      ]);
-
-
-      this.router.add([
-        {
-          path: "/team",
-          handler: function(params) {
-            if (!this.logged_in) {
-              window._spacedeck_location_change = true;
-              location.href = "/";
-            } else {
-              this.active_view = "team";
-              this.load_team();
             }
           }.bind(this)
         }

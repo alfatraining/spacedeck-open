@@ -6,7 +6,6 @@ require('../../models/db');
 var async = require('async');
 var fs = require('fs');
 var _ = require("underscore");
-var request = require('request');
 var url = require("url");
 var path = require("path");
 var crypto = require('crypto');

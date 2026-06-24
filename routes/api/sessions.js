@@ -21,9 +21,6 @@ router.post('/', function(req, res) {
   var password = req.body["password"];
 
   db.User.findOne({where: {email: email}})
-    .error(err => {
-      res.sendStatus(404);
-    })
     .then(user => {
       if (!user) {
         res.sendStatus(404);
@@ -41,19 +38,23 @@ router.post('/', function(req, res) {
           };
 
           db.Session.create(session)
-            .error(err => {
-              console.error("Error creating Session:",err);
-              res.sendStatus(500);
-            })
             .then(() => {
-              var domain = req.headers.hostname;
+              var domain = req.hostname;
               res.cookie('sdsession', token, { domain: domain, httpOnly: true });
               res.status(201).json(session);
+            })
+            .catch(err => {
+              console.error("Error creating Session:", err);
+              if (!res.headersSent) res.sendStatus(500);
             });
         });
       } else {
         res.sendStatus(403);
       }
+    })
+    .catch(err => {
+      console.error("Error during login:", err);
+      if (!res.headersSent) res.sendStatus(500);
     });
 });
 
@@ -64,7 +65,7 @@ router.delete('/current', function(req, res, next) {
       .then(session => {
         session.destroy();
       });
-    var domain = req.headers.hostname;
+    var domain = req.hostname;
     res.clearCookie('sdsession', { domain: domain });
     res.sendStatus(204);
   } else {

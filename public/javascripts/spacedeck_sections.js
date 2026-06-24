@@ -380,7 +380,7 @@ var SpacedeckSections = {
       this.$watch('active_style.background_color', function (value, mutation) {
 
         if (this.active_style.background_color != this.active_space.background_color) {
-          this.$set("active_space.background_color",this.active_style.background_color);
+          this.$set(this.active_space, "background_color", this.active_style.background_color);
           this.throttled_save_active_space();
         }
 
@@ -540,7 +540,7 @@ var SpacedeckSections = {
               if (el.style.lineHeight) this.active_style.line_height = parseFloat(el.style.lineHeight);
               if (el.style.color) this.active_style.text_color = el.style.color;
             }
-          } while (el && (el = dom.nextSibling));
+          } while (el && (el = el.nextSibling));
         }
       }
 
@@ -2431,7 +2431,7 @@ var SpacedeckSections = {
               } else {
                 parsed[i].x = parsed[i].x+50;
                 parsed[i].y = parsed[i].y+50;
-                parsed[i].y = parsed[i].z+z;
+                parsed[i].z = parsed[i].z+z;
               }
               this.clone_artifact(parsed[i], 0,0, function(a) {
                 this.multi_select([a]);

@@ -4,7 +4,7 @@ const os = require('os');
 const db = require('../../models/db');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
-const uuidv4 = require('uuid/v4');
+const { v4: uuidv4 } = require('uuid');
 
 var mailer = require('../../helpers/mailer');
 var uploader = require('../../helpers/uploader');
@@ -16,7 +16,6 @@ var slug = require('slug');
 var fs = require('fs');
 var async = require('async');
 var _ = require("underscore");
-var request = require('request');
 var url = require("url");
 var path = require("path");
 var crypto = require('crypto');
@@ -196,9 +195,7 @@ router.post('/', function(req, res, next) {
           state: "active"
         };
         
-        db.Membership.create(membership).then(() => {
-          res.status(201).json(createdSpace);
-        });
+        db.Membership.create(membership);
       });
     }
 

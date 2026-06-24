@@ -42,7 +42,7 @@
     <!-- Disable file uploads for MVP -->
     <!-- <button class="btn btn-icon-labeled avw-button" @click="showFileUploadDialog()">Media</button>
     <input
-      v-el:file-upload
+      ref="fileUpload"
       type="file"
       accept="*/*"
       multiple
@@ -76,7 +76,7 @@
     <button class="btn btn-icon-labeled avw-button" @click="clearSpace()">
       <!-- <span class="icon icon-page-horizontal-remove"></span> -->
       <i class="material-icons">delete_sweep</i>
-      <span class="icon-label">Clear</span>
+      <span class="icon-label">{{ $t('toolbar.clear') }}</span>
     </button>
   </div>
 </template>

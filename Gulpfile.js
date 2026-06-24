@@ -1,5 +1,6 @@
 const gulp = require('gulp');
-const sass = require('gulp-sass');
+const sass = require('gulp-sass')(require('sass'));
+//           └── factory function ──┘└─ compiler ─┘
 const concat = require('gulp-concat');
 const autoprefixer = require('gulp-autoprefixer');
 const uglify = require('gulp-uglify');
@@ -18,8 +19,8 @@ gulp.task('build-sd-js', () =>
     .pipe(gulp.dest(dirs.dest))
 );
 
-gulp.task('styles', (done) => {
-  gulp
+gulp.task('styles', () => {
+  return gulp
     .src('styles/**/*.scss')
     .pipe(
       sass({
@@ -33,7 +34,6 @@ gulp.task('styles', (done) => {
     )
     .pipe(gulp.dest('./public/stylesheets/'))
     .pipe(concat('style.css'));
-  done();
 });
 
 gulp.task('watch', () => {
